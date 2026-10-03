@@ -13,7 +13,7 @@ Placement Preparation/
 │   ├── Topic_Wise/          7 topic-wise practice sets
 │   └── Mixed_Sets/          6 mixed practice sets
 ├── 03_Programming/
-│   ├── Java/                Guide, quick revision, practice questions
+│   ├── Java/                Guide, quick revision, practice questions, API reference
 │   └── MySQL/               Guide, quick revision, practice questions
 └── 04_Business_and_Finance/ Books and reports
 ```
@@ -98,6 +98,7 @@ Placement Preparation/
 | 02 | [Quick Revision (TCS CPA)](03_Programming/Java/02_Java_Quick_Revision_TCS_CPA.pdf) | [Quick Revision](03_Programming/MySQL/02_MySQL_Quick_Revision.pdf) |
 | 03 | [Practice Questions – Chapterwise](03_Programming/Java/03_Java_Practice_Questions_Chapterwise.pdf) | [Practice Questions – Chapterwise](03_Programming/MySQL/03_MySQL_Practice_Questions_Chapterwise.pdf) |
 | 04 | [TCS CPA Practice Sets](03_Programming/Java/04_Java_TCS_CPA_Practice_Sets.pdf) | — |
+| 05 | [Classes & Methods Reference](03_Programming/Java/05_Java_Classes_and_Methods_Reference.pdf) | — |
 
 ---
 

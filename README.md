@@ -15,6 +15,7 @@ Placement Preparation/
 ├── 03_Programming/
 │   ├── Java/                Guide, quick revision, practice questions, API reference
 │   ├── MySQL/               Guide, quick revision, practice questions, reference
+│   ├── AI_ML/               Python AI/ML guide and practice book
 │   └── Deep_Learning/       PyTorch guide and practice book
 └── 04_Business_and_Finance/ Books and study reports
 ```
@@ -100,6 +101,15 @@ Placement Preparation/
 | 03 | [Practice Questions – Chapterwise](03_Programming/Java/03_Java_Practice_Questions_Chapterwise.pdf) | [Practice Questions – Chapterwise](03_Programming/MySQL/03_MySQL_Practice_Questions_Chapterwise.pdf) |
 | 04 | [TCS CPA Practice Sets](03_Programming/Java/04_Java_TCS_CPA_Practice_Sets.pdf) | [Commands & Functions Reference](03_Programming/MySQL/04_MySQL_Commands_and_Functions_Reference.pdf) |
 | 05 | [Classes & Methods Reference](03_Programming/Java/05_Java_Classes_and_Methods_Reference.pdf) | — |
+
+### AI and Machine Learning (Python)
+
+| # | Document |
+|---|----------|
+| 01 | [Complete Guide – From Maths to Agents](03_Programming/AI_ML/01_AI_ML_Complete_Guide.pdf) |
+| 02 | [Practice Book – 73 exercises with hints and solutions](03_Programming/AI_ML/02_AI_ML_Practice_Book.pdf) |
+
+Read the AI/ML guide first; the Deep Learning guide goes deeper into the neural-network parts.
 
 ### Deep Learning (PyTorch)
 

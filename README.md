@@ -14,8 +14,9 @@ Placement Preparation/
 │   └── Mixed_Sets/          6 mixed practice sets
 ├── 03_Programming/
 │   ├── Java/                Guide, quick revision, practice questions, API reference
-│   └── MySQL/               Guide, quick revision, practice questions, reference
-└── 04_Business_and_Finance/ Books and reports
+│   ├── MySQL/               Guide, quick revision, practice questions, reference
+│   └── Deep_Learning/       PyTorch guide and practice book
+└── 04_Business_and_Finance/ Books and study reports
 ```
 
 **Suggested flow for each section:** learn from the guide or the topic-wise sets first, then test yourself with the mixed sets.
@@ -100,6 +101,13 @@ Placement Preparation/
 | 04 | [TCS CPA Practice Sets](03_Programming/Java/04_Java_TCS_CPA_Practice_Sets.pdf) | [Commands & Functions Reference](03_Programming/MySQL/04_MySQL_Commands_and_Functions_Reference.pdf) |
 | 05 | [Classes & Methods Reference](03_Programming/Java/05_Java_Classes_and_Methods_Reference.pdf) | — |
 
+### Deep Learning (PyTorch)
+
+| # | Document |
+|---|----------|
+| 01 | [Complete Guide – From Autograd to Research Frontiers](03_Programming/Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) |
+| 02 | [Practice Book – 73 exercises with hints and solutions](03_Programming/Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
+
 ---
 
 ## 04 · Business and Finance
@@ -108,4 +116,5 @@ Placement Preparation/
 |---|----------|
 | 01 | [Cashflow Quadrant – Robert Kiyosaki](04_Business_and_Finance/01_Cashflow_Quadrant_Robert_Kiyosaki.pdf) |
 | 02 | [Cashflow Quadrant – Study Report](04_Business_and_Finance/02_Cashflow_Quadrant_Study_Report.pdf) |
-| 03 | [Parable Pipeline](04_Business_and_Finance/03_Parable_Pipeline.pdf) |
+| 03 | [The Parable of the Pipeline – Burke Hedges](04_Business_and_Finance/03_Parable_Pipeline.pdf) |
+| 04 | [The Parable of the Pipeline – Study Report](04_Business_and_Finance/04_Parable_Pipeline_Study_Report.pdf) |

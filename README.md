@@ -14,10 +14,13 @@ Placement Preparation/
 │   └── Mixed_Sets/          6 mixed practice sets
 ├── 03_Programming/
 │   ├── Java/                Guide, quick revision, practice questions, API reference
-│   ├── MySQL/               Guide, quick revision, practice questions, reference
-│   ├── AI_ML/               Python AI/ML guide and practice book
-│   └── Deep_Learning/       PyTorch guide and practice book
-└── 04_Business_and_Finance/ Books and study reports
+│   └── MySQL/               Guide, quick revision, practice questions, reference
+├── 04_AI_and_Machine_Learning/
+│   ├── 01_AI_ML/            Python AI/ML guide and practice book
+│   └── 02_Deep_Learning/    PyTorch guide and practice book
+└── 05_Business_and_Finance/
+    ├── Cashflow_Quadrant/        Book and study report
+    └── Parable_of_the_Pipeline/  Book and study report
 ```
 
 **Suggested flow for each section:** learn from the guide or the topic-wise sets first, then test yourself with the mixed sets.
@@ -102,29 +105,22 @@ Placement Preparation/
 | 04 | [TCS CPA Practice Sets](03_Programming/Java/04_Java_TCS_CPA_Practice_Sets.pdf) | [Commands & Functions Reference](03_Programming/MySQL/04_MySQL_Commands_and_Functions_Reference.pdf) |
 | 05 | [Classes & Methods Reference](03_Programming/Java/05_Java_Classes_and_Methods_Reference.pdf) | — |
 
-### AI and Machine Learning (Python)
+---
 
-| # | Document |
-|---|----------|
-| 01 | [Complete Guide – From Maths to Agents](03_Programming/AI_ML/01_AI_ML_Complete_Guide.pdf) |
-| 02 | [Practice Book – 73 exercises with hints and solutions](03_Programming/AI_ML/02_AI_ML_Practice_Book.pdf) |
+## 04 · AI and Machine Learning
 
-Read the AI/ML guide first; the Deep Learning guide goes deeper into the neural-network parts.
+Start with the AI/ML guide; the Deep Learning guide goes deeper into neural networks. Each guide has a matching practice book.
 
-### Deep Learning (PyTorch)
-
-| # | Document |
-|---|----------|
-| 01 | [Complete Guide – From Autograd to Research Frontiers](03_Programming/Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) |
-| 02 | [Practice Book – 73 exercises with hints and solutions](03_Programming/Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [AI/ML: From Maths to Agents](04_AI_and_Machine_Learning/01_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](04_AI_and_Machine_Learning/01_AI_ML/02_AI_ML_Practice_Book.pdf) |
+| 02 | [Deep Learning: From Autograd to Research Frontiers](04_AI_and_Machine_Learning/02_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](04_AI_and_Machine_Learning/02_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
 
 ---
 
-## 04 · Business and Finance
+## 05 · Business and Finance
 
-| # | Document |
-|---|----------|
-| 01 | [Cashflow Quadrant – Robert Kiyosaki](04_Business_and_Finance/01_Cashflow_Quadrant_Robert_Kiyosaki.pdf) |
-| 02 | [Cashflow Quadrant – Study Report](04_Business_and_Finance/02_Cashflow_Quadrant_Study_Report.pdf) |
-| 03 | [The Parable of the Pipeline – Burke Hedges](04_Business_and_Finance/03_Parable_Pipeline.pdf) |
-| 04 | [The Parable of the Pipeline – Study Report](04_Business_and_Finance/04_Parable_Pipeline_Study_Report.pdf) |
+| Book | Study report |
+|------|--------------|
+| [Cashflow Quadrant – Robert Kiyosaki](05_Business_and_Finance/Cashflow_Quadrant/01_Cashflow_Quadrant_Book_Robert_Kiyosaki.pdf) | [Chapter-by-chapter report](05_Business_and_Finance/Cashflow_Quadrant/02_Cashflow_Quadrant_Study_Report.pdf) |
+| [The Parable of the Pipeline – Burke Hedges](05_Business_and_Finance/Parable_of_the_Pipeline/01_Parable_of_the_Pipeline_Book_Burke_Hedges.pdf) | [Lesson-by-lesson report](05_Business_and_Finance/Parable_of_the_Pipeline/02_Parable_of_the_Pipeline_Study_Report.pdf) |

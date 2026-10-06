@@ -19,7 +19,8 @@ Placement Preparation/
 │   └── 02_MySQL/                 Guide → reference → practice → revision
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
-│   └── 02_Computer_Networks/     Guide → practice book
+│   ├── 02_Computer_Networks/     Guide → practice book
+│   └── 03_DBMS_Theory/           Guide → practice book
 ├── 05_AI_and_Machine_Learning/
 │   ├── 01_AI_ML/                 Python guide → practice book
 │   └── 02_Deep_Learning/         PyTorch guide → practice book
@@ -120,12 +121,13 @@ Java first: the JDBC part of the MySQL material uses it. In each language, learn
 
 ## 04 · CS Fundamentals
 
-The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. Read each guide, then solve its practice book.
+The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. DBMS Theory comes last: it goes beneath the MySQL books (normal forms, transactions, indexing, distributed data). Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Operating Systems: Concepts, Numericals and Concurrency](04_CS_Fundamentals/01_Operating_Systems/01_Operating_Systems_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/01_Operating_Systems/02_Operating_Systems_Practice_Book.pdf) |
 | 02 | [Computer Networks: Protocols, Numericals and Real Packets](04_CS_Fundamentals/02_Computer_Networks/01_Computer_Networks_Complete_Guide.pdf) | [44 exercises with hints and solutions](04_CS_Fundamentals/02_Computer_Networks/02_Computer_Networks_Practice_Book.pdf) |
+| 03 | [DBMS Theory: From Normal Forms to Distributed Data](04_CS_Fundamentals/03_DBMS_Theory/01_DBMS_Theory_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/03_DBMS_Theory/02_DBMS_Theory_Practice_Book.pdf) |
 
 ---
 

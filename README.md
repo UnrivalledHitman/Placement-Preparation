@@ -2,7 +2,7 @@
 
 Study material and practice sets for campus placements (TCS NQT, TCS CPA and similar aptitude + technical rounds).
 
-Everything is numbered in the order it is meant to be completed: sections `01`–`05`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
+Everything is numbered in the order it is meant to be completed: sections `01`–`06`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
 
 ## Folder structure
 
@@ -17,10 +17,13 @@ Placement Preparation/
 ├── 03_Programming/
 │   ├── 01_Java/                  Guide → reference → practice → exam sets → revision
 │   └── 02_MySQL/                 Guide → reference → practice → revision
-├── 04_AI_and_Machine_Learning/
+├── 04_CS_Fundamentals/
+│   ├── 01_Operating_Systems/     Guide → practice book
+│   └── 02_Computer_Networks/     Guide → practice book
+├── 05_AI_and_Machine_Learning/
 │   ├── 01_AI_ML/                 Python guide → practice book
 │   └── 02_Deep_Learning/         PyTorch guide → practice book
-└── 05_Business_and_Finance/
+└── 06_Business_and_Finance/
     ├── 01_Parable_of_the_Pipeline/  Book → study report
     └── 02_Cashflow_Quadrant/        Book → study report
 ```
@@ -115,22 +118,33 @@ Java first: the JDBC part of the MySQL material uses it. In each language, learn
 
 ---
 
-## 04 · AI and Machine Learning
+## 04 · CS Fundamentals
+
+The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. Read each guide, then solve its practice book.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Operating Systems: Concepts, Numericals and Concurrency](04_CS_Fundamentals/01_Operating_Systems/01_Operating_Systems_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/01_Operating_Systems/02_Operating_Systems_Practice_Book.pdf) |
+| 02 | [Computer Networks: Protocols, Numericals and Real Packets](04_CS_Fundamentals/02_Computer_Networks/01_Computer_Networks_Complete_Guide.pdf) | [44 exercises with hints and solutions](04_CS_Fundamentals/02_Computer_Networks/02_Computer_Networks_Practice_Book.pdf) |
+
+---
+
+## 05 · AI and Machine Learning
 
 Start with the AI/ML guide; the Deep Learning guide goes deeper into neural networks. Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [AI/ML: From Maths to Agents](04_AI_and_Machine_Learning/01_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](04_AI_and_Machine_Learning/01_AI_ML/02_AI_ML_Practice_Book.pdf) |
-| 02 | [Deep Learning: From Autograd to Research Frontiers](04_AI_and_Machine_Learning/02_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](04_AI_and_Machine_Learning/02_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
+| 01 | [AI/ML: From Maths to Agents](05_AI_and_Machine_Learning/01_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](05_AI_and_Machine_Learning/01_AI_ML/02_AI_ML_Practice_Book.pdf) |
+| 02 | [Deep Learning: From Autograd to Research Frontiers](05_AI_and_Machine_Learning/02_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](05_AI_and_Machine_Learning/02_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
 
 ---
 
-## 05 · Business and Finance
+## 06 · Business and Finance
 
 The short *Parable of the Pipeline* introduces residual income; *Cashflow Quadrant* develops it further. Read each book, then its study report.
 
 | # | Book | Study report |
 |---|------|--------------|
-| 01 | [The Parable of the Pipeline – Burke Hedges](05_Business_and_Finance/01_Parable_of_the_Pipeline/01_Parable_of_the_Pipeline_Book_Burke_Hedges.pdf) | [Lesson-by-lesson report](05_Business_and_Finance/01_Parable_of_the_Pipeline/02_Parable_of_the_Pipeline_Study_Report.pdf) |
-| 02 | [Cashflow Quadrant – Robert Kiyosaki](05_Business_and_Finance/02_Cashflow_Quadrant/01_Cashflow_Quadrant_Book_Robert_Kiyosaki.pdf) | [Chapter-by-chapter report](05_Business_and_Finance/02_Cashflow_Quadrant/02_Cashflow_Quadrant_Study_Report.pdf) |
+| 01 | [The Parable of the Pipeline – Burke Hedges](06_Business_and_Finance/01_Parable_of_the_Pipeline/01_Parable_of_the_Pipeline_Book_Burke_Hedges.pdf) | [Lesson-by-lesson report](06_Business_and_Finance/01_Parable_of_the_Pipeline/02_Parable_of_the_Pipeline_Study_Report.pdf) |
+| 02 | [Cashflow Quadrant – Robert Kiyosaki](06_Business_and_Finance/02_Cashflow_Quadrant/01_Cashflow_Quadrant_Book_Robert_Kiyosaki.pdf) | [Chapter-by-chapter report](06_Business_and_Finance/02_Cashflow_Quadrant/02_Cashflow_Quadrant_Study_Report.pdf) |

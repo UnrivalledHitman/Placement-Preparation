@@ -2,7 +2,7 @@
 
 Study material and practice sets for campus placements (TCS NQT, TCS CPA and similar aptitude + technical rounds).
 
-Everything is numbered in the order it is meant to be completed: sections `01`–`06`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
+Everything is numbered in the order it is meant to be completed: sections `01`–`07`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
 
 ## Folder structure
 
@@ -21,10 +21,12 @@ Placement Preparation/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Computer_Networks/     Guide → practice book
 │   └── 03_DBMS_Theory/           Guide → practice book
-├── 05_AI_and_Machine_Learning/
+├── 05_System_Design/
+│   └── 01_Low_Level_Design/      Guide → practice book (Java)
+├── 06_AI_and_Machine_Learning/
 │   ├── 01_AI_ML/                 Python guide → practice book
 │   └── 02_Deep_Learning/         PyTorch guide → practice book
-└── 06_Business_and_Finance/
+└── 07_Business_and_Finance/
     ├── 01_Parable_of_the_Pipeline/  Book → study report
     └── 02_Cashflow_Quadrant/        Book → study report
 ```
@@ -131,22 +133,32 @@ The core subjects of technical interviews. Operating Systems first: its concurre
 
 ---
 
-## 05 · AI and Machine Learning
+## 05 · System Design
+
+Design rounds come after the core subjects: they use Java (Programming) and build on databases and networks (CS Fundamentals). Start with low-level design, which is object-oriented design and machine coding in Java.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Low-Level Design in Java: Patterns to Case Studies](05_System_Design/01_Low_Level_Design/01_Low_Level_Design_Complete_Guide.pdf) | [41 exercises with hints and solutions](05_System_Design/01_Low_Level_Design/02_Low_Level_Design_Practice_Book.pdf) |
+
+---
+
+## 06 · AI and Machine Learning
 
 Start with the AI/ML guide; the Deep Learning guide goes deeper into neural networks. Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [AI/ML: From Maths to Agents](05_AI_and_Machine_Learning/01_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](05_AI_and_Machine_Learning/01_AI_ML/02_AI_ML_Practice_Book.pdf) |
-| 02 | [Deep Learning: From Autograd to Research Frontiers](05_AI_and_Machine_Learning/02_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](05_AI_and_Machine_Learning/02_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
+| 01 | [AI/ML: From Maths to Agents](06_AI_and_Machine_Learning/01_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/01_AI_ML/02_AI_ML_Practice_Book.pdf) |
+| 02 | [Deep Learning: From Autograd to Research Frontiers](06_AI_and_Machine_Learning/02_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/02_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
 
 ---
 
-## 06 · Business and Finance
+## 07 · Business and Finance
 
 The short *Parable of the Pipeline* introduces residual income; *Cashflow Quadrant* develops it further. Read each book, then its study report.
 
 | # | Book | Study report |
 |---|------|--------------|
-| 01 | [The Parable of the Pipeline – Burke Hedges](06_Business_and_Finance/01_Parable_of_the_Pipeline/01_Parable_of_the_Pipeline_Book_Burke_Hedges.pdf) | [Lesson-by-lesson report](06_Business_and_Finance/01_Parable_of_the_Pipeline/02_Parable_of_the_Pipeline_Study_Report.pdf) |
-| 02 | [Cashflow Quadrant – Robert Kiyosaki](06_Business_and_Finance/02_Cashflow_Quadrant/01_Cashflow_Quadrant_Book_Robert_Kiyosaki.pdf) | [Chapter-by-chapter report](06_Business_and_Finance/02_Cashflow_Quadrant/02_Cashflow_Quadrant_Study_Report.pdf) |
+| 01 | [The Parable of the Pipeline – Burke Hedges](07_Business_and_Finance/01_Parable_of_the_Pipeline/01_Parable_of_the_Pipeline_Book_Burke_Hedges.pdf) | [Lesson-by-lesson report](07_Business_and_Finance/01_Parable_of_the_Pipeline/02_Parable_of_the_Pipeline_Study_Report.pdf) |
+| 02 | [Cashflow Quadrant – Robert Kiyosaki](07_Business_and_Finance/02_Cashflow_Quadrant/01_Cashflow_Quadrant_Book_Robert_Kiyosaki.pdf) | [Chapter-by-chapter report](07_Business_and_Finance/02_Cashflow_Quadrant/02_Cashflow_Quadrant_Study_Report.pdf) |

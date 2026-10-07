@@ -1,0 +1,109 @@
+"""Build books: python build.py <key> [<key> ...]   (run from this directory)
+Expands ```python run / ```java run blocks (outputs cached), generates the progress tracker for
+practice books (a line containing only <<TRACKER>>), and renders the PDF into out/."""
+import os, re, sys
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+from engine import build
+import javarun, pyrun
+
+OUT = 'out'
+PRAC_ROWS = lambda first: [['What is inside', 'How to use it'], ['Exercises by chapter, tagged by type and level', first],
+                           ['Hints, kept separate', 'Read only the hint you need'],
+                           ['Solutions with real output and working', 'Compare even when you solved it'],
+                           ['Progress tracker', 'Mark each exercise and schedule redos']]
+
+DOCS = {
+    'dbms_guide': dict(file='DBMS_Theory_Complete_Guide.pdf',
+        title='DBMS Theory: From Normal Forms to Distributed Data',
+        subtitle='The theory beyond SQL: normalisation, serialisability, locking and MVCC, recovery, B+ trees, '
+                 'query optimisation and distributed databases, with runnable Python',
+        theme='db', kicker='CS core · Database management systems',
+        files=['db_0.md', 'db_1.md', 'db_2.md', 'db_3.md', 'db_4.md', 'db_5.md', 'db_6.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–3: architecture, keys, relational algebra, FDs and normal forms',
+               'Solve each numerical by hand, then check with the code'],
+              ['Chapters 4–6: transactions, serialisability, locking, MVCC, recovery and ARIES',
+               'The most-asked DBMS interview topics'],
+              ['Chapters 7–8: storage, buffer pool, B+ trees, hashing, joins and query optimisation',
+               'Numericals on capacity and I/O cost'],
+              ['Chapters 9–10: replication, sharding, CAP, 2PC, NoSQL, question bank, formula sheet',
+               'Revise before every interview']]),
+    'dbms_prac': dict(file='DBMS_Theory_Practice_Book.pdf', title='DBMS Theory: Practice Book',
+        subtitle='Exercises matching the DBMS theory guide: closures, normalisation, schedules, locking, recovery, '
+                 'B+ trees and join costs, with hints and executed solutions',
+        theme='db', kicker='Practice book · DBMS theory', files=['dq.md', 'dh.md', 'ds1.md', 'ds2.md', 'dt.md'],
+        rows=PRAC_ROWS('Solve numericals on paper first')),
+    'lld_guide': dict(file='Low_Level_Design_Complete_Guide.pdf',
+        title='Low-Level Design in Java: Patterns to Case Studies',
+        subtitle='OOP, UML, SOLID, the Gang of Four patterns and concurrency, applied to twelve classic '
+                 'machine-coding problems, every one a runnable Java program',
+        theme='lld', kicker='Design · Low-level design',
+        files=['ld_0.md', 'ld_1.md', 'ld_2.md', 'ld_3.md', 'ld_4.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: OOP, UML, SOLID with violations and refactors', 'The vocabulary of every LLD round'],
+              ['Chapters 3–5: creational, structural and behavioural patterns',
+               'Learn the problem each pattern solves before its structure'],
+              ['Chapter 6: concurrency in design', 'The follow-up question in most rounds'],
+              ['Chapters 7–8: twelve case studies, from parking lot to KV store with TTL',
+               'Attempt each for 30–45 minutes before reading'],
+              ['Chapter 9: interview checklist and cheat sheets', 'Read on the day of the interview']]),
+    'lld_prac': dict(file='Low_Level_Design_Practice_Book.pdf', title='Low-Level Design: Practice Book',
+        subtitle='41 exercises matching the LLD guide: SOLID refactors, patterns, concurrency, case-study '
+                 'extensions and timed mock problems, with runnable Java solutions',
+        theme='lld', kicker='Practice book · Low-level design',
+        files=['lq.md', 'lh.md', 'ls1.md', 'ls2.md', 'ls3.md', 'lt.md'],
+        rows=PRAC_ROWS('Design and code before reading anything')),
+    'hld_guide': dict(file='System_Design_Complete_Guide.pdf',
+        title='System Design: From Estimates to Case Studies',
+        subtitle='Fundamentals, estimation, caching, queues, consistency and microservices, applied to '
+                 'thirteen designs, with Python simulations of every key trade-off',
+        theme='hld', kicker='Design · High-level system design',
+        files=['hd_0.md', 'hd_1.md', 'hd_2.md', 'hd_3.md', 'hd_4.md', 'hd_5.md', 'hd_6.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: latency, availability, scaling, back-of-envelope estimation',
+               'Learn the numbers until they are automatic'],
+              ['Chapters 3–6: edge, storage and sharding, caching, asynchronous processing',
+               'Know when to use each block and what it costs'],
+              ['Chapters 7–8: consistency, reliability patterns, microservices and APIs',
+               'The source of most deep-dive questions'],
+              ['Chapters 9–10: thirteen case studies, from URL shortener to smart-meter platform',
+               'Attempt each for 40 minutes before reading'],
+              ['Chapter 11: question bank, numbers and a one-page checklist', 'Revise before every interview']]),
+    'hld_prac': dict(file='System_Design_Practice_Book.pdf', title='System Design: Practice Book',
+        subtitle='35 exercises matching the System Design guide: estimation drills, component choices, '
+                 'mini-designs and full prompts with grading rubrics',
+        theme='hld', kicker='Practice book · System design',
+        files=['hq.md', 'hh.md', 'hs1.md', 'hs2.md', 'ht.md'],
+        rows=PRAC_ROWS('Work on paper with a 40-minute timer for designs')),
+}
+
+
+def tracker(src):
+    ex = re.findall(r'^\*\*([A-Z]\d+\.\d+) · (Easy|Medium|Hard) · ([A-Za-z]+) · (.+?)\.?\*\*', src, re.M)
+    rows = ['| Exercise | Title | Type | Level | First try | Redo |', '|---|---|---|---|---|---|']
+    rows += [f'| {e} | {t} | {ty} | {lv} |  |  |' for e, lv, ty, t in ex]
+    return src.replace('<<TRACKER>>', '\n'.join(rows)), len(ex)
+
+
+def expand_all(key, d):
+    parts = []
+    for f in d['files']:
+        path = f if os.path.exists(f) else os.path.join('sources', f)   # sources/ holds the markdown
+        s = open(path, encoding='utf-8').read()
+        s = pyrun.expand(s, f.replace('.md', ''))
+        s = javarun.expand(s)
+        parts.append(s)
+    return '\n'.join(parts)
+
+
+if __name__ == '__main__':
+    os.makedirs(OUT, exist_ok=True)
+    for k in sys.argv[1:]:
+        d = DOCS[k]
+        src = expand_all(k, d)
+        src, n = tracker(src)
+        os.makedirs('tmp', exist_ok=True)
+        open(os.path.join('tmp', k + '.expanded.md'), 'w', encoding='utf-8').write(src)
+        path = os.path.join(OUT, d['file'])
+        build(path, d['title'], d['subtitle'], d['theme'], d['rows'], src, d['kicker'])
+        print('built', path, '| exercises in tracker:', n)

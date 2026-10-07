@@ -1,0 +1,7 @@
+.venv/
+out/
+tmp/
+figs/
+pycache/
+jcache/
+__pycache__/

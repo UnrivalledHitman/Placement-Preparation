@@ -65,7 +65,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | 57184a4 |
 | Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
 | JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
-| Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | (maths commit) |
+| Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | 432f236 |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 

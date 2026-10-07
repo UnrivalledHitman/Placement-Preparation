@@ -5,3 +5,5 @@ figs/
 pycache/
 jcache/
 __pycache__/
+spring/classpath.txt
+spring-security/classpath.txt

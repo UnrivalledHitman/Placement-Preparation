@@ -1,0 +1,5 @@
+<!-- On the classpath of ```java spring blocks (javarun.py): no log output before or after Spring Boot
+     configures logging, so that the printed output is only the program's own lines. -->
+<configuration>
+  <root level="OFF"/>
+</configuration>

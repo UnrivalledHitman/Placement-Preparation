@@ -25,7 +25,7 @@ GitHub: `UnrivalledHitman/Placement-Preparation`, branch `main`. Everything is *
 Placement Preparation/
 ├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
-├── 03_Programming/             01_Java (5 PDFs), 02_MySQL (4 PDFs), 03_DSA_in_Java (guide + practice book)
+├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_DSA_in_Java, 04_Backend_Spring_Boot (guide + practice book each)
 ├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Computer_Networks, 03_DBMS_Theory
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design
 ├── 06_AI_and_Machine_Learning/ 01_AI_ML, 02_Deep_Learning
@@ -58,20 +58,22 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/03_DBMS_Theory` | f540af3 |
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
-| DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/03_DSA_in_Java` | (DSA commit) |
+| DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/03_DSA_in_Java` | 11bf0d1 |
+| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/04_Backend_Spring_Boot` | (Backend commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
 - **DBMS:** relational-algebra engine; toolkit `fd.py` (closure, keys, minimal cover, normal forms, chase, preservation, BCNF/3NF) saved into `figs/` by the first block of Chapter 3; `sched.py` (precedence graphs) in Chapter 4; real anomalies on SQLite (dirty read in shared-cache mode, snapshot reads in WAL mode); strict 2PL simulator showing the **lock-upgrade deadlock**; timestamp ordering + Thomas rule; snapshot-isolation simulator showing write skew; undo/redo recovery from random crash states; ARIES simulation; buffer replacement chart; `bplus.py` B+ tree with leaf/internal splits; extendible hashing; join cost calculator (hash join only when M > √b); SQLite `EXPLAIN QUERY PLAN` including a **skip-scan** surprise; quorums, consistent hashing, CRDT counter, 2PC with coordinator crash.
 - **LLD:** all programs are single-file Java (`java Main.java`), Java 21+; SOLID violation/refactor pairs; all GoF patterns; concurrency (putIfAbsent, lock ordering, producer–consumer, read-write lock); twelve case studies (parking lot, LRU/LFU, elevator, seat holds, Splitwise, vending machine, rate limiters, logger, games, library, notification service, TTL store).
 - **DSA:** 12 chapters mapped to the 12-week roadmap (week 1 = Ch. 1–2 … week 12 = Ch. 12); one binary-search template (first true, `lo < hi`); every optimised solution checked against brute force on random inputs; honest notes kept: lazy Dijkstra survives a negative edge (but loses its guarantee), `power(3, -1)` silently returns 3, the constant-`hashCode` equals count is printed rounded because tree bins tie-break by identity hash.
+- **Backend:** real Spring Boot 3.3 apps (H2, embedded Tomcat on a random port, `HttpClient` calls, JUnit Platform Launcher for tests). Honest traps found by running and kept in the text: `@ConditionalOnMissingBean` in user config does not back off (registration order); reading a field through a Spring or Hibernate proxy gives null; JWT filter + `/error` dispatch turns 403 into 401 unless `/error` is permitted; without an entry point Spring Security answers 403 to anonymous calls; `DAY` is a reserved word (DDL fails with only a warning); `@Valid` on list elements raises `HandlerMethodValidationException`; `Map.of` JSON order is random.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
 
 The user said: **finish one set, commit, push, then wait for instructions.**
 
-### 4.1 Set 4: Backend stack (guide + practice book)
+### 4.1 Set 4: Backend stack (guide + practice book) — DONE
 
 Suggested placement: `03_Programming/04_Backend_Spring_Boot/` (after Java, MySQL and DSA, before CS fundamentals; `03` is now DSA). Suggested theme key `be` (already defined, `#3f6212`), exercise prefix **B**.
 
@@ -119,6 +121,9 @@ Placement: a final section, for example `08_Interview_and_HR/` (renumber nothing
 > TIP: / > TRAP: / > NOTE: / > EXAM:         coloured callout boxes
 ```python run Optional title  executed; output appended as an "Output" box (cached by syntax tree)
 ```java run Optional title    executed with `java Main.java` (class Main; output cached by source hash)
+```java spring Title         Spring Boot program (package demo; class demo.Main): compiled against
+                              spring/pom.xml's classpath and run with logging off (spring/quiet-logging)
+```java spring-security T     the same with spring-security/pom.xml (adds Spring Security)
 ```python / ```java / ```sql / ```text      displayed only
 ![Caption](figs/name.png)     image; programs save charts with plt.savefig('name.png', dpi=150)
 ---page                       forced page break
@@ -184,6 +189,6 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 
 ## 7. Current state at handoff
 
-- Repository: the DSA in Java set has been added on top of the System Design set and this `_book_tooling/` folder.
-- README: 73 links, 73 PDFs, all valid.
-- Next action: **set 4, Backend stack**, after checking whether Maven Central is reachable (section 4.1). Stop after each set for the user's instructions.
+- Repository: DSA in Java and Spring Boot Backend sets added after the System Design set.
+- README: 75 links, 75 PDFs, all valid.
+- Next action: **set 5, ML System Design**, then 6 and 7 (the user asked for them one after the other, each committed to `main`).

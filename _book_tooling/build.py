@@ -96,6 +96,28 @@ DOCS = {
         theme='dsa', kicker='Practice book · Data structures and algorithms',
         files=['sq.md', 'sh.md', 'ss1.md', 'ss2.md', 'ss3.md', 'st.md'],
         rows=PRAC_ROWS('Code it and test on edge cases before reading anything')),
+    'be_guide': dict(file='Backend_Spring_Boot_Complete_Guide.pdf',
+        title='Spring Boot Backend: From Beans to Production',
+        subtitle='Dependency injection, REST, JPA and the N+1 problem, transactions, security with JWT, '
+                 'testing and operations, with runnable Spring Boot 3 applications',
+        theme='be', kicker='Programming · Java backend with Spring Boot',
+        files=['be_0.md', 'be_1.md', 'be_2.md', 'be_3.md', 'be_4.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: Spring Boot, auto-configuration, dependency injection, scopes, proxies',
+               'The mechanisms behind every other chapter'],
+              ['Chapters 3–5: REST APIs, validation, JPA, N+1, transactions and locking',
+               'Predict each output before reading it'],
+              ['Chapters 6–7: Spring Security with JWT, unit and slice tests',
+               'Re-type the examples into a start.spring.io project'],
+              ['Chapters 8–10: observability, Docker, and a complete smart-meter API',
+               'Build the project and put it on GitHub'],
+              ['Chapter 11: question bank and annotation cheat sheet', 'Revise before every interview']]),
+    'be_prac': dict(file='Backend_Spring_Boot_Practice_Book.pdf', title='Spring Boot Backend: Practice Book',
+        subtitle='Exercises matching the Spring Boot guide: beans, REST, JPA, transactions, security, '
+                 'testing and the smart-meter project, with hints and executed solutions',
+        theme='be', kicker='Practice book · Java backend with Spring Boot',
+        files=['bq.md', 'bh.md', 'bs1.md', 'bs2.md', 'bt.md'],
+        rows=PRAC_ROWS('Predict, then build and run it before reading')),
 }
 
 

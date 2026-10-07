@@ -17,7 +17,8 @@ Placement Preparation/
 ├── 03_Programming/
 │   ├── 01_Java/                  Guide → reference → practice → exam sets → revision
 │   ├── 02_MySQL/                 Guide → reference → practice → revision
-│   └── 03_DSA_in_Java/           Guide → practice book (12-week DSA plan)
+│   ├── 03_DSA_in_Java/           Guide → practice book (12-week DSA plan)
+│   └── 04_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Computer_Networks/     Guide → practice book
@@ -128,6 +129,14 @@ Start after the Java guide: every program is in Java. The guide's chapters map o
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [DSA in Java: Patterns for Coding Interviews](03_Programming/03_DSA_in_Java/01_DSA_in_Java_Complete_Guide.pdf) (60 runnable programs) | [49 exercises with hints and solutions](03_Programming/03_DSA_in_Java/02_DSA_in_Java_Practice_Book.pdf) |
+
+### 04 · Backend with Spring Boot
+
+After Java and MySQL (the JPA chapters build on SQL). Every program is a real Spring Boot 3 application that was run to produce its output; Chapter 10 is a complete smart-meter REST API worth rebuilding as a GitHub project.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Spring Boot Backend: From Beans to Production](03_Programming/04_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/04_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
 
 ---
 

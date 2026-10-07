@@ -198,6 +198,28 @@ DOCS = {
         theme='jdbc', kicker='Practice book · Java database access',
         files=['jq.md', 'jh.md', 'js1.md', 'js2.md', 'jt.md'],
         rows=PRAC_ROWS('Write and run each program before reading')),
+    'math_guide': dict(file='Mathematics_and_Statistics_for_ML_Complete_Guide.pdf',
+        title='Mathematics and Statistics for Machine Learning',
+        subtitle='Linear algebra, calculus, back-propagation, optimisation, probability, '
+                 'estimation, inference and information theory, every derivation checked',
+        theme='math', kicker='AI and ML · The mathematics underneath',
+        files=['mx_0.md', 'mx_1.md', 'mx_2.md', 'mx_3.md', 'mx_4.md', 'mx_5.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–3: vectors, matrices, eigenvalues, SVD and PCA',
+               'Derive with a pen, then read the check'],
+              ['Chapters 4–6: gradients, Jacobians, back-propagation, optimisers',
+               'Predict each output before reading it'],
+              ['Chapters 7–10: probability, limit theorems, MLE, MAP, tests, bootstrap',
+               'Rerun the simulations with new seeds'],
+              ['Chapters 11–13: information theory, regression end to end, formula sheet',
+               'Revise from the formula sheet before interviews']]),
+    'math_prac': dict(file='Mathematics_and_Statistics_for_ML_Practice_Book.pdf',
+        title='Mathematics for ML: Practice Book',
+        subtitle='Derivations, hand calculations and simulations matching the guide, '
+                 'every answer checked by code',
+        theme='math', kicker='Practice book · The mathematics underneath',
+        files=['nq.md', 'nh.md', 'ns1.md', 'ns2.md', 'nt.md'],
+        rows=PRAC_ROWS('Derive and compute on paper before reading')),
 }
 
 

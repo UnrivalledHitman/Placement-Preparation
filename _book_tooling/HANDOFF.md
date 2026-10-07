@@ -28,7 +28,7 @@ Placement Preparation/
 ├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Backend_Spring_Boot
 ├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Computer_Networks, 03_DBMS_Theory
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design
-├── 06_AI_and_Machine_Learning/ 01_AI_ML, 02_Deep_Learning
+├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Deep_Learning, 04_ML_System_Design
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
 ├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide
 ├── _book_tooling/              this handoff, build scripts, markdown sources (not study material)
@@ -61,10 +61,11 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
 | Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/05_Backend_Spring_Boot` | ef0a05c |
-| ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/03_ML_System_Design` | a99854c |
+| ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/04_ML_System_Design` (was 03) | a99854c |
 | Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | 57184a4 |
 | Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
-| JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | (JDBC commit) |
+| JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
+| Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | (maths commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -75,6 +76,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **ML System Design:** NumPy/scikit-learn simulations with fixed seeds. Honest results kept: under drift a random split is optimistic and a time split pessimistic, while training on the last 90 days beats the full year (0.885 vs 0.707 AUC); paragraph chunks lost to whole sections at recall@1 on the tiny handbook (explained); the oracle router beats always-large (90% vs 81%) because errors are independent; a random forest needed no calibration (Brier unchanged).
 - **Aptitude:** every key recomputed in Python (itertools brute force, `datetime` as the calendar referee, a 256-world syllogism checker). The checks caught and fixed several wrong keys during writing (LEADER 360, clock 7:04 8/13, Tuesday + 61 = Sunday, CI − SI 91.50, circular seating answer T, data sufficiency 45 and 90 → (e)); keep running the checks after any edit.
 - **JDBC:** `java jdbc` blocks (jdbc/pom.xml: H2 in MODE=MySQL, HikariCP, embedded Tomcat 10, slf4j-nop). Observed on H2: dirty read at READ UNCOMMITTED, non-repeatable read and phantom at READ COMMITTED, stable snapshot at REPEATABLE READ; lost update 6000 vs 3000; FOR UPDATE timeout HYT00; H2 continues a batch after a failed row. A reflective counting proxy measures statements deterministically.
+- **Maths:** every derivation has a `python run` check (formula vs brute force, simulation, finite differences or SciPy). Honest results kept: the biased 1/n variance estimator has lower MSE than s² at every n; Bayes simulation drew 10,269 sick of 1,000,000 so it reads 0.166 vs 0.161; cross-validation picks λ = 0.1 while the true optimum in the table is 0.01; Adam reaches the Rosenbrock minimum exactly while momentum ends 0.02 away; peeking at 50 looks gives a 31% false-positive rate. Writing caught and fixed: swapped momentum rates (0.98 vs 0.82), a mislabelled 'half He' initialisation, non-nested noise features in the R² demo.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
@@ -91,7 +93,7 @@ Content (from the original plan): Spring Boot project structure and auto-configu
 
 ### 4.2 Set 5: ML System Design (guide + case-study book) — DONE
 
-Suggested placement: `06_AI_and_Machine_Learning/03_ML_System_Design/`, theme `mlsd` (`#86198f`), prefix **M**. Python simulations (numpy, matplotlib available; scikit-learn only if installable).
+Suggested placement (now `04_ML_System_Design`): `06_AI_and_Machine_Learning/03_ML_System_Design/`, theme `mlsd` (`#86198f`), prefix **M**. Python simulations (numpy, matplotlib available; scikit-learn only if installable).
 
 Content: problem framing (business metric → ML metric → offline/online evaluation); data pipelines, labelling, leakage; features and feature stores; **training/serving skew**; online versus batch inference, latency budgets, model serving and caching; evaluation, calibration, A/B tests and interleaving (with a significance and sample-size calculator); monitoring, data and concept drift (simulate PSI/KS drift detection); retraining triggers; cost. Cases: recommendations (candidate generation + ranking), fraud detection (class imbalance, precision/recall trade-off, cost-based thresholds), search ranking, ETA prediction, RAG chatbot (retrieval evaluation, chunking, caching), LLM-agent platform (tools, guardrails, evaluation, cost and latency routing; the learner's "escalation tax" paper fits here). Reference, do not repeat, the AI/ML and Deep Learning books and the System Design book.
 
@@ -198,5 +200,5 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 ## 7. Current state at handoff
 
 - Repository: all seven planned sets are done (DSA in Java, Spring Boot Backend, ML System Design, Aptitude/NQT mocks, Interview/HR added in this session).
-- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (full guide + practice book, every derivation checked numerically) → Linux → Front-end → Advanced back-end (caching, messaging, jobs, WebSockets, storage, API styles) → Security engineering (payments, encryption, storage, OWASP) → Senior engineer handbook.
-- README: 82 links, 82 PDFs. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend.
+- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (done) → Linux → Front-end → Advanced back-end (caching, messaging, jobs, WebSockets, storage, API styles) → Security engineering (payments, encryption, storage, OWASP) → Senior engineer handbook.
+- README: 84 links, 84 PDFs. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design.

@@ -118,6 +118,28 @@ DOCS = {
         theme='be', kicker='Practice book · Java backend with Spring Boot',
         files=['bq.md', 'bh.md', 'bs1.md', 'bs2.md', 'bt.md'],
         rows=PRAC_ROWS('Predict, then build and run it before reading')),
+    'mlsd_guide': dict(file='ML_System_Design_Complete_Guide.pdf',
+        title='ML System Design: From Metrics to Monitoring',
+        subtitle='Framing, data and leakage, features and skew, evaluation, A/B tests, serving and drift, '
+                 'with recommendation, fraud, RAG and LLM-routing case studies in Python',
+        theme='mlsd', kicker='AI and ML · Machine learning system design',
+        files=['mg_0.md', 'mg_1.md', 'mg_2.md', 'mg_3.md', 'mg_4.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–3: framing, metrics, labels, leakage, features and training/serving skew',
+               'The questions to ask before choosing a model'],
+              ['Chapters 4–5: imbalance, calibration, thresholds, ranking metrics, A/B tests',
+               'Change one simulation parameter at a time'],
+              ['Chapters 6–7: serving, latency budgets, fan-out, batching, drift and retraining',
+               'Learn the numbers'],
+              ['Chapters 8–9: feed ranking, search, fraud, ETA, RAG chatbot, LLM routing',
+               'Attempt each for 45 minutes before reading'],
+              ['Chapter 10: interview plan, numbers and question bank', 'Revise before every interview']]),
+    'mlsd_prac': dict(file='ML_System_Design_Practice_Book.pdf', title='ML System Design: Practice Book',
+        subtitle='Exercises matching the ML System Design guide: framing, metrics, leakage, calibration, '
+                 'experiments, serving, drift and full design prompts, with executed solutions',
+        theme='mlsd', kicker='Practice book · Machine learning system design',
+        files=['mq.md', 'mh.md', 'ms1.md', 'ms2.md', 'mt.md'],
+        rows=PRAC_ROWS('Work numericals on paper; time-box designs to 45 minutes')),
 }
 
 

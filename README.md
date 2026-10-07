@@ -28,7 +28,8 @@ Placement Preparation/
 │   └── 02_High_Level_Design/     Guide → practice book (Python simulations)
 ├── 06_AI_and_Machine_Learning/
 │   ├── 01_AI_ML/                 Python guide → practice book
-│   └── 02_Deep_Learning/         PyTorch guide → practice book
+│   ├── 02_Deep_Learning/         PyTorch guide → practice book
+│   └── 03_ML_System_Design/      Guide → practice book (simulations + design prompts)
 └── 07_Business_and_Finance/
     ├── 01_Parable_of_the_Pipeline/  Book → study report
     └── 02_Cashflow_Quadrant/        Book → study report
@@ -165,12 +166,13 @@ Design rounds come after the core subjects: they use Java (Programming) and buil
 
 ## 06 · AI and Machine Learning
 
-Start with the AI/ML guide; the Deep Learning guide goes deeper into neural networks. Read each guide, then solve its practice book.
+Start with the AI/ML guide; the Deep Learning guide goes deeper into neural networks; ML System Design comes last, because it applies both to whole products (and builds on the System Design section). Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [AI/ML: From Maths to Agents](06_AI_and_Machine_Learning/01_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/01_AI_ML/02_AI_ML_Practice_Book.pdf) |
 | 02 | [Deep Learning: From Autograd to Research Frontiers](06_AI_and_Machine_Learning/02_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/02_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
+| 03 | [ML System Design: From Metrics to Monitoring](06_AI_and_Machine_Learning/03_ML_System_Design/01_ML_System_Design_Complete_Guide.pdf) (Python simulations) | [29 exercises with hints and solutions, 5 full design prompts](06_AI_and_Machine_Learning/03_ML_System_Design/02_ML_System_Design_Practice_Book.pdf) |
 
 ---
 

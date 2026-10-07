@@ -59,7 +59,8 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/03_DSA_in_Java` | 11bf0d1 |
-| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/04_Backend_Spring_Boot` | (Backend commit) |
+| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/04_Backend_Spring_Boot` | ef0a05c |
+| ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/03_ML_System_Design` | (MLSD commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -67,6 +68,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **LLD:** all programs are single-file Java (`java Main.java`), Java 21+; SOLID violation/refactor pairs; all GoF patterns; concurrency (putIfAbsent, lock ordering, producer–consumer, read-write lock); twelve case studies (parking lot, LRU/LFU, elevator, seat holds, Splitwise, vending machine, rate limiters, logger, games, library, notification service, TTL store).
 - **DSA:** 12 chapters mapped to the 12-week roadmap (week 1 = Ch. 1–2 … week 12 = Ch. 12); one binary-search template (first true, `lo < hi`); every optimised solution checked against brute force on random inputs; honest notes kept: lazy Dijkstra survives a negative edge (but loses its guarantee), `power(3, -1)` silently returns 3, the constant-`hashCode` equals count is printed rounded because tree bins tie-break by identity hash.
 - **Backend:** real Spring Boot 3.3 apps (H2, embedded Tomcat on a random port, `HttpClient` calls, JUnit Platform Launcher for tests). Honest traps found by running and kept in the text: `@ConditionalOnMissingBean` in user config does not back off (registration order); reading a field through a Spring or Hibernate proxy gives null; JWT filter + `/error` dispatch turns 403 into 401 unless `/error` is permitted; without an entry point Spring Security answers 403 to anonymous calls; `DAY` is a reserved word (DDL fails with only a warning); `@Valid` on list elements raises `HandlerMethodValidationException`; `Map.of` JSON order is random.
+- **ML System Design:** NumPy/scikit-learn simulations with fixed seeds. Honest results kept: under drift a random split is optimistic and a time split pessimistic, while training on the last 90 days beats the full year (0.885 vs 0.707 AUC); paragraph chunks lost to whole sections at recall@1 on the tiny handbook (explained); the oracle router beats always-large (90% vs 81%) because errors are independent; a random forest needed no calibration (Brier unchanged).
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
@@ -81,7 +83,7 @@ Content (from the original plan): Spring Boot project structure and auto-configu
 
 **Execution constraint:** Spring cannot run in this environment unless Maven/Gradle can download dependencies. First check whether Maven Central is reachable (`mvn -v`, or try a tiny build). If it is, run real Spring examples. If not, mark Spring code blocks as display-only (```` ```java ```` without `run`), with the line "Not executed here: requires Spring Boot dependencies", and make every underlying idea runnable in **plain Java**: a REST server with `com.sun.net.httpserver.HttpServer`, JSON by hand or with records, JDBC on SQLite only if a driver is available (otherwise in-memory repositories), an N+1 demonstration with a query counter, transaction rollback, JWT signing with `javax.crypto.Mac` (HMAC-SHA256), and tests written as plain assertions in `main`.
 
-### 4.2 Set 5: ML System Design (guide + case-study book)
+### 4.2 Set 5: ML System Design (guide + case-study book) — DONE
 
 Suggested placement: `06_AI_and_Machine_Learning/03_ML_System_Design/`, theme `mlsd` (`#86198f`), prefix **M**. Python simulations (numpy, matplotlib available; scikit-learn only if installable).
 
@@ -160,7 +162,7 @@ Python blocks run with the working directory `figs/` and `PYTHONPATH=figs`, so a
 ```bash
 cd _book_tooling
 python3 -m venv .venv && . .venv/bin/activate       # Windows: .venv\Scripts\python.exe
-pip install reportlab numpy matplotlib
+pip install reportlab numpy matplotlib scikit-learn
 java -version                                        # Java 21 or later for java run blocks
 python build.py dbms_guide                           # sanity check: rebuilds a finished book (~1.5 min)
 ```
@@ -189,6 +191,6 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 
 ## 7. Current state at handoff
 
-- Repository: DSA in Java and Spring Boot Backend sets added after the System Design set.
-- README: 75 links, 75 PDFs, all valid.
-- Next action: **set 5, ML System Design**, then 6 and 7 (the user asked for them one after the other, each committed to `main`).
+- Repository: DSA in Java, Spring Boot Backend and ML System Design sets added after the System Design set.
+- README: 77 links, 77 PDFs, all valid.
+- Next action: **set 6, Aptitude and Reasoning for TCS NQT**, then 7 (the user asked for them one after the other, each committed to `main`).

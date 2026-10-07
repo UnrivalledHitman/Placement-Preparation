@@ -22,7 +22,8 @@ Placement Preparation/
 │   ├── 02_Computer_Networks/     Guide → practice book
 │   └── 03_DBMS_Theory/           Guide → practice book
 ├── 05_System_Design/
-│   └── 01_Low_Level_Design/      Guide → practice book (Java)
+│   ├── 01_Low_Level_Design/      Guide → practice book (Java)
+│   └── 02_High_Level_Design/     Guide → practice book (Python simulations)
 ├── 06_AI_and_Machine_Learning/
 │   ├── 01_AI_ML/                 Python guide → practice book
 │   └── 02_Deep_Learning/         PyTorch guide → practice book
@@ -135,11 +136,12 @@ The core subjects of technical interviews. Operating Systems first: its concurre
 
 ## 05 · System Design
 
-Design rounds come after the core subjects: they use Java (Programming) and build on databases and networks (CS Fundamentals). Start with low-level design, which is object-oriented design and machine coding in Java.
+Design rounds come after the core subjects: they use Java (Programming) and build on databases and networks (CS Fundamentals). Start with low-level design (object-oriented design and machine coding in Java), then high-level system design (architecture of large distributed systems).
 
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Low-Level Design in Java: Patterns to Case Studies](05_System_Design/01_Low_Level_Design/01_Low_Level_Design_Complete_Guide.pdf) | [41 exercises with hints and solutions](05_System_Design/01_Low_Level_Design/02_Low_Level_Design_Practice_Book.pdf) |
+| 02 | [System Design: From Estimates to Case Studies](05_System_Design/02_High_Level_Design/01_System_Design_Complete_Guide.pdf) | [35 exercises with hints, solutions and rubrics](05_System_Design/02_High_Level_Design/02_System_Design_Practice_Book.pdf) |
 
 ---
 

@@ -10,7 +10,8 @@ Everything is numbered in the order it is meant to be completed: sections `01`�
 Placement Preparation/
 ├── 01_Quantitative_Aptitude/
 │   ├── 01_Chapter_Wise/          11 topics, basics first
-│   └── 02_Mixed_Sets/            20 mixed practice sets
+│   ├── 02_Mixed_Sets/            20 mixed practice sets
+│   └── 03_Reasoning_Advanced_Quant_and_Mocks/   guide → 3 timed NQT mocks
 ├── 02_Verbal_Ability/
 │   ├── 01_Topic_Wise/            7 topics, words → sentences → passages
 │   └── 02_Mixed_Sets/            6 mixed practice sets
@@ -81,6 +82,15 @@ Take these after finishing all chapters.
 [18](01_Quantitative_Aptitude/02_Mixed_Sets/18_Mixed_Set.pdf) ·
 [19](01_Quantitative_Aptitude/02_Mixed_Sets/19_Mixed_Set.pdf) ·
 [20](01_Quantitative_Aptitude/02_Mixed_Sets/20_Mixed_Set.pdf)
+
+### Step 3: Reasoning, advanced quant and timed mocks
+
+The topics the sets above do not cover (number system, interest, mixtures, P&C, probability, clocks, calendars and logical reasoning), then three 25-minute mocks in the TCS NQT style. Every answer is checked by a Python brute force.
+
+| # | Book | Contents |
+|---|------|----------|
+| 01 | [Reasoning and Advanced Quant for TCS NQT](01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks/01_Reasoning_and_Advanced_Quant_Guide.pdf) | 7 chapters with worked examples and practice questions |
+| 02 | [TCS NQT Timed Mock Tests](01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks/02_TCS_NQT_Timed_Mock_Tests.pdf) | 3 mocks × 20 questions, keys, hints, solutions |
 
 ---
 

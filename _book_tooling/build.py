@@ -140,6 +140,30 @@ DOCS = {
         theme='mlsd', kicker='Practice book · Machine learning system design',
         files=['mq.md', 'mh.md', 'ms1.md', 'ms2.md', 'mt.md'],
         rows=PRAC_ROWS('Work numericals on paper; time-box designs to 45 minutes')),
+    'apt_guide': dict(file='Reasoning_and_Advanced_Quant_Guide.pdf',
+        title='Reasoning and Advanced Quant for TCS NQT',
+        subtitle='Number system, interest, mixtures, P&C, probability, clocks, calendars and logical '
+                 'reasoning, with every answer checked by a Python brute force',
+        theme='apt', kicker='Aptitude · Reasoning and advanced quantitative ability',
+        files=['ap_0.md', 'ap_1.md', 'ap_2.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: number system, interest, mixtures and alligation',
+               'Practise each question type against a 75-second timer'],
+              ['Chapters 3–4: permutations, combinations, probability, clocks, calendars',
+               'Count small cases by hand to check formulas'],
+              ['Chapters 5–6: series, coding, relations, directions, arrangements, syllogisms',
+               'Draw a diagram for every reasoning question'],
+              ['Chapter 7: shortcuts and exam strategy', 'Read again the day before the exam']]),
+    'apt_mocks': dict(file='TCS_NQT_Timed_Mock_Tests.pdf', title='TCS NQT Timed Mock Tests',
+        subtitle='Three 25-minute mocks of 20 questions (numerical, reasoning, mixed) with answer keys, '
+                 'hints and worked solutions, every key verified by computation',
+        theme='apt', kicker='Mock tests · TCS NQT foundation',
+        files=['aq.md', 'ah.md', 'as1.md', 'as2.md', 'at.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Three mocks of 20 questions with four options', 'One sitting, 25-minute timer, no calculator'],
+              ['Hints, kept separate', 'Retry a wrong answer with the hint first'],
+              ['Answer keys and worked solutions with Python checks', 'Learn the faster method'],
+              ['Progress tracker', 'Mark each question and redo the misses after a week']]),
 }
 
 

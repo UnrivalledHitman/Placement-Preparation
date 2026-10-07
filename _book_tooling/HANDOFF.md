@@ -60,7 +60,8 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/03_DSA_in_Java` | 11bf0d1 |
 | Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/04_Backend_Spring_Boot` | ef0a05c |
-| ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/03_ML_System_Design` | (MLSD commit) |
+| ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/03_ML_System_Design` | a99854c |
+| Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | (aptitude commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -69,6 +70,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **DSA:** 12 chapters mapped to the 12-week roadmap (week 1 = Ch. 1–2 … week 12 = Ch. 12); one binary-search template (first true, `lo < hi`); every optimised solution checked against brute force on random inputs; honest notes kept: lazy Dijkstra survives a negative edge (but loses its guarantee), `power(3, -1)` silently returns 3, the constant-`hashCode` equals count is printed rounded because tree bins tie-break by identity hash.
 - **Backend:** real Spring Boot 3.3 apps (H2, embedded Tomcat on a random port, `HttpClient` calls, JUnit Platform Launcher for tests). Honest traps found by running and kept in the text: `@ConditionalOnMissingBean` in user config does not back off (registration order); reading a field through a Spring or Hibernate proxy gives null; JWT filter + `/error` dispatch turns 403 into 401 unless `/error` is permitted; without an entry point Spring Security answers 403 to anonymous calls; `DAY` is a reserved word (DDL fails with only a warning); `@Valid` on list elements raises `HandlerMethodValidationException`; `Map.of` JSON order is random.
 - **ML System Design:** NumPy/scikit-learn simulations with fixed seeds. Honest results kept: under drift a random split is optimistic and a time split pessimistic, while training on the last 90 days beats the full year (0.885 vs 0.707 AUC); paragraph chunks lost to whole sections at recall@1 on the tiny handbook (explained); the oracle router beats always-large (90% vs 81%) because errors are independent; a random forest needed no calibration (Brier unchanged).
+- **Aptitude:** every key recomputed in Python (itertools brute force, `datetime` as the calendar referee, a 256-world syllogism checker). The checks caught and fixed several wrong keys during writing (LEADER 360, clock 7:04 8/13, Tuesday + 61 = Sunday, CI − SI 91.50, circular seating answer T, data sufficiency 45 and 90 → (e)); keep running the checks after any edit.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
@@ -89,7 +91,7 @@ Suggested placement: `06_AI_and_Machine_Learning/03_ML_System_Design/`, theme `m
 
 Content: problem framing (business metric → ML metric → offline/online evaluation); data pipelines, labelling, leakage; features and feature stores; **training/serving skew**; online versus batch inference, latency budgets, model serving and caching; evaluation, calibration, A/B tests and interleaving (with a significance and sample-size calculator); monitoring, data and concept drift (simulate PSI/KS drift detection); retraining triggers; cost. Cases: recommendations (candidate generation + ranking), fraud detection (class imbalance, precision/recall trade-off, cost-based thresholds), search ranking, ETA prediction, RAG chatbot (retrieval evaluation, chunking, caching), LLM-agent platform (tools, guardrails, evaluation, cost and latency routing; the learner's "escalation tax" paper fits here). Reference, do not repeat, the AI/ML and Deep Learning books and the System Design book.
 
-### 4.3 Set 6: Aptitude and reasoning for TCS NQT (practice book with timed sets)
+### 4.3 Set 6: Aptitude and reasoning for TCS NQT (practice book with timed sets) — DONE (placed in `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks/`, no renaming)
 
 Suggested placement: decide with the user; options are a new `01_Quantitative_Aptitude/03_TCS_NQT_Timed_Mocks/`, or renaming `02_Verbal_Ability` to a broader "Aptitude and Reasoning" section. Theme `apt` (`#b91c1c`), prefix **A**.
 
@@ -191,6 +193,6 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 
 ## 7. Current state at handoff
 
-- Repository: DSA in Java, Spring Boot Backend and ML System Design sets added after the System Design set.
-- README: 77 links, 77 PDFs, all valid.
-- Next action: **set 6, Aptitude and Reasoning for TCS NQT**, then 7 (the user asked for them one after the other, each committed to `main`).
+- Repository: DSA in Java, Spring Boot Backend, ML System Design and Aptitude/NQT sets added after the System Design set.
+- README: 79 links, 79 PDFs, all valid.
+- Next action: **set 7, Interview and HR** (the user asked for the sets one after the other, each committed to `main`).

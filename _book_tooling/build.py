@@ -164,6 +164,19 @@ DOCS = {
               ['Hints, kept separate', 'Retry a wrong answer with the hint first'],
               ['Answer keys and worked solutions with Python checks', 'Learn the faster method'],
               ['Progress tracker', 'Mark each question and redo the misses after a week']]),
+    'hr_guide': dict(file='Interview_HR_and_Resume_Guide.pdf',
+        title='Interview, HR and Resume Guide',
+        subtitle='HR, managerial and behavioural rounds: introductions, STAR stories, a question bank, '
+                 'presenting projects and research, the resume, offers and checklists',
+        theme='hr', kicker='Interviews · HR, behavioural and resume',
+        files=['hr_0.md', 'hr_1.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–3: rounds, "tell me about yourself", STAR story bank',
+               'Write your answers once, then rehearse out loud'],
+              ['Chapter 4: question bank with the core of a good answer', 'Draft two lines for each question'],
+              ['Chapter 5: presenting projects and the research paper', 'Prepare 30-second, 2-minute and deep-dive versions'],
+              ['Chapters 6–8: resume, company research, offers, checklists',
+               'Fill in every [placeholder] with your real details']]),
 }
 
 

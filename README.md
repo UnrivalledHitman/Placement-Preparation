@@ -2,7 +2,7 @@
 
 Study material and practice sets for campus placements (TCS NQT, TCS CPA and similar aptitude + technical rounds).
 
-Everything is numbered in the order it is meant to be completed: sections `01`–`07`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
+Everything is numbered in the order it is meant to be completed: sections `01`–`08`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
 
 ## Folder structure
 
@@ -31,9 +31,10 @@ Placement Preparation/
 │   ├── 01_AI_ML/                 Python guide → practice book
 │   ├── 02_Deep_Learning/         PyTorch guide → practice book
 │   └── 03_ML_System_Design/      Guide → practice book (simulations + design prompts)
-└── 07_Business_and_Finance/
-    ├── 01_Parable_of_the_Pipeline/  Book → study report
-    └── 02_Cashflow_Quadrant/        Book → study report
+├── 07_Business_and_Finance/
+│   ├── 01_Parable_of_the_Pipeline/  Book → study report
+│   └── 02_Cashflow_Quadrant/        Book → study report
+└── 08_Interview_and_HR/          Interview, HR and resume guide
 ```
 
 ---
@@ -194,3 +195,13 @@ The short *Parable of the Pipeline* introduces residual income; *Cashflow Quadra
 |---|------|--------------|
 | 01 | [The Parable of the Pipeline – Burke Hedges](07_Business_and_Finance/01_Parable_of_the_Pipeline/01_Parable_of_the_Pipeline_Book_Burke_Hedges.pdf) | [Lesson-by-lesson report](07_Business_and_Finance/01_Parable_of_the_Pipeline/02_Parable_of_the_Pipeline_Study_Report.pdf) |
 | 02 | [Cashflow Quadrant – Robert Kiyosaki](07_Business_and_Finance/02_Cashflow_Quadrant/01_Cashflow_Quadrant_Book_Robert_Kiyosaki.pdf) | [Chapter-by-chapter report](07_Business_and_Finance/02_Cashflow_Quadrant/02_Cashflow_Quadrant_Study_Report.pdf) |
+
+---
+
+## 08 · Interview and HR
+
+Last, but start it early: write your introduction, STAR stories and resume once, then refine them after every interview. The guide uses your real profile and leaves clearly marked placeholders for details only you can fill in.
+
+| # | Guide | Contents |
+|---|-------|----------|
+| 01 | [Interview, HR and Resume Guide](08_Interview_and_HR/01_Interview_HR_and_Resume_Guide.pdf) | Rounds, "tell me about yourself", STAR story bank, question bank, presenting projects and research, resume, offers, checklists |

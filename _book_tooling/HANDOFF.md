@@ -19,7 +19,7 @@ This file gives a new Claude Code session (cloud or local) everything needed to 
 
 ## 2. The repository
 
-GitHub: `UnrivalledHitman/Placement-Preparation`, branch `main`. Everything is **numbered in the order it should be studied**: sections `01`–`07`, the folders inside each, and the files inside each folder.
+GitHub: `UnrivalledHitman/Placement-Preparation`, branch `main`. Everything is **numbered in the order it should be studied**: sections `01`–`08`, the folders inside each, and the files inside each folder.
 
 ```text
 Placement Preparation/
@@ -30,6 +30,7 @@ Placement Preparation/
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design
 ├── 06_AI_and_Machine_Learning/ 01_AI_ML, 02_Deep_Learning
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
+├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide
 ├── _book_tooling/              this handoff, build scripts, markdown sources (not study material)
 └── README.md                   index: folder tree, one section per top-level folder, tables linking every PDF
 ```
@@ -61,7 +62,8 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/03_DSA_in_Java` | 11bf0d1 |
 | Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/04_Backend_Spring_Boot` | ef0a05c |
 | ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/03_ML_System_Design` | a99854c |
-| Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | (aptitude commit) |
+| Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | 57184a4 |
+| Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | (HR commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -97,7 +99,7 @@ Suggested placement: decide with the user; options are a new `01_Quantitative_Ap
 
 The repo already has 11 chapter-wise quant sets, 20 mixed quant sets and 13 verbal sets (earlier PDFs), so this book should **add what is missing**: **logical reasoning** (series, coding–decoding, blood relations, directions, seating arrangement, syllogisms, data sufficiency, puzzles), **advanced quant** not yet covered (permutations and combinations, probability, number systems, HCF/LCM, mixtures and alligation, simple/compound interest), **shortcut techniques**, and **full timed mock tests** in the NQT pattern with answer keys. Every numerical answer must be computed and checked by Python (brute force where possible), with clear working.
 
-### 4.4 Set 7: Behavioural, HR and resume (short guide)
+### 4.4 Set 7: Behavioural, HR and resume (short guide) — DONE (uses only profile facts from section 1; everything else is a [placeholder] for the learner)
 
 Placement: a final section, for example `08_Interview_and_HR/` (renumber nothing; it goes last). Theme `hr` (`#334155`). Mostly text: common HR questions with frameworks (STAR), "tell me about yourself" built from the learner's profile, projects and research write-ups (the escalation-tax paper, IoT/energy projects), resume structure (one page, impact bullets with numbers), company research, salary and offer questions, a final checklist. No code blocks are needed, but the house style still applies.
 
@@ -193,6 +195,6 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 
 ## 7. Current state at handoff
 
-- Repository: DSA in Java, Spring Boot Backend, ML System Design and Aptitude/NQT sets added after the System Design set.
-- README: 79 links, 79 PDFs, all valid.
-- Next action: **set 7, Interview and HR** (the user asked for the sets one after the other, each committed to `main`).
+- Repository: all seven planned sets are done (DSA in Java, Spring Boot Backend, ML System Design, Aptitude/NQT mocks, Interview/HR added in this session).
+- README: 80 links, 80 PDFs, all valid; sections 01–08.
+- Next action: none planned. Ask the user. Candidates: fill the HR guide's placeholders together with the learner; more NQT mocks; a timed coding-mock book for the DSA plan; recomputing the older PDFs from markdown if their sources are recreated.

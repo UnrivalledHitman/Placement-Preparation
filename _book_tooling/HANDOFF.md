@@ -25,7 +25,7 @@ GitHub: `UnrivalledHitman/Placement-Preparation`, branch `main`. Everything is *
 Placement Preparation/
 ├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
-├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_DSA_in_Java, 04_Backend_Spring_Boot (guide + practice book each)
+├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Backend_Spring_Boot
 ├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Computer_Networks, 03_DBMS_Theory
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design
 ├── 06_AI_and_Machine_Learning/ 01_AI_ML, 02_Deep_Learning
@@ -42,7 +42,7 @@ Conventions to keep:
 - **README**: update the folder tree, add a table row (`| NN | [Guide title](path) | [N exercises with hints and solutions](path) |`), and a sentence explaining the order. After every change, check that every link resolves and that the number of links equals the number of PDFs. The check is a one-line shell loop over `grep -oE '\]\([^)]+\.pdf\)' README.md`.
 - Commit messages: a summary line, a blank line, bullet points, then the line `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Commit and push each finished set. The user has asked for a stop after each set, to give the next instruction.
 
-> NOTE: An earlier chat listed a DSA pair that never reached the repository. The user asked for missing books to be created, so the DSA pair was **rebuilt from scratch with this tooling** (sources `sa_*`, `sq`, `sh`, `ss1`–`ss3`, `st`) and placed in `03_Programming/03_DSA_in_Java/`.
+> NOTE: An earlier chat listed a DSA pair that never reached the repository. The user asked for missing books to be created, so the DSA pair was **rebuilt from scratch with this tooling** (sources `sa_*`, `sq`, `sh`, `ss1`–`ss3`, `st`) and placed in `03_Programming/04_DSA_in_Java/`.
 
 ## 3. What has been done
 
@@ -59,11 +59,12 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/03_DBMS_Theory` | f540af3 |
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
-| DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/03_DSA_in_Java` | 11bf0d1 |
-| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/04_Backend_Spring_Boot` | ef0a05c |
+| DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
+| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/05_Backend_Spring_Boot` | ef0a05c |
 | ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/03_ML_System_Design` | a99854c |
 | Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | 57184a4 |
-| Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | (HR commit) |
+| Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
+| JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | (JDBC commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -73,6 +74,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **Backend:** real Spring Boot 3.3 apps (H2, embedded Tomcat on a random port, `HttpClient` calls, JUnit Platform Launcher for tests). Honest traps found by running and kept in the text: `@ConditionalOnMissingBean` in user config does not back off (registration order); reading a field through a Spring or Hibernate proxy gives null; JWT filter + `/error` dispatch turns 403 into 401 unless `/error` is permitted; without an entry point Spring Security answers 403 to anonymous calls; `DAY` is a reserved word (DDL fails with only a warning); `@Valid` on list elements raises `HandlerMethodValidationException`; `Map.of` JSON order is random.
 - **ML System Design:** NumPy/scikit-learn simulations with fixed seeds. Honest results kept: under drift a random split is optimistic and a time split pessimistic, while training on the last 90 days beats the full year (0.885 vs 0.707 AUC); paragraph chunks lost to whole sections at recall@1 on the tiny handbook (explained); the oracle router beats always-large (90% vs 81%) because errors are independent; a random forest needed no calibration (Brier unchanged).
 - **Aptitude:** every key recomputed in Python (itertools brute force, `datetime` as the calendar referee, a 256-world syllogism checker). The checks caught and fixed several wrong keys during writing (LEADER 360, clock 7:04 8/13, Tuesday + 61 = Sunday, CI − SI 91.50, circular seating answer T, data sufficiency 45 and 90 → (e)); keep running the checks after any edit.
+- **JDBC:** `java jdbc` blocks (jdbc/pom.xml: H2 in MODE=MySQL, HikariCP, embedded Tomcat 10, slf4j-nop). Observed on H2: dirty read at READ UNCOMMITTED, non-repeatable read and phantom at READ COMMITTED, stable snapshot at REPEATABLE READ; lost update 6000 vs 3000; FOR UPDATE timeout HYT00; H2 continues a batch after a failed row. A reflective counting proxy measures statements deterministically.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
@@ -81,7 +83,7 @@ The user said: **finish one set, commit, push, then wait for instructions.**
 
 ### 4.1 Set 4: Backend stack (guide + practice book) — DONE
 
-Suggested placement: `03_Programming/04_Backend_Spring_Boot/` (after Java, MySQL and DSA, before CS fundamentals; `03` is now DSA). Suggested theme key `be` (already defined, `#3f6212`), exercise prefix **B**.
+Suggested placement: `03_Programming/05_Backend_Spring_Boot/` (after Java, MySQL and DSA, before CS fundamentals; `03` is now DSA). Suggested theme key `be` (already defined, `#3f6212`), exercise prefix **B**.
 
 Content (from the original plan): Spring Boot project structure and auto-configuration; dependency injection and bean scopes (connect to DIP in the LLD book); REST controllers, DTOs, validation, error handling (`@ControllerAdvice`); JPA/Hibernate: entities, relationships, lazy loading, **the N+1 problem** and fetch joins, transactions (`@Transactional` propagation, isolation, the self-invocation proxy trap); Spring Security with JWT; testing: JUnit 5, Mockito, `@WebMvcTest`, `@DataJpaTest`, Testcontainers; configuration and profiles; observability (Actuator, metrics, logging); Docker and docker-compose; a full mini-project: a **smart-meter REST API** (meters, readings, daily aggregates, idempotent ingestion).
 
@@ -196,5 +198,5 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 ## 7. Current state at handoff
 
 - Repository: all seven planned sets are done (DSA in Java, Spring Boot Backend, ML System Design, Aptitude/NQT mocks, Interview/HR added in this session).
-- README: 80 links, 80 PDFs, all valid; sections 01–08.
-- Next action: none planned. Ask the user. Candidates: fill the HR guide's placeholders together with the learner; more NQT mocks; a timed coding-mock book for the DSA plan; recomputing the older PDFs from markdown if their sources are recreated.
+- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (full guide + practice book, every derivation checked numerically) → Linux → Front-end → Advanced back-end (caching, messaging, jobs, WebSockets, storage, API styles) → Security engineering (payments, encryption, storage, OWASP) → Senior engineer handbook.
+- README: 82 links, 82 PDFs. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend.

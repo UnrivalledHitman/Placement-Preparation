@@ -26,7 +26,7 @@ SPRING_FLAGS = ['-Dspring.main.banner-mode=off', '-Dlogging.level.root=OFF',
 
 
 def spring_classpath(kind):
-    """Classpath of <kind>/pom.xml (kind = spring or spring-security), resolved once with Maven
+    """Classpath of <kind>/pom.xml (kind = spring, spring-security or jdbc), resolved once with Maven
     and cached in <kind>/classpath.txt."""
     f = os.path.join(ROOT, kind, 'classpath.txt')
     if not os.path.exists(f):
@@ -46,7 +46,8 @@ def run_code(code, n, spring=False):
     d = os.path.join(ROOT, 'tmp', 'jr', str(n))
     shutil.rmtree(d, ignore_errors=True); os.makedirs(d)
     open(os.path.join(d, 'Main.java'), 'w', encoding='utf-8').write(src)
-    if spring:   # package demo; compiled to a directory so that component and entity scanning work
+    if spring:   # package demo (spring, spring-security, jdbc kinds); compiled to a directory so
+                 # that component and entity scanning work
         cp = spring_classpath(spring)
         c = subprocess.run(['javac', '-parameters', '-encoding', 'UTF-8', '-cp', cp, '-d', 'classes',
                             'Main.java'], cwd=d, capture_output=True, text=True, encoding='utf-8')
@@ -69,7 +70,7 @@ def expand(src):
     out, lines, i, n = [], src.split('\n'), 0, 0
     while i < len(lines):
         s = lines[i].strip()
-        m = re.match(r'```java (run|spring-security|spring)(?: (.*))?$', s)
+        m = re.match(r'```java (run|spring-security|spring|jdbc)(?: (.*))?$', s)
         if m:
             spring, title = (None if m.group(1) == 'run' else m.group(1)), m.group(2)
             j = i + 1; buf = []

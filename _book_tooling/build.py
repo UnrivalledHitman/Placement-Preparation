@@ -177,6 +177,27 @@ DOCS = {
               ['Chapter 5: presenting projects and the research paper', 'Prepare 30-second, 2-minute and deep-dive versions'],
               ['Chapters 6–8: resume, company research, offers, checklists',
                'Fill in every [placeholder] with your real details']]),
+    'jdbc_guide': dict(file='JDBC_and_Persistence_Complete_Guide.pdf',
+        title='JDBC and Java Persistence in Depth',
+        subtitle='Connections, PreparedStatement and SQL injection, transactions and isolation, '
+                 'batching, HikariCP, DAOs, migrations and Servlets, every program run',
+        theme='jdbc', kicker='Programming · Java database access',
+        files=['jd_0.md', 'jd_1.md', 'jd_2.md', 'jd_3.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: architecture, resources, statements, injection, types and NULLs',
+               'Read before the TCS CPA exam'],
+              ['Chapters 3–4: transactions, isolation levels observed, locking, batching, N+1',
+               'Predict each output before reading it'],
+              ['Chapters 5–7: connection pools, the DAO pattern, schema migrations',
+               'Break the programs on purpose: leak, forget commit'],
+              ['Chapters 8–9: Servlets, JDBC versus JPA, cheat sheet, question bank',
+               'Then read the Spring Boot guide']]),
+    'jdbc_prac': dict(file='JDBC_and_Persistence_Practice_Book.pdf', title='JDBC: Practice Book',
+        subtitle='Exercises matching the JDBC guide: injection-safe queries, NULLs, transactions, '
+                 'savepoints, batches, pools, DAOs, migrations and Servlets, with run solutions',
+        theme='jdbc', kicker='Practice book · Java database access',
+        files=['jq.md', 'jh.md', 'js1.md', 'js2.md', 'jt.md'],
+        rows=PRAC_ROWS('Write and run each program before reading')),
 }
 
 

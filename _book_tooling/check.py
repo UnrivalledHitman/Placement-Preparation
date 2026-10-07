@@ -9,7 +9,7 @@ for m in re.finditer(r'```(\w+)[^\n]*\n(.*?)\n```', src, re.S):
         if len(l.rstrip()) > 94:
             long.append(l.rstrip())
 print('code blocks:', len(re.findall(r'^```(?:python|java|sql|text)', src, re.M)),
-      '| runnable:', len(re.findall(r'^```(?:python run|java run|java spring)', src, re.M)), '| long lines:', len(long))
+      '| runnable:', len(re.findall(r'^```(?:python run|java run|java spring|java jdbc)', src, re.M)), '| long lines:', len(long))
 for l in long:
     print('   LONG', len(l), l[:110])
 ex = re.findall(r'^\*\*([A-Z]\d+\.\d+) · ', src, re.M)

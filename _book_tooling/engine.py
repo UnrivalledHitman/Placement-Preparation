@@ -44,6 +44,9 @@ THEMES = {
     'mlsd': dict(accent=colors.HexColor('#86198f'), soft=colors.HexColor('#f9ecfa')),
     'apt': dict(accent=colors.HexColor('#b91c1c'), soft=colors.HexColor('#fdeeee')),
     'hr': dict(accent=colors.HexColor('#334155'), soft=colors.HexColor('#eef1f5')),
+    'jdbc': dict(accent=colors.HexColor('#0e7490'), soft=colors.HexColor('#e7f6f9')),
+    'math': dict(accent=colors.HexColor('#1e40af'), soft=colors.HexColor('#ebf0fc')),
+    'senior': dict(accent=colors.HexColor('#57534e'), soft=colors.HexColor('#f3f2f1')),
 }
 
 CALLOUTS = {

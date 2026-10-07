@@ -16,7 +16,8 @@ Placement Preparation/
 │   └── 02_Mixed_Sets/            6 mixed practice sets
 ├── 03_Programming/
 │   ├── 01_Java/                  Guide → reference → practice → exam sets → revision
-│   └── 02_MySQL/                 Guide → reference → practice → revision
+│   ├── 02_MySQL/                 Guide → reference → practice → revision
+│   └── 03_DSA_in_Java/           Guide → practice book (12-week DSA plan)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Computer_Networks/     Guide → practice book
@@ -119,6 +120,14 @@ Java first: the JDBC part of the MySQL material uses it. In each language, learn
 | 03 | [Practice Questions – Chapterwise](03_Programming/01_Java/03_Java_Practice_Questions_Chapterwise.pdf) | [Practice Questions – Chapterwise](03_Programming/02_MySQL/03_MySQL_Practice_Questions_Chapterwise.pdf) |
 | 04 | [TCS CPA Practice Sets](03_Programming/01_Java/04_Java_TCS_CPA_Practice_Sets.pdf) | [Quick Revision](03_Programming/02_MySQL/04_MySQL_Quick_Revision.pdf) |
 | 05 | [Quick Revision (TCS CPA)](03_Programming/01_Java/05_Java_Quick_Revision_TCS_CPA.pdf) | — |
+
+### 03 · DSA in Java
+
+Start after the Java guide: every program is in Java. The guide's chapters map onto the 12-week DSA roadmap (week 1 = Chapters 1–2, …, week 12 = Chapter 12); solve the matching part of the practice book after each chapter.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [DSA in Java: Patterns for Coding Interviews](03_Programming/03_DSA_in_Java/01_DSA_in_Java_Complete_Guide.pdf) (60 runnable programs) | [49 exercises with hints and solutions](03_Programming/03_DSA_in_Java/02_DSA_in_Java_Practice_Book.pdf) |
 
 ---
 

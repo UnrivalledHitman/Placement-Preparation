@@ -75,6 +75,27 @@ DOCS = {
         theme='hld', kicker='Practice book · System design',
         files=['hq.md', 'hh.md', 'hs1.md', 'hs2.md', 'ht.md'],
         rows=PRAC_ROWS('Work on paper with a 40-minute timer for designs')),
+    'dsa_guide': dict(file='DSA_in_Java_Complete_Guide.pdf',
+        title='DSA in Java: Patterns for Coding Interviews',
+        subtitle='Complexity, arrays, binary search, lists, recursion, trees, heaps, graphs, dynamic '
+                 'programming, greedy and range queries, with 60 runnable Java programs',
+        theme='dsa', kicker='Programming · Data structures and algorithms',
+        files=['sa_0.md', 'sa_1.md', 'sa_2.md', 'sa_3.md', 'sa_4.md', 'sa_5.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: complexity, Java collections, arrays, hashing, two pointers, windows',
+               'Week 1 of the 12-week plan'],
+              ['Chapters 3–5: binary search, sorting, lists, stacks, queues, backtracking',
+               'Weeks 2–4: learn each template until you can write it cold'],
+              ['Chapters 6–8: trees, BSTs, heaps, hash maps and graphs', 'Weeks 5–8'],
+              ['Chapters 9–11: dynamic programming, greedy, bits, maths, tries, range queries',
+               'Weeks 9–11: define the state before coding'],
+              ['Chapter 12: pattern table, bug checklist, interview plan', 'Revise before every round']]),
+    'dsa_prac': dict(file='DSA_in_Java_Practice_Book.pdf', title='DSA in Java: Practice Book',
+        subtitle='Exercises matching the DSA guide, from arrays and binary search to graphs and dynamic '
+                 'programming, with hints and executed Java solutions tested against brute force',
+        theme='dsa', kicker='Practice book · Data structures and algorithms',
+        files=['sq.md', 'sh.md', 'ss1.md', 'ss2.md', 'ss3.md', 'st.md'],
+        rows=PRAC_ROWS('Code it and test on edge cases before reading anything')),
 }
 
 

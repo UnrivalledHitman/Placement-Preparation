@@ -11,6 +11,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (BaseDocTemplate, PageTemplate, Frame, Paragraph, Spacer, Table,
                                 TableStyle, PageBreak, CondPageBreak, KeepTogether, NextPageTemplate)
+from reportlab.platypus.flowables import PageBreakIfNotEmpty
 from reportlab.platypus.tableofcontents import TableOfContents
 
 # DejaVu fonts ship with matplotlib (Windows has no system copy)
@@ -51,6 +52,9 @@ THEMES = {
     'fe': dict(accent=colors.HexColor('#c2410c'), soft=colors.HexColor('#fdf0e8')),
     'abe': dict(accent=colors.HexColor('#065f46'), soft=colors.HexColor('#e6f4ef')),
     'sec': dict(accent=colors.HexColor('#991b1b'), soft=colors.HexColor('#fcebeb')),
+    'devops': dict(accent=colors.HexColor('#0e7490'), soft=colors.HexColor('#e7f5f8')),
+    'conc': dict(accent=colors.HexColor('#be123c'), soft=colors.HexColor('#fdecef')),
+    'dist': dict(accent=colors.HexColor('#7e22ce'), soft=colors.HexColor('#f5ecfc')),
 }
 
 CALLOUTS = {
@@ -319,7 +323,9 @@ def parse(src, S, theme, width, h1_count):
         if s.startswith('# '):
             flush()
             if h1_count[0] > 0:
-                story.append(PageBreak())
+                if story and isinstance(story[-1], Spacer):
+                    story.pop()                    # a trailing spacer can spill onto a blank page
+                story.append(PageBreakIfNotEmpty())
             h1_count[0] += 1
             story.append(heading(s[2:], S['h1'], 0))
             i += 1

@@ -66,7 +66,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
 | JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
 | Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | 432f236 |
-| Linux for Software Engineers | `lx_0`…`lx_3`; `uq, uh, us1, us2, ut` | 56 + 26 | 36 | U | `linux` | `04_CS_Fundamentals/02_Linux` | (linux commit) |
+| Linux for Software Engineers | `lx_0`…`lx_3`; `uq, uh, us1, us2, ut` | 56 + 26 | 36 | U | `linux` | `04_CS_Fundamentals/02_Linux` | 3e5158c |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 

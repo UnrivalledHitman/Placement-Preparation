@@ -4,7 +4,7 @@ practice books (a line containing only <<TRACKER>>), and renders the PDF into ou
 import os, re, sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from engine import build
-import javarun, pyrun, shrun
+import javarun, pyrun, shrun, webrun
 
 OUT = 'out'
 PRAC_ROWS = lambda first: [['What is inside', 'How to use it'], ['Exercises by chapter, tagged by type and level', first],
@@ -242,6 +242,28 @@ DOCS = {
         theme='linux', kicker='Practice book · The operating system of servers',
         files=['uq.md', 'uh.md', 'us1.md', 'us2.md', 'ut.md'],
         rows=PRAC_ROWS('Run every command before reading')),
+    'fe_guide': dict(file='Frontend_Design_and_Development_Complete_Guide.pdf',
+        title='Front-end Design and Development',
+        subtitle='HTML, CSS, UI design, JavaScript, the DOM, TypeScript, React, accessibility, '
+                 'performance and security, every page rendered in a real browser',
+        theme='fe', kicker='Programming · What users see and touch',
+        files=['fe_0.md', 'fe_1.md', 'fe_2.md', 'fe_3.md', 'fe_4.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–4: how browsers render, HTML, CSS layout, UI design and contrast',
+               'Rebuild each screenshot from a blank file'],
+              ['Chapters 5–6: JavaScript, the event loop, promises, the DOM and events',
+               'Predict every output before reading it'],
+              ['Chapters 7–8: TypeScript and React: state, effects, keys, forms, hooks',
+               'Type the components, then break them'],
+              ['Chapters 9–12: accessibility, Web Vitals, security, testing, interview questions',
+               'Run axe and Lighthouse on your own projects']]),
+    'fe_prac': dict(file='Frontend_Design_and_Development_Practice_Book.pdf',
+        title='Front-end: Practice Book',
+        subtitle='Machine-coding and concept exercises on layout, JavaScript, the DOM, TypeScript, '
+                 'React, accessibility and security, with executed solutions',
+        theme='fe', kicker='Practice book · What users see and touch',
+        files=['fq.md', 'fh.md', 'fs1.md', 'fs2.md', 'ft.md'],
+        rows=PRAC_ROWS('Build each component before reading')),
 }
 
 
@@ -260,6 +282,7 @@ def expand_all(key, d):
         s = pyrun.expand(s, f.replace('.md', ''))
         s = javarun.expand(s)
         s = shrun.expand(s, f.replace('.md', ''))
+        s = webrun.expand(s, f.replace('.md', ''))
         parts.append(s)
     return '\n'.join(parts)
 

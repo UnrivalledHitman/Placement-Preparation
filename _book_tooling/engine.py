@@ -67,6 +67,9 @@ protected public return short static strictfp super switch synchronized this thr
 while var record yield sealed permits non-sealed true false null""".split())
 PY_KW = set('''False None True and as assert async await break class continue def del elif else except finally for
 from global if import in is lambda nonlocal not or pass raise return try while with yield self print len range'''.split())
+JS_KW = set('''async await break case catch class const continue default delete do else export extends
+false finally for from function if import in instanceof let new null of return static super switch this
+throw true try typeof undefined var void while yield interface type enum implements readonly'''.split())
 SQL_KW = set("""select from where and or not insert into values update set delete create table database drop alter add
 column primary key foreign references unique default null is in between like as on join inner left right full outer
 cross group by having order asc desc limit offset distinct count sum avg min max union all exists case when then else
@@ -92,7 +95,7 @@ def highlight(line, lang, theme):
             e = re.sub(r'  +', lambda mm: '&nbsp;' * len(mm.group(0)), escape(t))
         if lang in ('text', 'out'):
             out.append(e); continue
-        if (t.startswith('//') and lang == 'java') or (t.startswith('--') and lang == 'sql') or t.startswith('/*') \
+        if (t.startswith('//') and lang in ('java', 'javascript', 'typescript')) or (t.startswith('--') and lang == 'sql') or t.startswith('/*') \
                 or (t.startswith('#') and lang in ('sql', 'python', 'bash')):
             out.append(f'<font color="#7a8291"><i>{e}</i></font>')
         elif t[0] in '"\'' and len(t) > 1:
@@ -103,6 +106,8 @@ def highlight(line, lang, theme):
             out.append(f'<font color="{kwc}"><b>{e}</b></font>')
         elif lang == 'java' and t.startswith('@'):
             out.append(f'<font color="#b05a00">{e}</font>')
+        elif lang in ('javascript', 'typescript') and t in JS_KW:
+            out.append(f'<font color="#7c3aed"><b>{e}</b></font>')
         elif lang == 'python' and t in PY_KW:
             out.append(f'<font color="#7c3aed"><b>{e}</b></font>')
         elif lang == 'python' and t.startswith('@'):

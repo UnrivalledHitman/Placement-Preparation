@@ -20,7 +20,8 @@ Placement Preparation/
 │   ├── 02_MySQL/                 Guide → reference → practice → revision
 │   ├── 03_JDBC_and_Persistence/  Guide → practice book (JDBC, transactions, pools, Servlets)
 │   ├── 04_DSA_in_Java/           Guide → practice book (12-week DSA plan)
-│   └── 05_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
+│   ├── 05_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
+│   └── 06_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Linux/                 Guide → practice book (every command executed)
@@ -160,6 +161,14 @@ After Java and MySQL (the JPA chapters build on SQL). Every program is a real Sp
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Spring Boot Backend: From Beans to Production](03_Programming/05_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/05_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
+
+### 06 · Front-end design and development
+
+What runs in the user's browser: how pages render, HTML, CSS layout, UI design principles (hierarchy, spacing, contrast, states), JavaScript and the event loop, the DOM, TypeScript, React, accessibility, Core Web Vitals and front-end security. Every HTML, CSS and React example was rendered in headless Chromium (with screenshots), every script run in Node.js, and every TypeScript example checked by the compiler. Pairs with the Spring Boot back end: together they make a full-stack project.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Front-end Design and Development: From Pixels to React](03_Programming/06_Frontend_Design_and_Development/01_Frontend_Design_and_Development_Complete_Guide.pdf) (48 runnable examples) | [36 machine-coding and concept exercises with executed solutions](03_Programming/06_Frontend_Design_and_Development/02_Frontend_Design_and_Development_Practice_Book.pdf) |
 
 ---
 

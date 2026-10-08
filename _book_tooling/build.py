@@ -264,6 +264,28 @@ DOCS = {
         theme='fe', kicker='Practice book · What users see and touch',
         files=['fq.md', 'fh.md', 'fs1.md', 'fs2.md', 'ft.md'],
         rows=PRAC_ROWS('Build each component before reading')),
+    'abe_guide': dict(file='Advanced_Backend_Engineering_Complete_Guide.pdf',
+        title='Advanced Back-end Engineering',
+        subtitle='Caching, rate limiting, idempotency, messaging, background jobs, real-time, '
+                 'object storage, REST, GraphQL, gRPC and NoSQL, run against real Redis',
+        theme='abe', kicker='Programming · Beyond controllers and a database',
+        files=['ab_0.md', 'ab_1.md', 'ab_2.md', 'ab_3.md', 'ab_4.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–2: caching patterns, eviction, stampedes, rate limits, idempotency, locks',
+               'Start a Redis server and rerun every example'],
+              ['Chapters 3–5: queues, logs, outbox, sagas, background jobs, SSE and WebSockets',
+               'Break the consumers on purpose: crash, duplicate, reorder'],
+              ['Chapters 6–8: presigned uploads, REST in depth, GraphQL, gRPC, NoSQL modelling',
+               'Port each idea to Spring with the tables given'],
+              ['Chapter 9: interview questions and a design checklist',
+               'Use the checklist on every system-design question']]),
+    'abe_prac': dict(file='Advanced_Backend_Engineering_Practice_Book.pdf',
+        title='Advanced Back-end: Practice Book',
+        subtitle='Caching, rate limiting, messaging, jobs, real-time, storage, API and NoSQL '
+                 'exercises plus two system designs, with executed solutions',
+        theme='abe', kicker='Practice book · Beyond controllers and a database',
+        files=['kq.md', 'kh.md', 'ks1.md', 'ks2.md', 'kt.md'],
+        rows=PRAC_ROWS('Write and run each program before reading')),
 }
 
 

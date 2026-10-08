@@ -21,7 +21,8 @@ Placement Preparation/
 │   ├── 03_JDBC_and_Persistence/  Guide → practice book (JDBC, transactions, pools, Servlets)
 │   ├── 04_DSA_in_Java/           Guide → practice book (12-week DSA plan)
 │   ├── 05_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
-│   └── 06_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
+│   ├── 06_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
+│   └── 07_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Linux/                 Guide → practice book (every command executed)
@@ -169,6 +170,14 @@ What runs in the user's browser: how pages render, HTML, CSS layout, UI design p
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Front-end Design and Development: From Pixels to React](03_Programming/06_Frontend_Design_and_Development/01_Frontend_Design_and_Development_Complete_Guide.pdf) (48 runnable examples) | [36 machine-coding and concept exercises with executed solutions](03_Programming/06_Frontend_Design_and_Development/02_Frontend_Design_and_Development_Practice_Book.pdf) |
+
+### 07 · Advanced back-end engineering
+
+After the Spring Boot guide: the pieces around the core API that production systems and senior interviews need. Caching (patterns, invalidation, eviction, stampedes), rate limiting, idempotency keys and distributed locks, message queues and event logs (consumer groups, retries, dead letters, outbox, sagas), background and scheduled jobs, SSE and WebSockets, object storage with presigned URLs, REST in depth, GraphQL and gRPC, and NoSQL data modelling. Every example ran against a real Redis 7 server, real HTTP and WebSocket servers, graphql-core and a generated gRPC service; each chapter maps the ideas onto Spring.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/07_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/07_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
 
 ---
 

@@ -3,7 +3,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 FIGS = os.path.join(ROOT, 'figs')
 CACHE = os.path.join(ROOT, 'pycache')
 TMP = os.path.join(ROOT, 'tmp')
-ENV = dict(os.environ, PYTHONPATH=FIGS, MPLBACKEND='Agg', PYTHONHASHSEED='0', PYTHONIOENCODING='utf-8', PYTHONUTF8='1')
+ENV = dict(os.environ, PYTHONPATH=FIGS + os.pathsep + os.path.join(ROOT, 'pylib'), MPLBACKEND='Agg', PYTHONHASHSEED='0', PYTHONIOENCODING='utf-8', PYTHONUTF8='1')
 PRELUDE = """import warnings; warnings.filterwarnings('ignore')
 import matplotlib
 matplotlib.use('Agg')

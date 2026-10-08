@@ -26,7 +26,7 @@ Placement Preparation/
 ├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
 ├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Backend_Spring_Boot
-├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Computer_Networks, 03_DBMS_Theory
+├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Computer_Networks, 04_DBMS_Theory
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design
 ├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Deep_Learning, 04_ML_System_Design
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
@@ -56,7 +56,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
-| DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/03_DBMS_Theory` | f540af3 |
+| DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/04_DBMS_Theory` (was 03) | f540af3 |
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
@@ -66,6 +66,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
 | JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
 | Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | 432f236 |
+| Linux for Software Engineers | `lx_0`…`lx_3`; `uq, uh, us1, us2, ut` | 56 + 26 | 36 | U | `linux` | `04_CS_Fundamentals/02_Linux` | (linux commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -77,6 +78,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **Aptitude:** every key recomputed in Python (itertools brute force, `datetime` as the calendar referee, a 256-world syllogism checker). The checks caught and fixed several wrong keys during writing (LEADER 360, clock 7:04 8/13, Tuesday + 61 = Sunday, CI − SI 91.50, circular seating answer T, data sufficiency 45 and 90 → (e)); keep running the checks after any edit.
 - **JDBC:** `java jdbc` blocks (jdbc/pom.xml: H2 in MODE=MySQL, HikariCP, embedded Tomcat 10, slf4j-nop). Observed on H2: dirty read at READ UNCOMMITTED, non-repeatable read and phantom at READ COMMITTED, stable snapshot at REPEATABLE READ; lost update 6000 vs 3000; FOR UPDATE timeout HYT00; H2 continues a batch after a failed row. A reflective counting proxy measures statements deterministically.
 - **Maths:** every derivation has a `python run` check (formula vs brute force, simulation, finite differences or SciPy). Honest results kept: the biased 1/n variance estimator has lower MSE than s² at every n; Bayes simulation drew 10,269 sick of 1,000,000 so it reads 0.166 vs 0.161; cross-validation picks λ = 0.1 while the true optimum in the table is 0.01; Adam reaches the Rosenbrock minimum exactly while momentum ends 0.02 away; peeking at 50 looks gives a 31% false-positive rate. Writing caught and fixed: swapped momentum rates (0.98 vs 0.82), a mislabelled 'half He' initialisation, non-nested noise features in the R² demo.
+- **Linux:** new block type ```` ```bash run ```` (`shrun.py`): each block runs as `nobody` (uid 65534, via `setpriv`) in a fresh `/var/tmp/shbox/learner` shown as `/home/learner`, TZ=UTC, stderr merged; non-zero exit fails the build, so intentional failures use `|| echo "exit status $?"`. Files in `sh_fixtures/` (the `access.log`) are copied into every home. Outputs cached in `shcache/`. Needed packages beyond the base image: iproute2, acl, openssh-client, cron, bsdextrautils (`apt-get install`). systemd is not PID 1 in the container, so service management is display-only (the book says so); `systemd-analyze verify` works. Honest results kept: grep ` 5[0-9][0-9] ` also matched the byte count 512; SIGINT ignored by background jobs cannot be trapped; Python's buffered prints follow fd 1 into a file after `os.close(1)` (flush=True used); a connect timeout to a black-hole address cannot be shown (the sandbox refuses private ranges), so a response timeout is shown and explained.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
@@ -200,5 +202,5 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 ## 7. Current state at handoff
 
 - Repository: all seven planned sets are done (DSA in Java, Spring Boot Backend, ML System Design, Aptitude/NQT mocks, Interview/HR added in this session).
-- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (done) → Linux → Front-end → Advanced back-end (caching, messaging, jobs, WebSockets, storage, API styles) → Security engineering (payments, encryption, storage, OWASP) → Senior engineer handbook.
-- README: 84 links, 84 PDFs. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design.
+- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (done) → Linux (done) → Front-end → Advanced back-end (caching, messaging, jobs, WebSockets, storage, API styles) → Security engineering (payments, encryption, storage, OWASP) → Senior engineer handbook.
+- README: 86 links, 86 PDFs. `04_CS_Fundamentals` renumbered: 01 OS, 02 Linux, 03 Networks, 04 DBMS. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design.

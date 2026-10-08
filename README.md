@@ -23,8 +23,9 @@ Placement Preparation/
 │   └── 05_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
-│   ├── 02_Computer_Networks/     Guide → practice book
-│   └── 03_DBMS_Theory/           Guide → practice book
+│   ├── 02_Linux/                 Guide → practice book (every command executed)
+│   ├── 03_Computer_Networks/     Guide → practice book
+│   └── 04_DBMS_Theory/           Guide → practice book
 ├── 05_System_Design/
 │   ├── 01_Low_Level_Design/      Guide → practice book (Java)
 │   └── 02_High_Level_Design/     Guide → practice book (Python simulations)
@@ -164,13 +165,14 @@ After Java and MySQL (the JPA chapters build on SQL). Every program is a real Sp
 
 ## 04 · CS Fundamentals
 
-The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. DBMS Theory comes last: it goes beneath the MySQL books (normal forms, transactions, indexing, distributed data). Read each guide, then solve its practice book.
+The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. Linux comes straight after it: the same ideas (processes, files, permissions, signals) at the command line of the servers you will deploy to. DBMS Theory comes last: it goes beneath the MySQL books (normal forms, transactions, indexing, distributed data). Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Operating Systems: Concepts, Numericals and Concurrency](04_CS_Fundamentals/01_Operating_Systems/01_Operating_Systems_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/01_Operating_Systems/02_Operating_Systems_Practice_Book.pdf) |
-| 02 | [Computer Networks: Protocols, Numericals and Real Packets](04_CS_Fundamentals/02_Computer_Networks/01_Computer_Networks_Complete_Guide.pdf) | [44 exercises with hints and solutions](04_CS_Fundamentals/02_Computer_Networks/02_Computer_Networks_Practice_Book.pdf) |
-| 03 | [DBMS Theory: From Normal Forms to Distributed Data](04_CS_Fundamentals/03_DBMS_Theory/01_DBMS_Theory_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/03_DBMS_Theory/02_DBMS_Theory_Practice_Book.pdf) |
+| 02 | [Linux for Software Engineers: Shell to Kernel, Every Command Run](04_CS_Fundamentals/02_Linux/01_Linux_for_Software_Engineers_Complete_Guide.pdf) | [36 exercises with hints and executed solutions](04_CS_Fundamentals/02_Linux/02_Linux_for_Software_Engineers_Practice_Book.pdf) |
+| 03 | [Computer Networks: Protocols, Numericals and Real Packets](04_CS_Fundamentals/03_Computer_Networks/01_Computer_Networks_Complete_Guide.pdf) | [44 exercises with hints and solutions](04_CS_Fundamentals/03_Computer_Networks/02_Computer_Networks_Practice_Book.pdf) |
+| 04 | [DBMS Theory: From Normal Forms to Distributed Data](04_CS_Fundamentals/04_DBMS_Theory/01_DBMS_Theory_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/04_DBMS_Theory/02_DBMS_Theory_Practice_Book.pdf) |
 
 ---
 

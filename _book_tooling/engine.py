@@ -47,6 +47,10 @@ THEMES = {
     'jdbc': dict(accent=colors.HexColor('#0e7490'), soft=colors.HexColor('#e7f6f9')),
     'math': dict(accent=colors.HexColor('#1e40af'), soft=colors.HexColor('#ebf0fc')),
     'senior': dict(accent=colors.HexColor('#57534e'), soft=colors.HexColor('#f3f2f1')),
+    'linux': dict(accent=colors.HexColor('#1f2937'), soft=colors.HexColor('#eef0f3')),
+    'fe': dict(accent=colors.HexColor('#c2410c'), soft=colors.HexColor('#fdf0e8')),
+    'abe': dict(accent=colors.HexColor('#065f46'), soft=colors.HexColor('#e6f4ef')),
+    'sec': dict(accent=colors.HexColor('#991b1b'), soft=colors.HexColor('#fcebeb')),
 }
 
 CALLOUTS = {
@@ -89,7 +93,7 @@ def highlight(line, lang, theme):
         if lang in ('text', 'out'):
             out.append(e); continue
         if (t.startswith('//') and lang == 'java') or (t.startswith('--') and lang == 'sql') or t.startswith('/*') \
-                or (t.startswith('#') and lang in ('sql', 'python')):
+                or (t.startswith('#') and lang in ('sql', 'python', 'bash')):
             out.append(f'<font color="#7a8291"><i>{e}</i></font>')
         elif t[0] in '"\'' and len(t) > 1:
             out.append(f'<font color="#2e7d32">{e}</font>')

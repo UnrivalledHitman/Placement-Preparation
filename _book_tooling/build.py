@@ -4,7 +4,7 @@ practice books (a line containing only <<TRACKER>>), and renders the PDF into ou
 import os, re, sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from engine import build
-import javarun, pyrun
+import javarun, pyrun, shrun
 
 OUT = 'out'
 PRAC_ROWS = lambda first: [['What is inside', 'How to use it'], ['Exercises by chapter, tagged by type and level', first],
@@ -220,6 +220,28 @@ DOCS = {
         theme='math', kicker='Practice book · The mathematics underneath',
         files=['nq.md', 'nh.md', 'ns1.md', 'ns2.md', 'nt.md'],
         rows=PRAC_ROWS('Derive and compute on paper before reading')),
+    'linux_guide': dict(file='Linux_for_Software_Engineers_Complete_Guide.pdf',
+        title='Linux for Software Engineers',
+        subtitle='Shell, files, text processing, permissions, processes, scripting, networking, '
+                 'services, kernel internals and troubleshooting, every command executed',
+        theme='linux', kicker='Programming · The operating system of servers',
+        files=['lx_0.md', 'lx_1.md', 'lx_2.md', 'lx_3.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–3: what Linux is and where it runs, files, links, text processing',
+               'Type every command in a real shell'],
+              ['Chapters 4–5: users, permissions, processes, signals, /proc',
+               'Break permissions on purpose and read the errors'],
+              ['Chapters 6–7: shell scripting in strict mode, networking, curl, SSH',
+               'Rewrite the scripts from memory'],
+              ['Chapters 8–10: services, logs, cron, kernel internals, troubleshooting',
+               'Rehearse the playbook before interviews']]),
+    'linux_prac': dict(file='Linux_for_Software_Engineers_Practice_Book.pdf',
+        title='Linux: Practice Book',
+        subtitle='Log analysis, permissions, signals, robust scripts, networking and incident '
+                 'exercises matching the guide, with executed solutions',
+        theme='linux', kicker='Practice book · The operating system of servers',
+        files=['uq.md', 'uh.md', 'us1.md', 'us2.md', 'ut.md'],
+        rows=PRAC_ROWS('Run every command before reading')),
 }
 
 
@@ -237,6 +259,7 @@ def expand_all(key, d):
         s = open(path, encoding='utf-8').read()
         s = pyrun.expand(s, f.replace('.md', ''))
         s = javarun.expand(s)
+        s = shrun.expand(s, f.replace('.md', ''))
         parts.append(s)
     return '\n'.join(parts)
 

@@ -226,7 +226,7 @@ Add MySQL Connector/J to the project (Maven `com.mysql:mysql-connector-j`). The 
 | `ps.addBatch()`, `ps.executeBatch()` | Send many inserts in one round trip |
 | `prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)` | Then `ps.getGeneratedKeys()` for `AUTO_INCREMENT` ids |
 
-> NOTE: This program needs the MySQL Connector/J driver on the classpath, so it is shown here without being executed. Its two queries are the same as in the SQL examples above, which were run against MySQL.
+> NOTE: Run it with the driver JAR on the classpath, for example `java -cp mysql-connector-j-26.7.0.jar Main.java`, after setting `DB_USER` and `DB_PASSWORD` in the environment. The output below is from running it with Connector/J 26.7.0 against MySQL 8.0.46 and the sample database.
 
 ```java
 import java.sql.*;
@@ -236,8 +236,9 @@ public class Main {
         String url = "jdbc:mysql://localhost:3306/company";
         String sql = "SELECT name, salary FROM employees WHERE dept_id = ? "
                 + "ORDER BY salary DESC";
+        String user = System.getenv().getOrDefault("DB_USER", "root");
         String password = System.getenv("DB_PASSWORD");     // never hard-code passwords
-        try (Connection conn = DriverManager.getConnection(url, "root", password);
+        try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, 1);                              // first ? = dept 1 (IT)
             try (ResultSet rs = ps.executeQuery()) {
@@ -256,6 +257,11 @@ public class Main {
         }
     }
 }
+```
+```out Output
+Asha earns 85000
+Neha earns 71000
+rows updated: 1
 ```
 
 > TRAP: Never build SQL by joining strings with user input: `"... WHERE name = '" + input + "'"` allows **SQL injection** (input like `x' OR '1'='1` returns every row). `PreparedStatement` placeholders send values separately from the SQL, so they are always treated as data.

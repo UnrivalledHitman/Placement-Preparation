@@ -12,3 +12,4 @@ shcache/
 webcache/
 web/node_modules/
 sqlcache/
+lib/*.jar

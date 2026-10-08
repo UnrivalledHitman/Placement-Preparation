@@ -109,7 +109,13 @@ DBMS Theory, Low-Level Design, System Design (HLD), DSA in Java, Spring Boot Bac
 | 6 | Security Engineering (payments, encryption, key management, storage, OWASP) | `03_Programming/08_Security_Engineering` | 56d6d78 |
 | 7 | Senior Engineer Handbook | `08_Interview_and_HR` (02 guide, 03 workbook) | 3f5f556 |
 
-Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue). There is no further queued work; wait for the user's next instruction. Natural candidates if asked, none promised: a DevOps/cloud (Docker, Kubernetes, CI/CD) set, a concurrency-in-Java set, or rebuilding the older PDF-only books from fresh sources.
+Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue). There is no further queued work; wait for the user's next instruction. See §4.3 for possible next steps.
+
+### 4.3 Possible next steps (gaps the user has not asked for; none promised)
+
+1. **Re-verify the MySQL Commands and Functions reference.** Its outputs were computed by hand (§3.1), the only book whose outputs were never executed. Run its queries against a real MySQL (or H2 in MySQL mode where behaviour matches) and rebuild it with this tooling.
+2. **Rebuild the earliest PDF-only books from fresh sources.** The Java, MySQL, AI/ML, Deep Learning, OS and Networks books (§3.1) have no markdown sources, so they cannot easily be fixed or extended and their examples were not run by this pipeline. Rewriting them in the house style would make them editable and verified.
+3. **Topics with no book yet:** DevOps and cloud (Docker, Kubernetes, CI/CD); concurrency in Java; distributed-systems theory.
 
 ## 5. House style (apply to every book)
 

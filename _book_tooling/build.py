@@ -308,6 +308,28 @@ DOCS = {
         theme='sec', kicker='Practice book · Protecting data, money and identity',
         files=['vq.md', 'vh.md', 'vs1.md', 'vs2.md', 'vs3.md', 'vt.md'],
         rows=PRAC_ROWS('Build the toy and run each attack and fix yourself')),
+    'senior_guide': dict(file='Senior_Engineer_Handbook_Complete_Guide.pdf',
+        title='The Senior Engineer Handbook',
+        subtitle='Scope and impact, technical excellence, design and decisions, testing, '
+                 'reliability, performance, tech debt, communication, people and career',
+        theme='senior', kicker='Career · From strong coder to senior and staff engineer',
+        files=['se_0.md', 'se_1.md', 'se_2.md', 'se_3.md', 'se_4.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–4: what senior means, technical excellence, review, design decisions',
+               'Compare against how you work today'],
+              ['Chapters 5–8: testing, reliability, SLOs, performance, cost, technical debt',
+               'The numbers are computed; rerun them for your own system'],
+              ['Chapters 9–10: writing, design docs, mentoring, leading without authority',
+               'Apply one idea per week at work'],
+              ['Chapter 11: career growth, promotion and senior interviews',
+               'Build your STAR bank and your growth plan']]),
+    'senior_prac': dict(file='Senior_Engineer_Handbook_Workbook.pdf',
+        title='Senior Engineer: Workbook',
+        subtitle='Scenario, design and reflection exercises on seniority, reviews, reliability, '
+                 'tech debt, communication, people and career, with worked answers',
+        theme='senior', kicker='Workbook · From strong coder to senior and staff engineer',
+        files=['gq.md', 'gh.md', 'gs1.md', 'gs2.md', 'gs3.md', 'gt.md'],
+        rows=PRAC_ROWS('Think each scenario through before reading the answer')),
 }
 
 

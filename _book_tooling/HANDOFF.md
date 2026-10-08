@@ -30,7 +30,7 @@ Placement Preparation/
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design
 ├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Deep_Learning, 04_ML_System_Design
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
-├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide
+├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide, 02_Senior_Engineer_Handbook (guide + workbook)
 ├── _book_tooling/              this handoff, build scripts, markdown sources (not study material)
 └── README.md                   index: folder tree, one section per top-level folder, tables linking every PDF
 ```
@@ -70,6 +70,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/06_Frontend_Design_and_Development` | e2afa6b |
 | Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/07_Advanced_Backend_Engineering` | 786203a |
 | Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/08_Security_Engineering` | 56d6d78 |
+| Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (02, 03) | (senior commit) |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -208,5 +209,5 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 ## 7. Current state at handoff
 
 - Repository: all seven planned sets are done (DSA in Java, Spring Boot Backend, ML System Design, Aptitude/NQT mocks, Interview/HR added in this session).
-- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (done) → Linux (done) → Front-end (done) → Advanced back-end (done) → Security engineering (done) → Senior engineer handbook.
-- README: 92 links, 92 PDFs. `04_CS_Fundamentals` renumbered: 01 OS, 02 Linux, 03 Networks, 04 DBMS. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design.
+- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (done) → Linux (done) → Front-end (done) → Advanced back-end (done) → Security engineering (done) → Senior engineer handbook (done). ALL SEVEN SETS DONE.
+- README: 94 links, 94 PDFs. `04_CS_Fundamentals` renumbered: 01 OS, 02 Linux, 03 Networks, 04 DBMS. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design.

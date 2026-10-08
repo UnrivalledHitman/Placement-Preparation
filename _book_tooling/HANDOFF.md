@@ -69,7 +69,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Linux for Software Engineers | `lx_0`…`lx_3`; `uq, uh, us1, us2, ut` | 56 + 26 | 36 | U | `linux` | `04_CS_Fundamentals/02_Linux` | 3e5158c |
 | Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/06_Frontend_Design_and_Development` | e2afa6b |
 | Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/07_Advanced_Backend_Engineering` | 786203a |
-| Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/08_Security_Engineering` | (sec commit) |
+| Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/08_Security_Engineering` | 56d6d78 |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 

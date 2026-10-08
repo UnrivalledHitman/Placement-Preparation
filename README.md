@@ -22,7 +22,8 @@ Placement Preparation/
 │   ├── 04_DSA_in_Java/           Guide → practice book (12-week DSA plan)
 │   ├── 05_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
 │   ├── 06_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
-│   └── 07_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
+│   ├── 07_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
+│   └── 08_Security_Engineering/             Guide → practice book (attacks run on toys)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Linux/                 Guide → practice book (every command executed)
@@ -178,6 +179,14 @@ After the Spring Boot guide: the pieces around the core API that production syst
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/07_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/07_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
+
+### 08 · Security engineering
+
+Security is spread through every layer, so this comes after the back-end and front-end books and draws on all of them. Cryptography used correctly (hashes, HMAC, AES-GCM, signatures), passwords and authentication (Argon2id, JWT, TOTP, OAuth/PKCE), TLS and mutual TLS, encryption at rest, key management and secrets, payment security (PCI scope, webhooks, idempotency), the OWASP Top 10 attacked and fixed, and data privacy and audit. Every control was run with real cryptographic libraries and OpenSSL, and every attack is demonstrated on a deliberately weak toy with its fix beside it.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Security Engineering for Developers: Crypto to OWASP](03_Programming/08_Security_Engineering/01_Security_Engineering_Complete_Guide.pdf) (33 runnable programs) | [34 exercises with hints and executed solutions, including two secure designs](03_Programming/08_Security_Engineering/02_Security_Engineering_Practice_Book.pdf) |
 
 ---
 

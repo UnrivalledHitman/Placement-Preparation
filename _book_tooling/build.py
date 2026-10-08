@@ -286,6 +286,28 @@ DOCS = {
         theme='abe', kicker='Practice book · Beyond controllers and a database',
         files=['kq.md', 'kh.md', 'ks1.md', 'ks2.md', 'kt.md'],
         rows=PRAC_ROWS('Write and run each program before reading')),
+    'sec_guide': dict(file='Security_Engineering_Complete_Guide.pdf',
+        title='Security Engineering for Developers',
+        subtitle='Cryptography, passwords and auth, TLS, key management, payments, the OWASP '
+                 'Top 10 and privacy, every control run and every attack demonstrated',
+        theme='sec', kicker='Programming · Protecting data, money and identity',
+        files=['sc_0.md', 'sc_1.md', 'sc_2.md', 'sc_3.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapters 1–3: the mindset, cryptography, passwords, sessions, MFA, OAuth',
+               'Run each primitive; never roll your own crypto'],
+              ['Chapters 4–6: TLS and mTLS, key management, secrets, payment security',
+               'Build the toy, see each check pass and fail'],
+              ['Chapter 7: the OWASP Top 10 attacked and fixed',
+               'Reproduce each attack on your own toy only'],
+              ['Chapters 8–9: privacy, audit, secure development, interview questions',
+               'Use the review checklist on every change']]),
+    'sec_prac': dict(file='Security_Engineering_Practice_Book.pdf',
+        title='Security Engineering: Practice Book',
+        subtitle='Cryptography, auth, TLS, key management, payments, OWASP, privacy and two '
+                 'design exercises, with executed solutions',
+        theme='sec', kicker='Practice book · Protecting data, money and identity',
+        files=['vq.md', 'vh.md', 'vs1.md', 'vs2.md', 'vs3.md', 'vt.md'],
+        rows=PRAC_ROWS('Build the toy and run each attack and fix yourself')),
 }
 
 

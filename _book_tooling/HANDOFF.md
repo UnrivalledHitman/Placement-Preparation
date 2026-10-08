@@ -52,7 +52,7 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was built differently, with an HTML → Edge print pipeline, and its outputs were computed by hand because no MySQL server was available. It is the one book whose outputs were not executed.
 
-### 3.2 This session: three sets built with this tooling (sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (fifteen sets; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
@@ -86,35 +86,30 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **Front-end:** `webrun.py` adds ```` ```js run ```` (Node 22), ```` ```ts run ```` (`tsc --strict`; compile errors become the output and nothing runs; a `package.json` with `type: module` is written so top-level await works) and ```` ```html run ```` (headless Chromium via the global Playwright, `web/render.mjs`; console output captured; first line `<!-- shot: name.png WxH -->` saves a screenshot into `figs/` and inserts it). Pages load `lib/react.js`, `lib/react-dom.js` (React 18.3.1 UMD), `lib/babel.js` (@babel/standalone 7.25.6) and `lib/axe.js` (axe-core 4.10.0) from `web/node_modules` (`cd web && npm install` restores them; `node_modules` is gitignored). A page that does async work sets `window.__ready = false` and later `true`, otherwise the renderer waits only ~150 ms. A JS block whose first line is `// node --test` runs under `node --test --test-reporter=spec` (durations and todo-failure details stripped). Browser noise (React DevTools banner, Babel warning, `Failed to load resource`, `Refused to execute ...`) is filtered. Cache: `webcache/`, keyed on the block plus hashes of `webrun.py` and `render.mjs`. Honest results kept: React batching made three synchronous `.click()`s one render (clicks are now spaced); the CLS demo first measured the removal of the other image (order fixed); the `.note.note.note` rule loses to one ID; `(0.05).toFixed(1)` is `'0.1'`; `minlength` is not checked for script-set values; `priya@example` is a valid email per HTML.
 - **Advanced back-end:** Python blocks import `pylib/backlab.py` (now on `PYTHONPATH` via `pyrun.py`): `redis_server(*args)` starts a private `redis-server` (apt package `redis-server`, 7.0) on a free port with no persistence and yields a client; `http_server(Handler)` serves a handler in a thread. Extra pip packages in `.venv`: redis, websockets, graphql-core, grpcio, grpcio-tools. Note: the py cache key is the block's AST, so editing `backlab.py` does not invalidate cached outputs (delete `pycache/` entries if you change it). Honest results kept: Redis LRU evicted hot keys almost at random in a sub-second test (1 s LRU clock) while LFU kept all 20; a rebuild lock without a re-check let 2 queries through in one run (1 in the shown run; text says so); the sliding-window counter allowed 11 of 12 boundary-aligned requests where the exact log allowed 7.
 - **Security:** pip packages cryptography, bcrypt, argon2-cffi, PyJWT; `pylib/seclab.py` builds a private PKI with the openssl CLI (CA with basicConstraints/keyUsage, server SAN, client cert CN=SM-42). Honest results kept: Python 3.13 turns on VERIFY_X509_STRICT, so a CA cert without keyUsage fails every verification (shown as the fourth TLS failure); the timing-attack demo shows naive == rising 7->33 ms with match length while compare_digest stays ~1.5 ms; bcrypt cost 12 ~0.3 s/check; every TOTP RFC 6238 test vector matches. NOTE: one block was rejected by the chat safety classifier while being written (an insecure-deserialisation pickle demo); it was dropped and replaced with prose plus a safe JSON-validation example. Avoid writing runnable pickle-RCE or live-exploit payloads.
+- **Senior Engineer Handbook:** mostly prose (judgement, scope, leverage); every number behind a judgement comes from a `python run` block (impact model, compounding availability, error budgets, Amdahl, cost of late bugs, estimation skew, tech-debt compounding). Profile facts only; everything personal is a [placeholder]. Writing caught and fixed: Amdahl overall 1.72× corrected to 1.9×; the tech-debt model retuned so 15% paydown ships most (370 vs 228); the idempotent-capture demo now reports 1 charged, 4 replayed. Parser traps hit: nested emphasis `**...*why***` crashes ReportLab (write `**...why**`); an exercise header with the type repeated in place of the level (`Numerical · Numerical`) is silently dropped from the tracker.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
-## 4. What remains (user chose "everything"; do them in this order unless told otherwise)
+## 4. What remains: nothing queued (all requested work is complete)
 
-The user said: **finish one set, commit, push, then wait for instructions.**
+Both queues the user asked for are finished, built, verified (`check.py` counts equal, every runnable block executed, tracker counts match) and pushed to `main`.
 
-### 4.1 Set 4: Backend stack (guide + practice book) — DONE
+### 4.1 First queue (sets 1–7 of the original plan) — DONE
 
-Suggested placement: `03_Programming/05_Backend_Spring_Boot/` (after Java, MySQL and DSA, before CS fundamentals; `03` is now DSA). Suggested theme key `be` (already defined, `#3f6212`), exercise prefix **B**.
+DBMS Theory, Low-Level Design, System Design (HLD), DSA in Java, Spring Boot Backend, ML System Design, Reasoning/Advanced Quant/NQT mocks, Interview/HR/Resume. Commits and folders are in the §3.2 table.
 
-Content (from the original plan): Spring Boot project structure and auto-configuration; dependency injection and bean scopes (connect to DIP in the LLD book); REST controllers, DTOs, validation, error handling (`@ControllerAdvice`); JPA/Hibernate: entities, relationships, lazy loading, **the N+1 problem** and fetch joins, transactions (`@Transactional` propagation, isolation, the self-invocation proxy trap); Spring Security with JWT; testing: JUnit 5, Mockito, `@WebMvcTest`, `@DataJpaTest`, Testcontainers; configuration and profiles; observability (Actuator, metrics, logging); Docker and docker-compose; a full mini-project: a **smart-meter REST API** (meters, readings, daily aggregates, idempotent ingestion).
+### 4.2 Second queue (seven sets, requested as "build them one after the other and commit to main") — DONE
 
-**Execution constraint:** Spring cannot run in this environment unless Maven/Gradle can download dependencies. First check whether Maven Central is reachable (`mvn -v`, or try a tiny build). If it is, run real Spring examples. If not, mark Spring code blocks as display-only (```` ```java ```` without `run`), with the line "Not executed here: requires Spring Boot dependencies", and make every underlying idea runnable in **plain Java**: a REST server with `com.sun.net.httpserver.HttpServer`, JSON by hand or with records, JDBC on SQLite only if a driver is available (otherwise in-memory repositories), an N+1 demonstration with a query counter, transaction rollback, JWT signing with `javax.crypto.Mac` (HMAC-SHA256), and tests written as plain assertions in `main`.
+| # | Set | Repo folder | Commit |
+|---|---|---|---|
+| 1 | JDBC and Java Persistence | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
+| 2 | Mathematics and Statistics for ML (every derivation checked numerically) | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | 432f236 |
+| 3 | Linux for Software Engineers | `04_CS_Fundamentals/02_Linux` | 3e5158c |
+| 4 | Front-end Design and Development | `03_Programming/06_Frontend_Design_and_Development` | e2afa6b |
+| 5 | Advanced Back-end Engineering | `03_Programming/07_Advanced_Backend_Engineering` | 786203a |
+| 6 | Security Engineering (payments, encryption, key management, storage, OWASP) | `03_Programming/08_Security_Engineering` | 56d6d78 |
+| 7 | Senior Engineer Handbook | `08_Interview_and_HR` (02 guide, 03 workbook) | 3f5f556 |
 
-### 4.2 Set 5: ML System Design (guide + case-study book) — DONE
-
-Suggested placement (now `04_ML_System_Design`): `06_AI_and_Machine_Learning/03_ML_System_Design/`, theme `mlsd` (`#86198f`), prefix **M**. Python simulations (numpy, matplotlib available; scikit-learn only if installable).
-
-Content: problem framing (business metric → ML metric → offline/online evaluation); data pipelines, labelling, leakage; features and feature stores; **training/serving skew**; online versus batch inference, latency budgets, model serving and caching; evaluation, calibration, A/B tests and interleaving (with a significance and sample-size calculator); monitoring, data and concept drift (simulate PSI/KS drift detection); retraining triggers; cost. Cases: recommendations (candidate generation + ranking), fraud detection (class imbalance, precision/recall trade-off, cost-based thresholds), search ranking, ETA prediction, RAG chatbot (retrieval evaluation, chunking, caching), LLM-agent platform (tools, guardrails, evaluation, cost and latency routing; the learner's "escalation tax" paper fits here). Reference, do not repeat, the AI/ML and Deep Learning books and the System Design book.
-
-### 4.3 Set 6: Aptitude and reasoning for TCS NQT (practice book with timed sets) — DONE (placed in `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks/`, no renaming)
-
-Suggested placement: decide with the user; options are a new `01_Quantitative_Aptitude/03_TCS_NQT_Timed_Mocks/`, or renaming `02_Verbal_Ability` to a broader "Aptitude and Reasoning" section. Theme `apt` (`#b91c1c`), prefix **A**.
-
-The repo already has 11 chapter-wise quant sets, 20 mixed quant sets and 13 verbal sets (earlier PDFs), so this book should **add what is missing**: **logical reasoning** (series, coding–decoding, blood relations, directions, seating arrangement, syllogisms, data sufficiency, puzzles), **advanced quant** not yet covered (permutations and combinations, probability, number systems, HCF/LCM, mixtures and alligation, simple/compound interest), **shortcut techniques**, and **full timed mock tests** in the NQT pattern with answer keys. Every numerical answer must be computed and checked by Python (brute force where possible), with clear working.
-
-### 4.4 Set 7: Behavioural, HR and resume (short guide) — DONE (uses only profile facts from section 1; everything else is a [placeholder] for the learner)
-
-Placement: a final section, for example `08_Interview_and_HR/` (renumber nothing; it goes last). Theme `hr` (`#334155`). Mostly text: common HR questions with frameworks (STAR), "tell me about yourself" built from the learner's profile, projects and research write-ups (the escalation-tax paper, IoT/energy projects), resume structure (one page, impact bullets with numbers), company research, salary and offer questions, a final checklist. No code blocks are needed, but the house style still applies.
+Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue). There is no further queued work; wait for the user's next instruction. Natural candidates if asked, none promised: a DevOps/cloud (Docker, Kubernetes, CI/CD) set, a concurrency-in-Java set, or rebuilding the older PDF-only books from fresh sources.
 
 ## 5. House style (apply to every book)
 
@@ -143,6 +138,10 @@ Placement: a final section, for example `08_Interview_and_HR/` (renumber nothing
 ```java spring Title         Spring Boot program (package demo; class demo.Main): compiled against
                               spring/pom.xml's classpath and run with logging off (spring/quiet-logging)
 ```java spring-security T     the same with spring-security/pom.xml (adds Spring Security)
+```java jdbc Title            plain Java against jdbc/pom.xml (H2 in MySQL mode, HikariCP)
+```bash run Title             shell, as nobody in a fresh /home/learner (shrun.py)
+```js run / ```ts run         Node 22 / tsc --strict then Node (webrun.py)
+```html run Title             headless Chromium; <!-- shot: x.png WxH --> saves a screenshot
 ```python / ```java / ```sql / ```text      displayed only
 ![Caption](figs/name.png)     image; programs save charts with plt.savefig('name.png', dpi=150)
 ---page                       forced page break
@@ -164,29 +163,37 @@ Python blocks run with the working directory `figs/` and `PYTHONPATH=figs`, so a
 
 | File | Purpose |
 |---|---|
-| `engine.py` | Markdown → PDF (ReportLab). Fonts: DejaVu, taken from matplotlib's bundled fonts (works on Windows and Linux). Themes for every book, including the remaining `be`, `mlsd`, `apt`, `hr` |
+| `engine.py` | Markdown → PDF (ReportLab). Fonts: DejaVu, taken from matplotlib's bundled fonts (works on Windows and Linux). Themes for every book (`db`, `lld`, `hld`, `dsa`, `be`, `mlsd`, `apt`, `hr`, `jdbc`, `math`, `linux`, `fe`, `abe`, `sec`, `senior`); JS keyword highlighting |
 | `build.py` | One `DOCS` entry per book (file, title, subtitle, theme, kicker, source files, cover rows); expands runnable blocks, builds the tracker, writes `out/<file>.pdf`. Sources are read from `sources/` (or the tooling folder itself) |
-| `pyrun.py` / `javarun.py` | Run Python / Java blocks; outputs are cached in `pycache/` and `jcache/` |
+| `pyrun.py` / `javarun.py` | Run Python / Java blocks; outputs are cached in `pycache/` and `jcache/`. `PYTHONPATH` = `figs/` + `pylib/` |
+| `shrun.py` + `sh_fixtures/` | ```` ```bash run ```` blocks, run as `nobody` in a fresh home; fixtures copied in; cache `shcache/` |
+| `webrun.py` + `web/` | ```` ```js run ````, ```` ```ts run ````, ```` ```html run ```` (Node 22, `tsc --strict`, headless Chromium via `web/render.mjs`); cache `webcache/`; `cd web && npm install` restores React, Babel, axe-core |
+| `pylib/backlab.py`, `pylib/seclab.py` | Helpers: private `redis-server` and threaded HTTP server; private openssl PKI |
+| `jdbc/`, `spring/`, `spring-security/` | Maven poms for the `java jdbc`, `java spring` and `java spring-security` block types |
 | `outputs.py` | `python outputs.py sources/x.md [filter]` runs one file's blocks and prints each output, for checking prose against results |
 | `check.py` | Long lines (> 94), runnable-block counts, and for practice books, exercises versus solutions versus hints coverage |
 | `ast_reflow.py` (+ `pyreflow.py`, `pystr.py`) | Reflow long Python lines and verify that every block's syntax tree is unchanged |
 | `javasplit.py`, `reflow.py` | Split packed Java statements and one-line blocks, then reflow long Java lines. Java has no syntax-tree check: **rerun and diff outputs** afterwards |
 | `sheet.py` | Contact sheet of all pages (uses Edge on Windows). On Linux, use `pdftoppm -r 40 -png out/x.pdf tmp/p` and view a few pages |
-| `sources/` | Markdown of the three books built this session: templates for structure and style |
+| `sources/` | Markdown of all fifteen sets built with this tooling: templates for structure and style |
 
 ### Setup (Linux cloud or Windows)
 
 ```bash
 cd _book_tooling
 python3 -m venv .venv && . .venv/bin/activate       # Windows: .venv\Scripts\python.exe
-pip install reportlab numpy matplotlib scikit-learn
+pip install reportlab numpy matplotlib scikit-learn scipy
+pip install redis websockets graphql-core grpcio grpcio-tools \
+            cryptography bcrypt argon2-cffi pyjwt          # back-end and security books
+sudo apt-get install -y iproute2 acl openssh-client cron bsdextrautils redis-server
+(cd web && npm install)                              # front-end book
 java -version                                        # Java 21 or later for java run blocks
 python build.py dbms_guide                           # sanity check: rebuilds a finished book (~1.5 min)
 ```
 
-`out/`, `tmp/`, `figs/`, `pycache/`, `jcache/` and `.venv/` are gitignored. A guide that saves a helper module into `figs/` (`fd.py`, `sched.py`, `bplus.py`, `estimate.py`) must be built **before** its practice book, which imports it. If `pdftotext`/`pdftoppm` (poppler) are missing on Linux, install `poppler-utils` for inspecting PDFs.
+`out/`, `tmp/`, `figs/`, `pycache/`, `jcache/`, `shcache/`, `webcache/`, `web/node_modules/` and `.venv/` are gitignored. A guide that saves a helper module into `figs/` (`fd.py`, `sched.py`, `bplus.py`, `estimate.py`) must be built **before** its practice book, which imports it. If `pdftotext`/`pdftoppm` (poppler) are missing on Linux, install `poppler-utils` for inspecting PDFs.
 
-### Workflow per book (this is what produced the three sets)
+### Workflow per book (this is what produced every set)
 
 1. Write the chapters as `sources/xx_0.md`, `xx_1.md`, … in the house style (about 2 chapters per file).
 2. `python outputs.py sources/xx_0.md`: run the blocks and read **every** output against the prose; fix the prose (or a buggy program), never the numbers.
@@ -208,6 +215,6 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 
 ## 7. Current state at handoff
 
-- Repository: all seven planned sets are done (DSA in Java, Spring Boot Backend, ML System Design, Aptitude/NQT mocks, Interview/HR added in this session).
-- Queue requested by the user (each committed to `main` in turn): JDBC (done) → Mathematics and Statistics for ML (done) → Linux (done) → Front-end (done) → Advanced back-end (done) → Security engineering (done) → Senior engineer handbook (done). ALL SEVEN SETS DONE.
-- README: 94 links, 94 PDFs. `04_CS_Fundamentals` renumbered: 01 OS, 02 Linux, 03 Networks, 04 DBMS. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design.
+- **All work requested so far is complete.** First queue (DBMS, LLD, HLD, DSA, Spring Boot, ML System Design, Aptitude/NQT, Interview/HR) and second queue (JDBC → Mathematics and Statistics for ML → Linux → Front-end → Advanced back-end → Security engineering → Senior engineer handbook): ALL SEVEN SETS of the second queue DONE, each committed to `main` in turn (§4.2).
+- README: 94 links, 94 PDFs, 0 broken links. `04_CS_Fundamentals` renumbered: 01 OS, 02 Linux, 03 Networks, 04 DBMS. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Backend, 06 Front-end, 07 Advanced Back-end, 08 Security. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Deep Learning, 04 ML System Design. `08_Interview_and_HR`: 01 Interview/HR/Resume, 02 Senior Handbook guide, 03 Senior Handbook workbook.
+- Next step: none queued; wait for the user's instructions.

@@ -4,7 +4,7 @@ practice books (a line containing only <<TRACKER>>), and renders the PDF into ou
 import os, re, sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from engine import build
-import javarun, pyrun, shrun, webrun
+import javarun, pyrun, shrun, sqlrun, webrun
 
 OUT = 'out'
 PRAC_ROWS = lambda first: [['What is inside', 'How to use it'], ['Exercises by chapter, tagged by type and level', first],
@@ -330,6 +330,20 @@ DOCS = {
         theme='senior', kicker='Workbook · From strong coder to senior and staff engineer',
         files=['gq.md', 'gh.md', 'gs1.md', 'gs2.md', 'gs3.md', 'gt.md'],
         rows=PRAC_ROWS('Think each scenario through before reading the answer')),
+    'mysql_ref': dict(file='MySQL_Commands_and_Functions_Reference.pdf',
+        title='MySQL Commands and Functions: A Reference',
+        subtitle='The statements and functions you use most, each with a worked example run on '
+                 'MySQL 8 and its real output',
+        theme='sql', kicker='Reference · MySQL 8', sql_setup='my_setup.sql',
+        files=['my_0.md', 'my_1.md', 'my_2.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Parts 1–4: tables, constraints, changing data, SELECT, NULL handling, aggregation',
+               'Read once, then look up as needed'],
+              ['Parts 5–7: joins, subqueries, set operations, CTEs, window functions',
+               'The core of interview SQL questions'],
+              ['Parts 8–12: built-in functions, views, indexes, stored programs, transactions, JDBC',
+               'For projects and the TCS CPA exam'],
+              ['Appendices: execution order, common comparisons, error codes', 'Check before an interview']]),
 }
 
 
@@ -342,11 +356,14 @@ def tracker(src):
 
 def expand_all(key, d):
     parts = []
+    if d.get('sql_setup'):                               # setup script for ```sql run blocks
+        sqlrun.use(os.path.join('sources', d['sql_setup']))
     for f in d['files']:
         path = f if os.path.exists(f) else os.path.join('sources', f)   # sources/ holds the markdown
         s = open(path, encoding='utf-8').read()
         s = pyrun.expand(s, f.replace('.md', ''))
         s = javarun.expand(s)
+        s = sqlrun.expand(s)
         s = shrun.expand(s, f.replace('.md', ''))
         s = webrun.expand(s, f.replace('.md', ''))
         parts.append(s)

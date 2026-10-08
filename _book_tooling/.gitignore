@@ -11,3 +11,4 @@ jdbc/classpath.txt
 shcache/
 webcache/
 web/node_modules/
+sqlcache/

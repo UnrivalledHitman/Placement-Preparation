@@ -50,7 +50,7 @@ Conventions to keep:
 
 Java guide, Java exam revision, Java practice book, Java classes-and-methods reference, TCS CPA Java practice sets, MySQL guide, MySQL exam revision, MySQL practice book, AI/ML guide and practice book, Deep Learning guide and practice book, Operating Systems guide and practice book, Computer Networks guide and practice book (all in the repo), plus the DSA pair (not in the repo). These books **were verified when they were built**: an earlier session used the same house style and the same rule that every program is actually run (Java with Java 21, Python with real outputs, SQL against MariaDB). What is missing is only their **markdown sources and build scripts**, which stayed in that session's sandbox, so these books cannot be edited and rebuilt; their content is not in doubt.
 
-The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was built differently, with an HTML → Edge print pipeline, and its outputs were computed by hand because no MySQL server was available. It is the one book whose outputs were not executed. Its sources survive in `_book_tooling/legacy/mysql_reference/`: `content.js` (all text, the 27 SQL blocks and the 28 hand-written output boxes, as a JavaScript array of blocks), `build.js` (Node script: renders HTML and prints it with headless Edge, two passes for the contents page numbers) and `style.css`.
+The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
 ### 3.2 Sets built with this tooling (fifteen sets; sources in `_book_tooling/sources/`)
 
@@ -71,6 +71,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/07_Advanced_Backend_Engineering` | 786203a |
 | Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/08_Security_Engineering` | 56d6d78 |
 | Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (02, 03) | 3f5f556 |
+| MySQL Commands and Functions reference (re-verified) | `my_0`…`my_2`, setup `my_setup.sql` | 43 | — | — | `sql` | `03_Programming/02_MySQL` (02) | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -87,6 +88,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **Advanced back-end:** Python blocks import `pylib/backlab.py` (now on `PYTHONPATH` via `pyrun.py`): `redis_server(*args)` starts a private `redis-server` (apt package `redis-server`, 7.0) on a free port with no persistence and yields a client; `http_server(Handler)` serves a handler in a thread. Extra pip packages in `.venv`: redis, websockets, graphql-core, grpcio, grpcio-tools. Note: the py cache key is the block's AST, so editing `backlab.py` does not invalidate cached outputs (delete `pycache/` entries if you change it). Honest results kept: Redis LRU evicted hot keys almost at random in a sub-second test (1 s LRU clock) while LFU kept all 20; a rebuild lock without a re-check let 2 queries through in one run (1 in the shown run; text says so); the sliding-window counter allowed 11 of 12 boundary-aligned requests where the exact log allowed 7.
 - **Security:** pip packages cryptography, bcrypt, argon2-cffi, PyJWT; `pylib/seclab.py` builds a private PKI with the openssl CLI (CA with basicConstraints/keyUsage, server SAN, client cert CN=SM-42). Honest results kept: Python 3.13 turns on VERIFY_X509_STRICT, so a CA cert without keyUsage fails every verification (shown as the fourth TLS failure); the timing-attack demo shows naive == rising 7->33 ms with match length while compare_digest stays ~1.5 ms; bcrypt cost 12 ~0.3 s/check; every TOTP RFC 6238 test vector matches. NOTE: one block was rejected by the chat safety classifier while being written (an insecure-deserialisation pickle demo); it was dropped and replaced with prose plus a safe JSON-validation example. Avoid writing runnable pickle-RCE or live-exploit payloads.
 - **Senior Engineer Handbook:** mostly prose (judgement, scope, leverage); every number behind a judgement comes from a `python run` block (impact model, compounding availability, error budgets, Amdahl, cost of late bugs, estimation skew, tech-debt compounding). Profile facts only; everything personal is a [placeholder]. Writing caught and fixed: Amdahl overall 1.72× corrected to 1.9×; the tech-debt model retuned so 15% paydown ships most (370 vs 228); the idempotent-capture demo now reports 1 charged, 4 replayed. Parser traps hit: nested emphasis `**...*why***` crashes ReportLab (write `**...why**`); an exercise header with the type repeated in place of the level (`Numerical · Numerical`) is silently dropped from the tracker.
+- **MySQL reference:** re-verified block by block on MySQL 8.0.46 (default strict mode, utf8mb4_0900_ai_ci, binary logging on). 26 of 27 blocks matched the hand-computed outputs exactly, including all five constraint error messages (`employees_ibfk_1`, `employees_chk_1`, 1364, 1451). **One real bug was found and fixed:** the upsert `ON DUPLICATE KEY UPDATE stock = stock + new.stock` fails with ERROR 1052 (column ambiguous with the `AS new` row alias); it now reads `products.stock + new.stock`, with an exam-trap note. The JDBC program is display-only (needs Connector/J; not installed locally).
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
 ## 4. What remains: nothing queued (all requested work is complete)
@@ -113,7 +115,7 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
 
 ### 4.3 Possible next steps (gaps the user has not asked for; none promised)
 
-1. **Re-verify the MySQL Commands and Functions reference** (recommended; the only real verification gap). Its outputs were computed by hand (§3.1). Proposed plan (the user has not yet given the go-ahead; ask first): (a) use a **real MySQL 8** server (cloud: `apt-get install mysql-server`; local Windows: the portable ZIP, only with the user's OK to download). Do **not** use H2's MySQL mode, because error texts, `DESCRIBE`, `DATE_FORMAT`, `GROUP_CONCAT` and `INTERSECT` differ, so it would verify the wrong engine. (b) Recreate the `company` sample database and run all 27 SQL blocks from `legacy/mysql_reference/content.js` with `mysql -t`, resetting the data before blocks that need the original state. (c) Diff against the 28 output boxes; likely mismatches are exact error messages (constraint names, codes 1364/1451/1644), row order without `ORDER BY`, decimal formatting, warning lines, and 8.0.19+/8.0.31+ syntax. (d) Fix the text, never the numbers. (e) Port the book to this tooling with executed `sql run` blocks (sources into `sources/`), replace the PDF in `03_Programming/02_MySQL/`, and commit.
+1. ~~Re-verify the MySQL Commands and Functions reference~~ **DONE** (§3.1, §3.2). Remaining optional bit: run its JDBC program once MySQL Connector/J is available.
 2. **Rebuilding the earliest PDF-only books is NOT needed.** The Java, MySQL, AI/ML, Deep Learning, OS and Networks books were verified when built (§3.1); only their sources are missing. After discussion the user decided not to rewrite them. Rebuild one only if an actual error is found in it or the user wants it extended (it would mean rewriting the book in the house style, since no sources exist).
 3. **Topics with no book yet:** DevOps and cloud (Docker, Kubernetes, CI/CD); concurrency in Java; distributed-systems theory.
 
@@ -145,6 +147,9 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
                               spring/pom.xml's classpath and run with logging off (spring/quiet-logging)
 ```java spring-security T     the same with spring-security/pom.xml (adds Spring Security)
 ```java jdbc Title            plain Java against jdbc/pom.xml (H2 in MySQL mode, HikariCP)
+```sql fresh Title           MySQL: drop the database, then run the block (the block that creates it)
+```sql run Title             MySQL: drop, run the book's sql_setup script, then the block
+```sql run+ Title            MySQL: continue from the previous block's state (sqlrun.py replays the chain)
 ```bash run Title             shell, as nobody in a fresh /home/learner (shrun.py)
 ```js run / ```ts run         Node 22 / tsc --strict then Node (webrun.py)
 ```html run Title             headless Chromium; <!-- shot: x.png WxH --> saves a screenshot
@@ -176,13 +181,14 @@ Python blocks run with the working directory `figs/` and `PYTHONPATH=figs`, so a
 | `webrun.py` + `web/` | ```` ```js run ````, ```` ```ts run ````, ```` ```html run ```` (Node 22, `tsc --strict`, headless Chromium via `web/render.mjs`); cache `webcache/`; `cd web && npm install` restores React, Babel, axe-core |
 | `pylib/backlab.py`, `pylib/seclab.py` | Helpers: private `redis-server` and threaded HTTP server; private openssl PKI |
 | `jdbc/`, `spring/`, `spring-security/` | Maven poms for the `java jdbc`, `java spring` and `java spring-security` block types |
+| `sqlrun.py` | ```` ```sql fresh/run/run+ ```` blocks on a real MySQL 8 via the `mysql` client (`-t -vvv`, echoes and timings stripped, stderr merged); a DOCS entry's `sql_setup` names the setup script in `sources/`; cache `sqlcache/`. Connection from env `MYSQL_ARGS` (default `--login-path=bookcheck`; cloud e.g. `-uroot`), `MYSQL_CLIENT`, `MYSQL_DB` (default `company`). Never put a password in `MYSQL_ARGS`: use `mysql_config_editor` or `~/.my.cnf` |
 | `outputs.py` | `python outputs.py sources/x.md [filter]` runs one file's blocks and prints each output, for checking prose against results |
 | `check.py` | Long lines (> 94), runnable-block counts, and for practice books, exercises versus solutions versus hints coverage |
 | `ast_reflow.py` (+ `pyreflow.py`, `pystr.py`) | Reflow long Python lines and verify that every block's syntax tree is unchanged |
 | `javasplit.py`, `reflow.py` | Split packed Java statements and one-line blocks, then reflow long Java lines. Java has no syntax-tree check: **rerun and diff outputs** afterwards |
 | `sheet.py` | Contact sheet of all pages (uses Edge on Windows). On Linux, use `pdftoppm -r 40 -png out/x.pdf tmp/p` and view a few pages |
 | `sources/` | Markdown of all fifteen sets built with this tooling: templates for structure and style |
-| `legacy/mysql_reference/` | Sources of the hand-computed MySQL Commands reference (HTML/Edge pipeline), kept for its re-verification (§4.3) |
+| `legacy/mysql_reference/` | Original sources of the MySQL Commands reference (HTML/Edge pipeline, hand-computed outputs); superseded by `sources/my_*.md`, kept for history |
 
 ### Setup (Linux cloud or Windows)
 
@@ -195,6 +201,9 @@ pip install redis websockets graphql-core grpcio grpcio-tools \
 sudo apt-get install -y iproute2 acl openssh-client cron bsdextrautils redis-server
 (cd web && npm install)                              # front-end book
 java -version                                        # Java 21 or later for java run blocks
+# MySQL reference only: a MySQL 8 server and the mysql client. Locally the user has an account `bookcheck`
+# (ALL on company.*) saved as login path `bookcheck`; also needs log_bin_trust_function_creators = 1.
+# Cloud: sudo apt-get install -y mysql-server; then export MYSQL_ARGS="-uroot" (or a login path).
 python build.py dbms_guide                           # sanity check: rebuilds a finished book (~1.5 min)
 ```
 

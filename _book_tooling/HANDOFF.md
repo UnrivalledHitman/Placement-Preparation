@@ -48,9 +48,9 @@ Conventions to keep:
 
 ### 3.1 Earlier sessions (before this tooling existed in the repo)
 
-Java guide, Java exam revision, Java practice book, Java classes-and-methods reference, TCS CPA Java practice sets, MySQL guide, MySQL exam revision, MySQL practice book, AI/ML guide and practice book, Deep Learning guide and practice book, Operating Systems guide and practice book, Computer Networks guide and practice book (all in the repo), plus the DSA pair (not in the repo). Their markdown sources are **not** available; only the PDFs.
+Java guide, Java exam revision, Java practice book, Java classes-and-methods reference, TCS CPA Java practice sets, MySQL guide, MySQL exam revision, MySQL practice book, AI/ML guide and practice book, Deep Learning guide and practice book, Operating Systems guide and practice book, Computer Networks guide and practice book (all in the repo), plus the DSA pair (not in the repo). These books **were verified when they were built**: an earlier session used the same house style and the same rule that every program is actually run (Java with Java 21, Python with real outputs, SQL against MariaDB). What is missing is only their **markdown sources and build scripts**, which stayed in that session's sandbox, so these books cannot be edited and rebuilt; their content is not in doubt.
 
-The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was built differently, with an HTML → Edge print pipeline, and its outputs were computed by hand because no MySQL server was available. It is the one book whose outputs were not executed.
+The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was built differently, with an HTML → Edge print pipeline, and its outputs were computed by hand because no MySQL server was available. It is the one book whose outputs were not executed. Its sources survive in `_book_tooling/legacy/mysql_reference/`: `content.js` (all text, the 27 SQL blocks and the 28 hand-written output boxes, as a JavaScript array of blocks), `build.js` (Node script: renders HTML and prints it with headless Edge, two passes for the contents page numbers) and `style.css`.
 
 ### 3.2 Sets built with this tooling (fifteen sets; sources in `_book_tooling/sources/`)
 
@@ -113,8 +113,8 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
 
 ### 4.3 Possible next steps (gaps the user has not asked for; none promised)
 
-1. **Re-verify the MySQL Commands and Functions reference.** Its outputs were computed by hand (§3.1), the only book whose outputs were never executed. Run its queries against a real MySQL (or H2 in MySQL mode where behaviour matches) and rebuild it with this tooling.
-2. **Rebuild the earliest PDF-only books from fresh sources.** The Java, MySQL, AI/ML, Deep Learning, OS and Networks books (§3.1) have no markdown sources, so they cannot easily be fixed or extended and their examples were not run by this pipeline. Rewriting them in the house style would make them editable and verified.
+1. **Re-verify the MySQL Commands and Functions reference** (recommended; the only real verification gap). Its outputs were computed by hand (§3.1). Proposed plan (the user has not yet given the go-ahead; ask first): (a) use a **real MySQL 8** server (cloud: `apt-get install mysql-server`; local Windows: the portable ZIP, only with the user's OK to download). Do **not** use H2's MySQL mode, because error texts, `DESCRIBE`, `DATE_FORMAT`, `GROUP_CONCAT` and `INTERSECT` differ, so it would verify the wrong engine. (b) Recreate the `company` sample database and run all 27 SQL blocks from `legacy/mysql_reference/content.js` with `mysql -t`, resetting the data before blocks that need the original state. (c) Diff against the 28 output boxes; likely mismatches are exact error messages (constraint names, codes 1364/1451/1644), row order without `ORDER BY`, decimal formatting, warning lines, and 8.0.19+/8.0.31+ syntax. (d) Fix the text, never the numbers. (e) Port the book to this tooling with executed `sql run` blocks (sources into `sources/`), replace the PDF in `03_Programming/02_MySQL/`, and commit.
+2. **Rebuilding the earliest PDF-only books is NOT needed.** The Java, MySQL, AI/ML, Deep Learning, OS and Networks books were verified when built (§3.1); only their sources are missing. After discussion the user decided not to rewrite them. Rebuild one only if an actual error is found in it or the user wants it extended (it would mean rewriting the book in the house style, since no sources exist).
 3. **Topics with no book yet:** DevOps and cloud (Docker, Kubernetes, CI/CD); concurrency in Java; distributed-systems theory.
 
 ## 5. House style (apply to every book)
@@ -182,6 +182,7 @@ Python blocks run with the working directory `figs/` and `PYTHONPATH=figs`, so a
 | `javasplit.py`, `reflow.py` | Split packed Java statements and one-line blocks, then reflow long Java lines. Java has no syntax-tree check: **rerun and diff outputs** afterwards |
 | `sheet.py` | Contact sheet of all pages (uses Edge on Windows). On Linux, use `pdftoppm -r 40 -png out/x.pdf tmp/p` and view a few pages |
 | `sources/` | Markdown of all fifteen sets built with this tooling: templates for structure and style |
+| `legacy/mysql_reference/` | Sources of the hand-computed MySQL Commands reference (HTML/Edge pipeline), kept for its re-verification (§4.3) |
 
 ### Setup (Linux cloud or Windows)
 

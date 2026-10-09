@@ -566,7 +566,7 @@ DOCS = {
         title='Mock Interview Loops: DSA, LLD, HLD and HR',
         subtitle='Complete interview loops for SDE roles, each with timed DSA, low-level design, high-level design and behavioural rounds, model answers and scoring rubrics',
         theme='mock', kicker='Interview · Full practice loops',
-        files=['mk_0.md', 'mk_1.md', 'mk_2.md', 'mk_3.md'],
+        files=['mk_0.md', 'mk_1.md', 'mk_2.md', 'mk_3.md', 'mk_4.md'],
         rows=[['What is inside', 'How to use it'],
               ['Chapter 1: how loops are run and scored',
                'Read once before the first mock'],

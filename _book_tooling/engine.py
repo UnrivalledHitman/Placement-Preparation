@@ -252,7 +252,10 @@ def table(rows, S, theme, width):
     lens = []
     for i in range(ncol):
         m = max(len(r[i]) if i < len(r) else 0 for r in rows)
-        lens.append(min(max(m, 8), 55))
+        # never narrower than the longest word (+ padding), so short label columns do not break words
+        word = max((len(w) for r in rows if i < len(r) for w in re.sub(r'[*`]', '', r[i]).split()),
+                   default=0)
+        lens.append(max(min(max(m, 8), 55), min(word + 3, 20)))
     tot = sum(lens)
     cw = [width * l / tot for l in lens]
     data = []

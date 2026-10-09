@@ -30,7 +30,7 @@ Placement Preparation/
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design, 03_Distributed_Systems
 ├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Applied_Data_Science, 04_Deep_Learning, 05_ML_System_Design, 06_MLOps, 07_Data_Science_Interview_Prep
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
-├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide, 02_Senior_Engineer_Handbook (guide + workbook)
+├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide, 02–03 Mock_Interview_Loops (guide + workbook), 04–05 Senior_Engineer_Handbook (guide + workbook)
 ├── _book_tooling/              this handoff, build scripts, markdown sources (not study material)
 └── README.md                   index: folder tree, one section per top-level folder, tables linking every PDF
 ```
@@ -52,7 +52,7 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
-### 3.2 Sets built with this tooling (twenty-five rows; sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (twenty-six rows; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
@@ -70,7 +70,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/09_Frontend_Design_and_Development` (was 06, then 07) | e2afa6b |
 | Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/10_Advanced_Backend_Engineering` (was 07, then 08) | 786203a |
 | Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/06_Security_Engineering` (was 08, then 09; moved before Spring Boot so security fundamentals and JWT come before Spring Security) | 56d6d78 |
-| Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (02, 03) | 3f5f556 |
+| Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (04, 05; was 02, 03) | 3f5f556 |
 | MySQL Commands and Functions reference (re-verified) | `my_0`…`my_2`, setup `my_setup.sql` | 43 | — | — | `sql` | `03_Programming/02_MySQL` (02) | see git log |
 | DevOps and Cloud | `dv_0`…`dv_4`; `oq, oh, os1, os2, ot` | 46 + 25 | 25 | O | `devops` | `04_CS_Fundamentals/05_DevOps_and_Cloud` | see git log |
 | Java Concurrency | `cc_0`…`cc_4`; `cq, ch, cs1, cs2, ct` | 48 + 27 | 25 | C | `conc` | `03_Programming/05_Java_Concurrency` | see git log |
@@ -81,6 +81,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Software Testing | `te_0`…`te_4`; `tq, th, ts1, ts2, tt` | 40 + 26 | 20 | T | `test` | `03_Programming/08_Software_Testing` | see git log |
 | Data Engineering | `de_0`…`de_4`; `wq, wh, ws1, ws2, wt` | 34 + 18 | 20 | W | `de` | `05_System_Design/05_Data_Engineering` | see git log |
 | Kafka and Stream Processing | `kf_0`…`kf_4`; `qq, qh, qs1, qs2, qt` | 33 + 16 | 20 | Q | `kafka` | `05_System_Design/04_Kafka_and_Stream_Processing` | see git log |
+| Mock Interview Loops | `mk_0`…`mk_4`; `zq, zh, zs1, zs2, zt` | 37 + 24 | 20 | Z | `mock` | `08_Interview_and_HR` (02, 03) | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -159,8 +160,8 @@ These were built while the user ran a heavy research job: every command ran at i
 | 1 | Data Engineering | `05_System_Design/05_Data_Engineering` | Done |
 | 2 | Kafka and Stream Processing | `05_System_Design/04_Kafka_and_Stream_Processing` | Done |
 | 3 | Software Testing | `03_Programming/08_Software_Testing` | Done |
-| 4 | Mock Interview Loops | `08_Interview_and_HR` (04 guide, 05 workbook) | Next |
-| 5 | Git Internals and Team Workflows | `04_CS_Fundamentals` (03, later folders renumbered) | Queued |
+| 4 | Mock Interview Loops | `08_Interview_and_HR` (02 guide, 03 workbook; Senior Handbook moved to 04, 05) | Done |
+| 5 | Git Internals and Team Workflows | `04_CS_Fundamentals` (03, later folders renumbered) | Next |
 | 6 | Compilers and Theory of Computation | end of `04_CS_Fundamentals` | Queued |
 
 `03_Programming` was also reordered at the user's request so that Security Engineering (06) comes before Spring Boot (07): security fundamentals and JWT before Spring Security. Software Testing is 08, Front-end 09, Advanced Back-end 10.

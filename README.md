@@ -51,6 +51,7 @@ Placement Preparation/
 │   └── 02_Cashflow_Quadrant/        Book → study report
 └── 08_Interview_and_HR/
     ├── Interview, HR and resume guide
+    ├── Mock Interview Loops: guide → workbook (full DSA, LLD, HLD and behavioural loops)
     └── Senior Engineer Handbook: guide → workbook (growing into senior and staff)
 ```
 
@@ -280,8 +281,14 @@ Last, but start it early: write your introduction, STAR stories and resume once,
 |---|-------|----------|
 | 01 | [Interview, HR and Resume Guide](08_Interview_and_HR/01_Interview_HR_and_Resume_Guide.pdf) | Rounds, "tell me about yourself", STAR story bank, question bank, presenting projects and research, resume, offers, checklists |
 
+Then practise under real conditions with **Mock Interview Loops**: three complete loops (fresher, SDE-1 and SDE-2), each with a timed coding round, an LLD or machine-coding round, an HLD round and a behavioural round, plus the rubrics interviewers score them with, a debrief template and a final checklist. Every coding and design solution was compiled and run with its tests, and every estimate computed. The workbook adds 20 more timed rounds to build your own loops. Sit them after the Programming, CS Fundamentals and System Design sections.
+
+| # | Guide | Workbook |
+|---|-------|----------|
+| 02 | [Mock Interview Loops: DSA, LLD, HLD and HR](08_Interview_and_HR/02_Mock_Interview_Loops_Complete_Guide.pdf) (3 loops, 13 runnable programs) | [20 timed rounds with executed model answers](08_Interview_and_HR/03_Mock_Interview_Loops_Workbook.pdf) |
+
 Then, for the years after you are hired, **The Senior Engineer Handbook**: what it takes to grow from a strong coder into a senior and staff engineer. Scope and impact, technical excellence, code review, system design and decisions, testing, reliability (SLOs, error budgets, incidents), performance and cost, technical debt, writing and communication, mentoring and leading without authority, and getting promoted. The judgement calls are backed by numbers computed and shown (how availability compounds, the cost of a late bug, Amdahl's law, error budgets, tech-debt drag).
 
 | # | Guide | Workbook |
 |---|-------|----------|
-| 02 | [The Senior Engineer Handbook: Scope, Impact and Leverage](08_Interview_and_HR/02_Senior_Engineer_Handbook_Complete_Guide.pdf) (11 chapters) | [36 scenario, design and reflection exercises with worked answers](08_Interview_and_HR/03_Senior_Engineer_Handbook_Workbook.pdf) |
+| 04 | [The Senior Engineer Handbook: Scope, Impact and Leverage](08_Interview_and_HR/04_Senior_Engineer_Handbook_Complete_Guide.pdf) (11 chapters) | [36 scenario, design and reflection exercises with worked answers](08_Interview_and_HR/05_Senior_Engineer_Handbook_Workbook.pdf) |

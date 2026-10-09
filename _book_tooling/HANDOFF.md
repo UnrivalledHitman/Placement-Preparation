@@ -26,7 +26,7 @@ Placement Preparation/
 ├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
 ├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Java_Concurrency, 06_Security_Engineering, 07_Backend_Spring_Boot, 08_Software_Testing, 09_Frontend_Design_and_Development, 10_Advanced_Backend_Engineering
-├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Git_Internals_and_Workflows, 04_Computer_Networks, 05_DBMS_Theory, 06_DevOps_and_Cloud
+├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Git_Internals_and_Workflows, 04_Computer_Networks, 05_DBMS_Theory, 06_DevOps_and_Cloud, 07_Compilers_and_Theory_of_Computation
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design, 03_Distributed_Systems
 ├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Applied_Data_Science, 04_Deep_Learning, 05_ML_System_Design, 06_MLOps, 07_Data_Science_Interview_Prep
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
@@ -52,7 +52,7 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
-### 3.2 Sets built with this tooling (twenty-seven rows; sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (twenty-eight rows; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
@@ -83,6 +83,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Kafka and Stream Processing | `kf_0`…`kf_4`; `qq, qh, qs1, qs2, qt` | 33 + 16 | 20 | Q | `kafka` | `05_System_Design/04_Kafka_and_Stream_Processing` | see git log |
 | Mock Interview Loops | `mk_0`…`mk_4`; `zq, zh, zs1, zs2, zt` | 37 + 24 | 20 | Z | `mock` | `08_Interview_and_HR` (02, 03) | see git log |
 | Git Internals and Team Workflows | `gi_0`…`gi_3`; `xq, xh, xs1, xs2, xt` | 32 + 18 | 20 | X | `git` | `04_CS_Fundamentals/03_Git_Internals_and_Workflows` | see git log |
+| Compilers and Theory of Computation | `co_0`…`co_4`; `yq, yh, ys1, ys2, yt` | 44 + 20 | 20 | Y | `comp` | `04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation` | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -108,7 +109,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **MLOps:** MLflow 3.17 with a fresh SQLite store per block (rerun-safe); skops serialisation requires `skops_trusted_types` for LightGBM and sklearn tree classes; Pandera 0.34 (`import pandera.pandas as pa`); pytest run in a subprocess with timings stripped and `--tb=no -rf`; FastAPI TestClient; skl2onnx + onnxruntime dynamic int8 quantisation; LLMOps uses a deterministic stand-in model (clearly labelled), no API calls.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
-## 4. What remains: see §4.6 (fifth request in progress)
+## 4. What remains: nothing queued (§4.6 complete)
 
 Both queues the user asked for are finished, built, verified (`check.py` counts equal, every runnable block executed, tracker counts match) and pushed to `main`.
 
@@ -154,7 +155,7 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
 
 These were built while the user ran a heavy research job: every command ran at idle priority, one thread, no GPU, through a `lowrun.cmd` wrapper (`start /low /b /wait`, with `OMP_NUM_THREADS=1` and friends). Children inherit the idle priority class. Outputs are unaffected; only speed.
 
-### 4.6 Fifth request (Data Engineering, Kafka, Software Testing, Git, Compilers, Mock loops) — IN PROGRESS
+### 4.6 Fifth request (Data Engineering, Kafka, Software Testing, Git, Compilers, Mock loops) — DONE
 
 | # | Set | Repo folder | Status |
 |---|---|---|---|
@@ -163,7 +164,7 @@ These were built while the user ran a heavy research job: every command ran at i
 | 3 | Software Testing | `03_Programming/08_Software_Testing` | Done |
 | 4 | Mock Interview Loops | `08_Interview_and_HR` (02 guide, 03 workbook; Senior Handbook moved to 04, 05) | Done |
 | 5 | Git Internals and Team Workflows | `04_CS_Fundamentals/03_Git_Internals_and_Workflows` (Networks, DBMS, DevOps renumbered 04–06) | Done |
-| 6 | Compilers and Theory of Computation | end of `04_CS_Fundamentals` (07) | Next |
+| 6 | Compilers and Theory of Computation | `04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation` | Done |
 
 `03_Programming` was also reordered at the user's request so that Security Engineering (06) comes before Spring Boot (07): security fundamentals and JWT before Spring Security. Software Testing is 08, Front-end 09, Advanced Back-end 10.
 
@@ -266,7 +267,7 @@ java -version                                        # Java 21 or later for java
 python build.py dbms_guide                           # sanity check: rebuilds a finished book (~1.5 min)
 ```
 
-`out/`, `tmp/`, `figs/`, `pycache/`, `jcache/`, `shcache/`, `webcache/`, `web/node_modules/` and `.venv/` are gitignored. A guide that saves a helper module into `figs/` (`fd.py`, `sched.py`, `bplus.py`, `estimate.py`) must be built **before** its practice book, which imports it. If `pdftotext`/`pdftoppm` (poppler) are missing on Linux, install `poppler-utils` for inspecting PDFs.
+`out/`, `tmp/`, `figs/`, `pycache/`, `jcache/`, `shcache/`, `webcache/`, `web/node_modules/` and `.venv/` are gitignored. A guide that saves a helper module into `figs/` (`fd.py`, `sched.py`, `bplus.py`, `estimate.py`, `kafka_partitioner.py`, `automata.py`, `mini*.py`) must be built **before** its practice book, which imports it. If `pdftotext`/`pdftoppm` (poppler) are missing on Linux, install `poppler-utils` for inspecting PDFs.
 
 ### Workflow per book (this is what produced every set)
 
@@ -296,6 +297,7 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 
 ## 7. Current state at handoff
 
-- **All work requested so far is complete,** including the third request (DevOps, Java Concurrency, Distributed Systems; §4.4) and the fourth (Applied Data Science, Data Science Interview Prep, MLOps; §4.5). First queue (DBMS, LLD, HLD, DSA, Spring Boot, ML System Design, Aptitude/NQT, Interview/HR) and second queue (JDBC → Mathematics and Statistics for ML → Linux → Front-end → Advanced back-end → Security engineering → Senior engineer handbook): ALL SEVEN SETS of the second queue DONE, each committed to `main` in turn (§4.2).
-- README: 106 links, 106 PDFs, 0 broken links. `04_CS_Fundamentals` renumbered: 01 OS, 02 Linux, 03 Networks, 04 DBMS. `03_Programming` renumbered: 03 JDBC, 04 DSA, 05 Java Concurrency, 06 Backend, 07 Front-end, 08 Advanced Back-end, 09 Security. `04_CS_Fundamentals` gained 05 DevOps and Cloud; `05_System_Design` gained 03 Distributed Systems. `06_AI_and_Machine_Learning` renumbered: 01 Mathematics, 02 AI/ML, 03 Applied Data Science, 04 Deep Learning, 05 ML System Design, 06 MLOps, 07 Data Science Interview Prep. `08_Interview_and_HR`: 01 Interview/HR/Resume, 02 Senior Handbook guide, 03 Senior Handbook workbook.
+- **All work requested so far is complete,** including the fifth request (§4.6): Data Engineering, Kafka and Stream Processing, Software Testing, Mock Interview Loops, Git Internals and Team Workflows, and Compilers and Theory of Computation.
+- README: 118 links, 118 PDFs, 0 broken links. `03_Programming`: 01 Java, 02 MySQL, 03 JDBC, 04 DSA, 05 Java Concurrency, 06 Security Engineering, 07 Backend Spring Boot, 08 Software Testing, 09 Front-end, 10 Advanced Back-end. `04_CS_Fundamentals`: 01 OS, 02 Linux, 03 Git, 04 Networks, 05 DBMS, 06 DevOps and Cloud, 07 Compilers and Theory of Computation. `05_System_Design`: 01 LLD, 02 HLD, 03 Distributed Systems, 04 Kafka, 05 Data Engineering. `08_Interview_and_HR`: 01 HR guide, 02–03 Mock Interview Loops, 04–05 Senior Engineer Handbook.
+- Tooling added in this batch: `java junit` blocks (JUnit 5 + Mockito, `// file:` multi-file blocks), `git run` blocks (`gitrun.py`, Windows Git Bash, reproducible hashes), table columns never narrower than their longest word. All heavy commands ran at idle priority through the `lowrun.cmd` wrapper while the user's research job ran.
 - Next step: none queued; wait for the user's instructions.

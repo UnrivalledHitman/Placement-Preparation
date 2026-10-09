@@ -32,7 +32,8 @@ Placement Preparation/
 │   ├── 03_Git_Internals_and_Workflows/  Guide → practice book (every git command executed)
 │   ├── 04_Computer_Networks/     Guide → practice book
 │   ├── 05_DBMS_Theory/           Guide → practice book
-│   └── 06_DevOps_and_Cloud/      Guide → practice book (pipelines, Kubernetes, Terraform simulated)
+│   ├── 06_DevOps_and_Cloud/      Guide → practice book (pipelines, Kubernetes, Terraform simulated)
+│   └── 07_Compilers_and_Theory_of_Computation/  Guide → practice book (automata to a working compiler)
 ├── 05_System_Design/
 │   ├── 01_Low_Level_Design/      Guide → practice book (Java)
 │   ├── 02_High_Level_Design/     Guide → practice book (Python simulations)
@@ -221,7 +222,7 @@ After the Spring Boot guide: the pieces around the core API that production syst
 
 ## 04 · CS Fundamentals
 
-The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. Linux comes straight after it: the same ideas (processes, files, permissions, signals) at the command line of the servers you will deploy to. Git Internals and Workflows follows naturally at that command line: how Git stores objects, what merge, rebase and reset really do, how to recover anything, and the branching and review workflows teams use, with every command run in a real repository. DBMS Theory goes beneath the MySQL books (normal forms, transactions, indexing, distributed data). DevOps and Cloud comes last: how code is built, shipped and run (CI pipelines, container images, Kubernetes, release strategies, infrastructure as code, alerting, cloud networking), with every mechanism simulated and every configuration file checked. Read each guide, then solve its practice book.
+The core subjects of technical interviews. Operating Systems first: its concurrency chapters use Java, and networking builds on processes and sockets. Linux comes straight after it: the same ideas (processes, files, permissions, signals) at the command line of the servers you will deploy to. Git Internals and Workflows follows naturally at that command line: how Git stores objects, what merge, rebase and reset really do, how to recover anything, and the branching and review workflows teams use, with every command run in a real repository. DBMS Theory goes beneath the MySQL books (normal forms, transactions, indexing, distributed data). DevOps and Cloud comes last: how code is built, shipped and run (CI pipelines, container images, Kubernetes, release strategies, infrastructure as code, alerting, cloud networking), with every mechanism simulated and every configuration file checked. Compilers and Theory of Computation is optional for most roles but asked by some companies and in GATE-style written tests: automata, regular expressions and their limits, grammars and parsing, Turing machines, decidability and P versus NP, then a working compiler for a small language from lexer to optimised bytecode. Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
@@ -231,6 +232,7 @@ The core subjects of technical interviews. Operating Systems first: its concurre
 | 04 | [Computer Networks: Protocols, Numericals and Real Packets](04_CS_Fundamentals/04_Computer_Networks/01_Computer_Networks_Complete_Guide.pdf) | [44 exercises with hints and solutions](04_CS_Fundamentals/04_Computer_Networks/02_Computer_Networks_Practice_Book.pdf) |
 | 05 | [DBMS Theory: From Normal Forms to Distributed Data](04_CS_Fundamentals/05_DBMS_Theory/01_DBMS_Theory_Complete_Guide.pdf) | [52 exercises with hints and solutions](04_CS_Fundamentals/05_DBMS_Theory/02_DBMS_Theory_Practice_Book.pdf) |
 | 06 | [DevOps and Cloud: From Commit to Production](04_CS_Fundamentals/06_DevOps_and_Cloud/01_DevOps_and_Cloud_Complete_Guide.pdf) (33 runnable programs) | [25 exercises with hints and executed solutions](04_CS_Fundamentals/06_DevOps_and_Cloud/02_DevOps_and_Cloud_Practice_Book.pdf) |
+| 07 | [Compilers and Theory of Computation](04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation/01_Compilers_and_Theory_of_Computation_Complete_Guide.pdf) (20 runnable programs, including a working compiler) | [20 exercises with hints and executed solutions](04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation/02_Compilers_and_Theory_of_Computation_Practice_Book.pdf) |
 
 ---
 

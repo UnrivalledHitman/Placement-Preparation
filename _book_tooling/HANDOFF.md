@@ -25,7 +25,7 @@ GitHub: `UnrivalledHitman/Placement-Preparation`, branch `main`. Everything is *
 Placement Preparation/
 ├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
-├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Java_Concurrency, 06_Backend_Spring_Boot, 07_Frontend_Design_and_Development, 08_Advanced_Backend_Engineering, 09_Security_Engineering
+├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Java_Concurrency, 06_Security_Engineering, 07_Backend_Spring_Boot, 08_Software_Testing, 09_Frontend_Design_and_Development, 10_Advanced_Backend_Engineering
 ├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Computer_Networks, 04_DBMS_Theory, 05_DevOps_and_Cloud
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design, 03_Distributed_Systems
 ├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Applied_Data_Science, 04_Deep_Learning, 05_ML_System_Design, 06_MLOps, 07_Data_Science_Interview_Prep
@@ -52,7 +52,7 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
-### 3.2 Sets built with this tooling (twenty-one sets; sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (twenty-five rows; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
@@ -60,16 +60,16 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
-| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/06_Backend_Spring_Boot` (was 05) | ef0a05c |
+| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/07_Backend_Spring_Boot` (was 05, then 06) | ef0a05c |
 | ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/05_ML_System_Design` (was 03, then 04) | a99854c |
 | Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | 57184a4 |
 | Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
 | JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
 | Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | 432f236 |
 | Linux for Software Engineers | `lx_0`…`lx_3`; `uq, uh, us1, us2, ut` | 56 + 26 | 36 | U | `linux` | `04_CS_Fundamentals/02_Linux` | 3e5158c |
-| Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/07_Frontend_Design_and_Development` (was 06) | e2afa6b |
-| Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/08_Advanced_Backend_Engineering` (was 07) | 786203a |
-| Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/09_Security_Engineering` (was 08) | 56d6d78 |
+| Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/09_Frontend_Design_and_Development` (was 06, then 07) | e2afa6b |
+| Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/10_Advanced_Backend_Engineering` (was 07, then 08) | 786203a |
+| Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/06_Security_Engineering` (was 08, then 09; moved before Spring Boot so security fundamentals and JWT come before Spring Security) | 56d6d78 |
 | Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (02, 03) | 3f5f556 |
 | MySQL Commands and Functions reference (re-verified) | `my_0`…`my_2`, setup `my_setup.sql` | 43 | — | — | `sql` | `03_Programming/02_MySQL` (02) | see git log |
 | DevOps and Cloud | `dv_0`…`dv_4`; `oq, oh, os1, os2, ot` | 46 + 25 | 25 | O | `devops` | `04_CS_Fundamentals/05_DevOps_and_Cloud` | see git log |
@@ -78,6 +78,9 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Applied Data Science | `ad_0`…`ad_4`; `eq, eh, es1, es2, et` | 41 + 21 | 24 | E | `ads` | `06_AI_and_Machine_Learning/03_Applied_Data_Science` | see git log |
 | Data Science Interview Prep | `ip_0`…`ip_3`; `iq, ih, is1, is2, it` | 34 + 20 | 24 | I | `dsi` | `06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep` | see git log |
 | MLOps | `mo_0`…`mo_4`; `pq, ph, ps1, ps2, pt` | 39 + 23 | 24 | P | `mlops` | `06_AI_and_Machine_Learning/06_MLOps` | see git log |
+| Software Testing | `te_0`…`te_4`; `tq, th, ts1, ts2, tt` | 40 + 26 | 20 | T | `test` | `03_Programming/08_Software_Testing` | see git log |
+| Data Engineering | `de_0`…`de_4`; `wq, wh, ws1, ws2, wt` | 34 + 18 | 20 | W | `de` | `05_System_Design/05_Data_Engineering` | see git log |
+| Kafka and Stream Processing | `kf_0`…`kf_4`; `qq, qh, qs1, qs2, qt` | 33 + 16 | 20 | Q | `kafka` | `05_System_Design/04_Kafka_and_Stream_Processing` | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -103,7 +106,7 @@ Highlights worth knowing (they are referenced across books, so do not contradict
 - **MLOps:** MLflow 3.17 with a fresh SQLite store per block (rerun-safe); skops serialisation requires `skops_trusted_types` for LightGBM and sklearn tree classes; Pandera 0.34 (`import pandera.pandas as pa`); pytest run in a subprocess with timings stripped and `--tb=no -rf`; FastAPI TestClient; skl2onnx + onnxruntime dynamic int8 quantisation; LLMOps uses a deterministic stand-in model (clearly labelled), no API calls.
 - **HLD:** `estimate.py` (QPS, storage, bandwidth, cache) saved into `figs/` by Chapter 2; Zipf CDN offload chart, power of two choices, virtual nodes chart, hot-key salting, fixed-partition rebalancing, cache-aside races, stampede (plain/coalesced/XFetch), delivery semantics under crashes, outbox on SQLite, back-pressure chart, Raft election timeouts, fencing tokens, retry jitter (**honest result: full jitter does not lower the first spike**), circuit breaker, cursor pagination, saga; 13 case studies including a **smart-meter platform** (late data, dedup by `(meter, timestamp)`, downsampling) and, in the practice book, an EV charging backend.
 
-## 4. What remains: nothing queued (all requested work is complete)
+## 4. What remains: see §4.6 (fifth request in progress)
 
 Both queues the user asked for are finished, built, verified (`check.py` counts equal, every runnable block executed, tracker counts match) and pushed to `main`.
 
@@ -149,6 +152,21 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
 
 These were built while the user ran a heavy research job: every command ran at idle priority, one thread, no GPU, through a `lowrun.cmd` wrapper (`start /low /b /wait`, with `OMP_NUM_THREADS=1` and friends). Children inherit the idle priority class. Outputs are unaffected; only speed.
 
+### 4.6 Fifth request (Data Engineering, Kafka, Software Testing, Git, Compilers, Mock loops) — IN PROGRESS
+
+| # | Set | Repo folder | Status |
+|---|---|---|---|
+| 1 | Data Engineering | `05_System_Design/05_Data_Engineering` | Done |
+| 2 | Kafka and Stream Processing | `05_System_Design/04_Kafka_and_Stream_Processing` | Done |
+| 3 | Software Testing | `03_Programming/08_Software_Testing` | Done |
+| 4 | Mock Interview Loops | `08_Interview_and_HR` (04 guide, 05 workbook) | Next |
+| 5 | Git Internals and Team Workflows | `04_CS_Fundamentals` (03, later folders renumbered) | Queued |
+| 6 | Compilers and Theory of Computation | end of `04_CS_Fundamentals` | Queued |
+
+`03_Programming` was also reordered at the user's request so that Security Engineering (06) comes before Spring Boot (07): security fundamentals and JWT before Spring Security. Software Testing is 08, Front-end 09, Advanced Back-end 10.
+
+Lessons from this batch: DuckDB runs with `SET threads=1` and a memory limit; timing claims are replaced by byte counts or plan lines at idle priority; `random()` in DuckDB needs `setseed`; Mockito skips its strict-stubbing argument-mismatch check when the stub and the call are in the same source file (hence the `// file:` markers); Python files written from Windows text mode get CRLF, so fix scripts write sources with `newline=''`.
+
 ## 5. House style (apply to every book)
 
 ### Writing
@@ -177,6 +195,10 @@ These were built while the user ran a heavy research job: every command ran at i
                               spring/pom.xml's classpath and run with logging off (spring/quiet-logging)
 ```java spring-security T     the same with spring-security/pom.xml (adds Spring Security)
 ```java jdbc Title            plain Java against jdbc/pom.xml (H2 in MySQL mode, HikariCP)
+```java junit Title           JUnit 5 + Mockito test classes run on the console launcher (jars in
+                              lib/, gitignored); output is the test tree plus totals; failing
+                              tests are allowed; '// file: X.java' lines split the block into
+                              separate source files
 ```sql fresh Title           MySQL: drop the database, then run the block (the block that creates it)
 ```sql run Title             MySQL: drop, run the book's sql_setup script, then the block
 ```sql run+ Title            MySQL: continue from the previous block's state (sqlrun.py replays the chain)

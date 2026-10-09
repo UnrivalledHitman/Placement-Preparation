@@ -58,6 +58,12 @@ THEMES = {
     'ads': dict(accent=colors.HexColor('#047857'), soft=colors.HexColor('#e6f6f0')),
     'dsi': dict(accent=colors.HexColor('#b45309'), soft=colors.HexColor('#fdf3e3')),
     'mlops': dict(accent=colors.HexColor('#1d4ed8'), soft=colors.HexColor('#e8eefc')),
+    'de': dict(accent=colors.HexColor('#0f766e'), soft=colors.HexColor('#e6f5f3')),
+    'kafka': dict(accent=colors.HexColor('#334155'), soft=colors.HexColor('#eef1f5')),
+    'test': dict(accent=colors.HexColor('#15803d'), soft=colors.HexColor('#e8f6ec')),
+    'git': dict(accent=colors.HexColor('#c2410c'), soft=colors.HexColor('#fdf0e8')),
+    'comp': dict(accent=colors.HexColor('#6d28d9'), soft=colors.HexColor('#f1ebfd')),
+    'mock': dict(accent=colors.HexColor('#a16207'), soft=colors.HexColor('#fbf4e2')),
 }
 
 CALLOUTS = {

@@ -21,10 +21,11 @@ Placement Preparation/
 │   ├── 03_JDBC_and_Persistence/  Guide → practice book (JDBC, transactions, pools, Servlets)
 │   ├── 04_DSA_in_Java/           Guide → practice book (12-week DSA plan)
 │   ├── 05_Java_Concurrency/      Guide → practice book (every program run on JDK 25)
-│   ├── 06_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
-│   ├── 07_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
-│   ├── 08_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
-│   └── 09_Security_Engineering/             Guide → practice book (attacks run on toys)
+│   ├── 06_Security_Engineering/  Guide → practice book (attacks run on toys)
+│   ├── 07_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
+│   ├── 08_Software_Testing/      Guide → practice book (every test run on JUnit 5)
+│   ├── 09_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
+│   └── 10_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Linux/                 Guide → practice book (every command executed)
@@ -34,7 +35,9 @@ Placement Preparation/
 ├── 05_System_Design/
 │   ├── 01_Low_Level_Design/      Guide → practice book (Java)
 │   ├── 02_High_Level_Design/     Guide → practice book (Python simulations)
-│   └── 03_Distributed_Systems/   Guide → practice book (consensus, clocks, CRDTs simulated)
+│   ├── 03_Distributed_Systems/   Guide → practice book (consensus, clocks, CRDTs simulated)
+│   ├── 04_Kafka_and_Stream_Processing/  Guide → practice book (Kafka's own partitioner, simulated)
+│   └── 05_Data_Engineering/      Guide → practice book (SQL run on DuckDB)
 ├── 06_AI_and_Machine_Learning/
 │   ├── 01_Mathematics_for_ML/    Guide → practice book (every derivation checked numerically)
 │   ├── 02_AI_ML/                 Python guide → practice book
@@ -172,37 +175,45 @@ After the DSA book and before the back-end books, which all run concurrent serve
 |---|-------|---------------|
 | 01 | [Java Concurrency: Threads to Virtual Threads](03_Programming/05_Java_Concurrency/01_Java_Concurrency_Complete_Guide.pdf) (35 runnable programs) | [25 exercises with hints and executed solutions](03_Programming/05_Java_Concurrency/02_Java_Concurrency_Practice_Book.pdf) |
 
-### 06 · Backend with Spring Boot
+### 06 · Security engineering
 
-After Java and MySQL (the JPA chapters build on SQL). Every program is a real Spring Boot 3 application that was run to produce its output; Chapter 10 is a complete smart-meter REST API worth rebuilding as a GitHub project.
+Security fundamentals come before any framework, so this sits before the Spring Boot guide: Spring Security, JWT filters and HTTPS settings there are then applications of ideas you already know. Each chapter ends with the Spring equivalents to look out for later. Cryptography used correctly (hashes, HMAC, AES-GCM, signatures), passwords and authentication (Argon2id, JWT, TOTP, OAuth/PKCE), TLS and mutual TLS, encryption at rest, key management and secrets, payment security (PCI scope, webhooks, idempotency), the OWASP Top 10 attacked and fixed, and data privacy and audit. Every control was run with real cryptographic libraries and OpenSSL, and every attack is demonstrated on a deliberately weak toy with its fix beside it.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Spring Boot Backend: From Beans to Production](03_Programming/06_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/06_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
+| 01 | [Security Engineering for Developers: Crypto to OWASP](03_Programming/06_Security_Engineering/01_Security_Engineering_Complete_Guide.pdf) (33 runnable programs) | [34 exercises with hints and executed solutions, including two secure designs](03_Programming/06_Security_Engineering/02_Security_Engineering_Practice_Book.pdf) |
 
-### 07 · Front-end design and development
+### 07 · Backend with Spring Boot
+
+After Java, MySQL (the JPA chapters build on SQL) and Security Engineering (Chapter 6 applies its password, session and JWT fundamentals with Spring Security). Every program is a real Spring Boot 3 application that was run to produce its output; Chapter 10 is a complete smart-meter REST API worth rebuilding as a GitHub project.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Spring Boot Backend: From Beans to Production](03_Programming/07_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/07_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
+
+### 08 · Software testing
+
+After the Spring Boot guide, whose test slices it builds on. Deciding what to test, systematic test design (equivalence classes, boundaries, decision tables, state machines), JUnit 5 in depth, parameterised and property-based tests, test doubles and Mockito (and when mocking hurts), integration tests with stub servers and Testcontainers, contract tests, flaky tests caused by time and concurrency, coverage versus mutation testing, and TDD. Every test was compiled and run on the JUnit 5 console launcher with Mockito; some fail on purpose, because catching the bug is the point.
+
+| # | Guide | Practice book |
+|---|-------|---------------|
+| 01 | [Software Testing: JUnit 5 to Testcontainers](03_Programming/08_Software_Testing/01_Software_Testing_Complete_Guide.pdf) (19 runnable examples) | [20 exercises with hints and executed solutions](03_Programming/08_Software_Testing/02_Software_Testing_Practice_Book.pdf) |
+
+### 09 · Front-end design and development
 
 What runs in the user's browser: how pages render, HTML, CSS layout, UI design principles (hierarchy, spacing, contrast, states), JavaScript and the event loop, the DOM, TypeScript, React, accessibility, Core Web Vitals and front-end security. Every HTML, CSS and React example was rendered in headless Chromium (with screenshots), every script run in Node.js, and every TypeScript example checked by the compiler. Pairs with the Spring Boot back end: together they make a full-stack project.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Front-end Design and Development: From Pixels to React](03_Programming/07_Frontend_Design_and_Development/01_Frontend_Design_and_Development_Complete_Guide.pdf) (48 runnable examples) | [36 machine-coding and concept exercises with executed solutions](03_Programming/07_Frontend_Design_and_Development/02_Frontend_Design_and_Development_Practice_Book.pdf) |
+| 01 | [Front-end Design and Development: From Pixels to React](03_Programming/09_Frontend_Design_and_Development/01_Frontend_Design_and_Development_Complete_Guide.pdf) (48 runnable examples) | [36 machine-coding and concept exercises with executed solutions](03_Programming/09_Frontend_Design_and_Development/02_Frontend_Design_and_Development_Practice_Book.pdf) |
 
-### 08 · Advanced back-end engineering
+### 10 · Advanced back-end engineering
 
 After the Spring Boot guide: the pieces around the core API that production systems and senior interviews need. Caching (patterns, invalidation, eviction, stampedes), rate limiting, idempotency keys and distributed locks, message queues and event logs (consumer groups, retries, dead letters, outbox, sagas), background and scheduled jobs, SSE and WebSockets, object storage with presigned URLs, REST in depth, GraphQL and gRPC, and NoSQL data modelling. Every example ran against a real Redis 7 server, real HTTP and WebSocket servers, graphql-core and a generated gRPC service; each chapter maps the ideas onto Spring.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/08_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/08_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
-
-### 09 · Security engineering
-
-Security is spread through every layer, so this comes after the back-end and front-end books and draws on all of them. Cryptography used correctly (hashes, HMAC, AES-GCM, signatures), passwords and authentication (Argon2id, JWT, TOTP, OAuth/PKCE), TLS and mutual TLS, encryption at rest, key management and secrets, payment security (PCI scope, webhooks, idempotency), the OWASP Top 10 attacked and fixed, and data privacy and audit. Every control was run with real cryptographic libraries and OpenSSL, and every attack is demonstrated on a deliberately weak toy with its fix beside it.
-
-| # | Guide | Practice book |
-|---|-------|---------------|
-| 01 | [Security Engineering for Developers: Crypto to OWASP](03_Programming/09_Security_Engineering/01_Security_Engineering_Complete_Guide.pdf) (33 runnable programs) | [34 exercises with hints and executed solutions, including two secure designs](03_Programming/09_Security_Engineering/02_Security_Engineering_Practice_Book.pdf) |
+| 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/10_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/10_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
 
 ---
 
@@ -222,13 +233,15 @@ The core subjects of technical interviews. Operating Systems first: its concurre
 
 ## 05 · System Design
 
-Design rounds come after the core subjects: they use Java (Programming) and build on databases and networks (CS Fundamentals). Start with low-level design (object-oriented design and machine coding in Java), then high-level system design (architecture of large distributed systems), then distributed systems theory (failure models, clocks, consistency models, Paxos and Raft, CRDTs, gossip), which explains why the high-level designs work.
+Design rounds come after the core subjects: they use Java (Programming) and build on databases and networks (CS Fundamentals). Start with low-level design (object-oriented design and machine coding in Java), then high-level system design (architecture of large distributed systems), then distributed systems theory (failure models, clocks, consistency models, Paxos and Raft, CRDTs, gossip), which explains why the high-level designs work. Kafka and stream processing then goes deep on the event log that most modern designs are built around, and data engineering closes the section with the pipelines, lakes and warehouses that turn those events into analytics.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Low-Level Design in Java: Patterns to Case Studies](05_System_Design/01_Low_Level_Design/01_Low_Level_Design_Complete_Guide.pdf) | [41 exercises with hints and solutions](05_System_Design/01_Low_Level_Design/02_Low_Level_Design_Practice_Book.pdf) |
 | 02 | [System Design: From Estimates to Case Studies](05_System_Design/02_High_Level_Design/01_System_Design_Complete_Guide.pdf) | [35 exercises with hints, solutions and rubrics](05_System_Design/02_High_Level_Design/02_System_Design_Practice_Book.pdf) |
 | 03 | [Distributed Systems: Time, Consensus and Replication](05_System_Design/03_Distributed_Systems/01_Distributed_Systems_Complete_Guide.pdf) (22 simulations) | [25 exercises with hints and executed solutions](05_System_Design/03_Distributed_Systems/02_Distributed_Systems_Practice_Book.pdf) |
+| 04 | [Kafka and Stream Processing in Depth](05_System_Design/04_Kafka_and_Stream_Processing/01_Kafka_and_Stream_Processing_Complete_Guide.pdf) (15 simulations; partitioning uses Kafka's own murmur2) | [20 exercises with hints and executed solutions](05_System_Design/04_Kafka_and_Stream_Processing/02_Kafka_and_Stream_Processing_Practice_Book.pdf) |
+| 05 | [Data Engineering: Lakes, Warehouses, Pipelines](05_System_Design/05_Data_Engineering/01_Data_Engineering_Complete_Guide.pdf) (18 runnable examples, SQL on DuckDB) | [20 exercises with hints and executed solutions](05_System_Design/05_Data_Engineering/02_Data_Engineering_Practice_Book.pdf) |
 
 ---
 

@@ -26,7 +26,7 @@ Placement Preparation/
 ├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
 ├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Java_Concurrency, 06_Security_Engineering, 07_Backend_Spring_Boot, 08_Software_Testing, 09_Frontend_Design_and_Development, 10_Advanced_Backend_Engineering
-├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Computer_Networks, 04_DBMS_Theory, 05_DevOps_and_Cloud
+├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Git_Internals_and_Workflows, 04_Computer_Networks, 05_DBMS_Theory, 06_DevOps_and_Cloud
 ├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design, 03_Distributed_Systems
 ├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Applied_Data_Science, 04_Deep_Learning, 05_ML_System_Design, 06_MLOps, 07_Data_Science_Interview_Prep
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
@@ -52,11 +52,11 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
-### 3.2 Sets built with this tooling (twenty-six rows; sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (twenty-seven rows; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
-| DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/04_DBMS_Theory` (was 03) | f540af3 |
+| DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/05_DBMS_Theory` (was 03, then 04) | f540af3 |
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
 | DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
@@ -72,7 +72,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/06_Security_Engineering` (was 08, then 09; moved before Spring Boot so security fundamentals and JWT come before Spring Security) | 56d6d78 |
 | Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (04, 05; was 02, 03) | 3f5f556 |
 | MySQL Commands and Functions reference (re-verified) | `my_0`…`my_2`, setup `my_setup.sql` | 43 | — | — | `sql` | `03_Programming/02_MySQL` (02) | see git log |
-| DevOps and Cloud | `dv_0`…`dv_4`; `oq, oh, os1, os2, ot` | 46 + 25 | 25 | O | `devops` | `04_CS_Fundamentals/05_DevOps_and_Cloud` | see git log |
+| DevOps and Cloud | `dv_0`…`dv_4`; `oq, oh, os1, os2, ot` | 46 + 25 | 25 | O | `devops` | `04_CS_Fundamentals/06_DevOps_and_Cloud` (was 05) | see git log |
 | Java Concurrency | `cc_0`…`cc_4`; `cq, ch, cs1, cs2, ct` | 48 + 27 | 25 | C | `conc` | `03_Programming/05_Java_Concurrency` | see git log |
 | Distributed Systems | `dx_0`…`dx_4`; `rq, rh, rs1, rs2, rt` | 41 + 23 | 25 | R | `dist` | `05_System_Design/03_Distributed_Systems` | see git log |
 | Applied Data Science | `ad_0`…`ad_4`; `eq, eh, es1, es2, et` | 41 + 21 | 24 | E | `ads` | `06_AI_and_Machine_Learning/03_Applied_Data_Science` | see git log |
@@ -82,6 +82,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Data Engineering | `de_0`…`de_4`; `wq, wh, ws1, ws2, wt` | 34 + 18 | 20 | W | `de` | `05_System_Design/05_Data_Engineering` | see git log |
 | Kafka and Stream Processing | `kf_0`…`kf_4`; `qq, qh, qs1, qs2, qt` | 33 + 16 | 20 | Q | `kafka` | `05_System_Design/04_Kafka_and_Stream_Processing` | see git log |
 | Mock Interview Loops | `mk_0`…`mk_4`; `zq, zh, zs1, zs2, zt` | 37 + 24 | 20 | Z | `mock` | `08_Interview_and_HR` (02, 03) | see git log |
+| Git Internals and Team Workflows | `gi_0`…`gi_3`; `xq, xh, xs1, xs2, xt` | 32 + 18 | 20 | X | `git` | `04_CS_Fundamentals/03_Git_Internals_and_Workflows` | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -161,8 +162,8 @@ These were built while the user ran a heavy research job: every command ran at i
 | 2 | Kafka and Stream Processing | `05_System_Design/04_Kafka_and_Stream_Processing` | Done |
 | 3 | Software Testing | `03_Programming/08_Software_Testing` | Done |
 | 4 | Mock Interview Loops | `08_Interview_and_HR` (02 guide, 03 workbook; Senior Handbook moved to 04, 05) | Done |
-| 5 | Git Internals and Team Workflows | `04_CS_Fundamentals` (03, later folders renumbered) | Next |
-| 6 | Compilers and Theory of Computation | end of `04_CS_Fundamentals` | Queued |
+| 5 | Git Internals and Team Workflows | `04_CS_Fundamentals/03_Git_Internals_and_Workflows` (Networks, DBMS, DevOps renumbered 04–06) | Done |
+| 6 | Compilers and Theory of Computation | end of `04_CS_Fundamentals` (07) | Next |
 
 `03_Programming` was also reordered at the user's request so that Security Engineering (06) comes before Spring Boot (07): security fundamentals and JWT before Spring Security. Software Testing is 08, Front-end 09, Advanced Back-end 10.
 
@@ -196,6 +197,9 @@ Lessons from this batch: DuckDB runs with `SET threads=1` and a memory limit; ti
                               spring/pom.xml's classpath and run with logging off (spring/quiet-logging)
 ```java spring-security T     the same with spring-security/pom.xml (adds Spring Security)
 ```java jdbc Title            plain Java against jdbc/pom.xml (H2 in MySQL mode, HikariCP)
+```git run Title             Git Bash (Windows) in a fresh repo dir shown as /home/learner/work;
+                              isolated config (Asha Rao, main), clock +60 s per git command, so
+                              hashes are reproducible (gitrun.py, cache gitcache/)
 ```java junit Title           JUnit 5 + Mockito test classes run on the console launcher (jars in
                               lib/, gitignored); output is the test tree plus totals; failing
                               tests are allowed; '// file: X.java' lines split the block into

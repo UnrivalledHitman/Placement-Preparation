@@ -4,7 +4,7 @@ practice books (a line containing only <<TRACKER>>), and renders the PDF into ou
 import os, re, sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from engine import build
-import javarun, pyrun, shrun, sqlrun, webrun
+import gitrun, javarun, pyrun, shrun, sqlrun, webrun
 
 OUT = 'out'
 PRAC_ROWS = lambda first: [['What is inside', 'How to use it'], ['Exercises by chapter, tagged by type and level', first],
@@ -617,6 +617,7 @@ def expand_all(key, d):
         s = javarun.expand(s)
         s = sqlrun.expand(s)
         s = shrun.expand(s, f.replace('.md', ''))
+        s = gitrun.expand(s, f.replace(".md", ""))
         s = webrun.expand(s, f.replace('.md', ''))
         parts.append(s)
     return '\n'.join(parts)

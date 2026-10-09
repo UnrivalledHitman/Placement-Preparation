@@ -55,6 +55,9 @@ THEMES = {
     'devops': dict(accent=colors.HexColor('#0e7490'), soft=colors.HexColor('#e7f5f8')),
     'conc': dict(accent=colors.HexColor('#be123c'), soft=colors.HexColor('#fdecef')),
     'dist': dict(accent=colors.HexColor('#7e22ce'), soft=colors.HexColor('#f5ecfc')),
+    'ads': dict(accent=colors.HexColor('#047857'), soft=colors.HexColor('#e6f6f0')),
+    'dsi': dict(accent=colors.HexColor('#b45309'), soft=colors.HexColor('#fdf3e3')),
+    'mlops': dict(accent=colors.HexColor('#1d4ed8'), soft=colors.HexColor('#e8eefc')),
 }
 
 CALLOUTS = {

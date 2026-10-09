@@ -38,8 +38,11 @@ Placement Preparation/
 ├── 06_AI_and_Machine_Learning/
 │   ├── 01_Mathematics_for_ML/    Guide → practice book (every derivation checked numerically)
 │   ├── 02_AI_ML/                 Python guide → practice book
-│   ├── 03_Deep_Learning/         PyTorch guide → practice book
-│   └── 04_ML_System_Design/      Guide → practice book (simulations + design prompts)
+│   ├── 03_Applied_Data_Science/  Guide → practice book (boosting, experiments, causal inference)
+│   ├── 04_Deep_Learning/         PyTorch guide → practice book
+│   ├── 05_ML_System_Design/      Guide → practice book (simulations + design prompts)
+│   ├── 06_MLOps/                 Guide → practice book (MLflow, tests, serving, rollouts)
+│   └── 07_Data_Science_Interview_Prep/  Guide → practice book (SQL, pandas, stats, product sense)
 ├── 07_Business_and_Finance/
 │   ├── 01_Parable_of_the_Pipeline/  Book → study report
 │   └── 02_Cashflow_Quadrant/        Book → study report
@@ -231,14 +234,17 @@ Design rounds come after the core subjects: they use Java (Programming) and buil
 
 ## 06 · AI and Machine Learning
 
-Start with the mathematics: linear algebra, calculus, probability and statistics, each result derived and checked by a NumPy program. Then the AI/ML guide; the Deep Learning guide goes deeper into neural networks; ML System Design comes last, because it applies both to whole products (and builds on the System Design section). Read each guide, then solve its practice book.
+Start with the mathematics: linear algebra, calculus, probability and statistics, each result derived and checked by a NumPy program. Then the AI/ML guide, followed by Applied Data Science: the tabular, experimental and causal techniques most industry data science runs on. The Deep Learning guide goes deeper into neural networks; ML System Design applies everything to whole products (and builds on the System Design section); MLOps covers running models in production (and builds on the DevOps guide). Data Science Interview Prep comes last: SQL, pandas, probability, statistics and product-sense rounds in interview format, for data scientist and data analyst roles. Read each guide, then solve its practice book.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
 | 01 | [Mathematics and Statistics for ML: Derived and Checked](06_AI_and_Machine_Learning/01_Mathematics_for_ML/01_Mathematics_and_Statistics_for_ML_Complete_Guide.pdf) (NumPy, SciPy) | [49 exercises with hints and solutions, every answer checked by code](06_AI_and_Machine_Learning/01_Mathematics_for_ML/02_Mathematics_and_Statistics_for_ML_Practice_Book.pdf) |
 | 02 | [AI/ML: From Maths to Agents](06_AI_and_Machine_Learning/02_AI_ML/01_AI_ML_Complete_Guide.pdf) (Python) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/02_AI_ML/02_AI_ML_Practice_Book.pdf) |
-| 03 | [Deep Learning: From Autograd to Research Frontiers](06_AI_and_Machine_Learning/03_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/03_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
-| 04 | [ML System Design: From Metrics to Monitoring](06_AI_and_Machine_Learning/04_ML_System_Design/01_ML_System_Design_Complete_Guide.pdf) (Python simulations) | [29 exercises with hints and solutions, 5 full design prompts](06_AI_and_Machine_Learning/04_ML_System_Design/02_ML_System_Design_Practice_Book.pdf) |
+| 03 | [Applied Data Science: Tabular ML to Causality](06_AI_and_Machine_Learning/03_Applied_Data_Science/01_Applied_Data_Science_Complete_Guide.pdf) (33 runnable analyses) | [24 exercises with hints and executed solutions](06_AI_and_Machine_Learning/03_Applied_Data_Science/02_Applied_Data_Science_Practice_Book.pdf) |
+| 04 | [Deep Learning: From Autograd to Research Frontiers](06_AI_and_Machine_Learning/04_Deep_Learning/01_Deep_Learning_Complete_Guide.pdf) (PyTorch) | [73 exercises with hints and solutions](06_AI_and_Machine_Learning/04_Deep_Learning/02_Deep_Learning_Practice_Book.pdf) |
+| 05 | [ML System Design: From Metrics to Monitoring](06_AI_and_Machine_Learning/05_ML_System_Design/01_ML_System_Design_Complete_Guide.pdf) (Python simulations) | [29 exercises with hints and solutions, 5 full design prompts](06_AI_and_Machine_Learning/05_ML_System_Design/02_ML_System_Design_Practice_Book.pdf) |
+| 06 | [MLOps: From Notebook to Production](06_AI_and_Machine_Learning/06_MLOps/01_MLOps_Complete_Guide.pdf) (19 runnable programs: MLflow, Pandera, pytest, FastAPI, ONNX) | [24 exercises with hints and executed solutions](06_AI_and_Machine_Learning/06_MLOps/02_MLOps_Practice_Book.pdf) |
+| 07 | [Data Science Interviews: SQL to Product Sense](06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep/01_Data_Science_Interview_Prep_Complete_Guide.pdf) (31 runnable queries and checks) | [24 interview-format exercises with executed solutions](06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep/02_Data_Science_Interview_Prep_Practice_Book.pdf) |
 
 ---
 

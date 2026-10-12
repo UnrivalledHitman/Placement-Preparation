@@ -64,6 +64,8 @@ THEMES = {
     'git': dict(accent=colors.HexColor('#c2410c'), soft=colors.HexColor('#fdf0e8')),
     'comp': dict(accent=colors.HexColor('#6d28d9'), soft=colors.HexColor('#f1ebfd')),
     'mock': dict(accent=colors.HexColor('#a16207'), soft=colors.HexColor('#fbf4e2')),
+    'cpa': dict(accent=colors.HexColor('#0e7490'), soft=colors.HexColor('#e6f4f7')),
+    'pydsa': dict(accent=colors.HexColor('#3b5bdb'), soft=colors.HexColor('#edf0fd')),
 }
 
 CALLOUTS = {

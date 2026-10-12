@@ -19,13 +19,14 @@ Placement Preparation/
 │   ├── 01_Java/                  Guide → reference → practice → exam sets → revision
 │   ├── 02_MySQL/                 Guide → reference → practice → revision
 │   ├── 03_JDBC_and_Persistence/  Guide → practice book (JDBC, transactions, pools, Servlets)
-│   ├── 04_DSA_in_Java/           Guide → practice book (12-week DSA plan)
-│   ├── 05_Java_Concurrency/      Guide → practice book (every program run on JDK 25)
-│   ├── 06_Security_Engineering/  Guide → practice book (attacks run on toys)
-│   ├── 07_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
-│   ├── 08_Software_Testing/      Guide → practice book (every test run on JUnit 5)
-│   ├── 09_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
-│   └── 10_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
+│   ├── 04_DSA_in_Java/           Guide → practice book → revision (12-week DSA plan)
+│   ├── 05_DSA_in_Python/         Guide → practice book → revision (same patterns in Python)
+│   ├── 06_Java_Concurrency/      Guide → practice book (every program run on JDK 25)
+│   ├── 07_Security_Engineering/  Guide → practice book (attacks run on toys)
+│   ├── 08_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
+│   ├── 09_Software_Testing/      Guide → practice book (every test run on JUnit 5)
+│   ├── 10_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
+│   └── 11_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Linux/                 Guide → practice book (every command executed)
@@ -47,7 +48,8 @@ Placement Preparation/
 │   ├── 04_Deep_Learning/         PyTorch guide → practice book
 │   ├── 05_ML_System_Design/      Guide → practice book (simulations + design prompts)
 │   ├── 06_MLOps/                 Guide → practice book (MLflow, tests, serving, rollouts)
-│   └── 07_Data_Science_Interview_Prep/  Guide → practice book (SQL, pandas, stats, product sense)
+│   ├── 07_Data_Science_Interview_Prep/  Guide → practice book (SQL, pandas, stats, product sense)
+│   └── 08_TCS_CPA_AI_ML_Stream/  Guide → practice sets with 2 mock papers → quick revision → supplement
 ├── 07_Business_and_Finance/
 │   ├── 01_Parable_of_the_Pipeline/  Book → study report
 │   └── 02_Cashflow_Quadrant/        Book → study report
@@ -166,57 +168,69 @@ The bridge between the Java and MySQL books: connections, PreparedStatement and 
 
 Start after the Java guide: every program is in Java. The guide's chapters map onto the 12-week DSA roadmap (week 1 = Chapters 1–2, …, week 12 = Chapter 12); solve the matching part of the practice book after each chapter.
 
-| # | Guide | Practice book |
-|---|-------|---------------|
-| 01 | [DSA in Java: Patterns for Coding Interviews](03_Programming/04_DSA_in_Java/01_DSA_in_Java_Complete_Guide.pdf) (60 runnable programs) | [49 exercises with hints and solutions](03_Programming/04_DSA_in_Java/02_DSA_in_Java_Practice_Book.pdf) |
+| # | Book | Contents |
+|---|------|----------|
+| 01 | [DSA in Java: Patterns for Coding Interviews](03_Programming/04_DSA_in_Java/01_DSA_in_Java_Complete_Guide.pdf) | 12 chapters, 60 runnable programs |
+| 02 | [Practice Book](03_Programming/04_DSA_in_Java/02_DSA_in_Java_Practice_Book.pdf) | 49 exercises with hints and solutions |
+| 03 | [Quick Revision](03_Programming/04_DSA_in_Java/03_DSA_in_Java_Quick_Revision.pdf) | Templates, collections, traps and checklists in 14 pages; read before every coding round |
 
-### 05 · Java concurrency
+### 05 · DSA in Python
+
+The same patterns as the Java DSA book, written in Python, for coding rounds that allow Python (including the TCS CPA AI and ML stream). Practise in one language: if you choose Python, use this set instead of the Java one, not as well as it. It adds what is specific to Python: the standard-library toolkit (`deque`, `heapq`, `bisect`, `Counter`, `lru_cache`), its traps (shared rows, floor division, mutable defaults, recursion depth) and its speed limit of about 10⁷ simple operations per second. Every program was run, and most practice solutions are checked against a brute-force version on hundreds of random inputs.
+
+| # | Book | Contents |
+|---|------|----------|
+| 01 | [DSA in Python: Patterns for Coding Interviews](03_Programming/05_DSA_in_Python/01_DSA_in_Python_Complete_Guide.pdf) | 12 chapters, 53 runnable programs |
+| 02 | [Practice Book](03_Programming/05_DSA_in_Python/02_DSA_in_Python_Practice_Book.pdf) | 36 exercises with hints and tested solutions |
+| 03 | [Quick Revision](03_Programming/05_DSA_in_Python/03_DSA_in_Python_Quick_Revision.pdf) | Templates, toolkit, traps and checklists in 13 pages |
+
+### 06 · Java concurrency
 
 After the DSA book and before the back-end books, which all run concurrent servers. Threads and the three concurrency problems (atomicity, visibility, ordering), the Java Memory Model and happens-before, locks and deadlock, atomics and concurrent collections, thread pools, `CompletableFuture`, synchronisers, and virtual threads with scoped values. Every program was run on JDK 25 and prints only facts that hold on every run.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Java Concurrency: Threads to Virtual Threads](03_Programming/05_Java_Concurrency/01_Java_Concurrency_Complete_Guide.pdf) (35 runnable programs) | [25 exercises with hints and executed solutions](03_Programming/05_Java_Concurrency/02_Java_Concurrency_Practice_Book.pdf) |
+| 01 | [Java Concurrency: Threads to Virtual Threads](03_Programming/06_Java_Concurrency/01_Java_Concurrency_Complete_Guide.pdf) (35 runnable programs) | [25 exercises with hints and executed solutions](03_Programming/06_Java_Concurrency/02_Java_Concurrency_Practice_Book.pdf) |
 
-### 06 · Security engineering
+### 07 · Security engineering
 
 Security fundamentals come before any framework, so this sits before the Spring Boot guide: Spring Security, JWT filters and HTTPS settings there are then applications of ideas you already know. Each chapter ends with the Spring equivalents to look out for later. Cryptography used correctly (hashes, HMAC, AES-GCM, signatures), passwords and authentication (Argon2id, JWT, TOTP, OAuth/PKCE), TLS and mutual TLS, encryption at rest, key management and secrets, payment security (PCI scope, webhooks, idempotency), the OWASP Top 10 attacked and fixed, and data privacy and audit. Every control was run with real cryptographic libraries and OpenSSL, and every attack is demonstrated on a deliberately weak toy with its fix beside it.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Security Engineering for Developers: Crypto to OWASP](03_Programming/06_Security_Engineering/01_Security_Engineering_Complete_Guide.pdf) (33 runnable programs) | [34 exercises with hints and executed solutions, including two secure designs](03_Programming/06_Security_Engineering/02_Security_Engineering_Practice_Book.pdf) |
+| 01 | [Security Engineering for Developers: Crypto to OWASP](03_Programming/07_Security_Engineering/01_Security_Engineering_Complete_Guide.pdf) (33 runnable programs) | [34 exercises with hints and executed solutions, including two secure designs](03_Programming/07_Security_Engineering/02_Security_Engineering_Practice_Book.pdf) |
 
-### 07 · Backend with Spring Boot
+### 08 · Backend with Spring Boot
 
 After Java, MySQL (the JPA chapters build on SQL) and Security Engineering (Chapter 6 applies its password, session and JWT fundamentals with Spring Security). Every program is a real Spring Boot 3 application that was run to produce its output; Chapter 10 is a complete smart-meter REST API worth rebuilding as a GitHub project.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Spring Boot Backend: From Beans to Production](03_Programming/07_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/07_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
+| 01 | [Spring Boot Backend: From Beans to Production](03_Programming/08_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/08_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
 
-### 08 · Software testing
+### 09 · Software testing
 
 After the Spring Boot guide, whose test slices it builds on. Deciding what to test, systematic test design (equivalence classes, boundaries, decision tables, state machines), JUnit 5 in depth, parameterised and property-based tests, test doubles and Mockito (and when mocking hurts), integration tests with stub servers and Testcontainers, contract tests, flaky tests caused by time and concurrency, coverage versus mutation testing, and TDD. Every test was compiled and run on the JUnit 5 console launcher with Mockito; some fail on purpose, because catching the bug is the point.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Software Testing: JUnit 5 to Testcontainers](03_Programming/08_Software_Testing/01_Software_Testing_Complete_Guide.pdf) (19 runnable examples) | [20 exercises with hints and executed solutions](03_Programming/08_Software_Testing/02_Software_Testing_Practice_Book.pdf) |
+| 01 | [Software Testing: JUnit 5 to Testcontainers](03_Programming/09_Software_Testing/01_Software_Testing_Complete_Guide.pdf) (19 runnable examples) | [20 exercises with hints and executed solutions](03_Programming/09_Software_Testing/02_Software_Testing_Practice_Book.pdf) |
 
-### 09 · Front-end design and development
+### 10 · Front-end design and development
 
 What runs in the user's browser: how pages render, HTML, CSS layout, UI design principles (hierarchy, spacing, contrast, states), JavaScript and the event loop, the DOM, TypeScript, React, accessibility, Core Web Vitals and front-end security. Every HTML, CSS and React example was rendered in headless Chromium (with screenshots), every script run in Node.js, and every TypeScript example checked by the compiler. Pairs with the Spring Boot back end: together they make a full-stack project.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Front-end Design and Development: From Pixels to React](03_Programming/09_Frontend_Design_and_Development/01_Frontend_Design_and_Development_Complete_Guide.pdf) (48 runnable examples) | [36 machine-coding and concept exercises with executed solutions](03_Programming/09_Frontend_Design_and_Development/02_Frontend_Design_and_Development_Practice_Book.pdf) |
+| 01 | [Front-end Design and Development: From Pixels to React](03_Programming/10_Frontend_Design_and_Development/01_Frontend_Design_and_Development_Complete_Guide.pdf) (48 runnable examples) | [36 machine-coding and concept exercises with executed solutions](03_Programming/10_Frontend_Design_and_Development/02_Frontend_Design_and_Development_Practice_Book.pdf) |
 
-### 10 · Advanced back-end engineering
+### 11 · Advanced back-end engineering
 
 After the Spring Boot guide: the pieces around the core API that production systems and senior interviews need. Caching (patterns, invalidation, eviction, stampedes), rate limiting, idempotency keys and distributed locks, message queues and event logs (consumer groups, retries, dead letters, outbox, sagas), background and scheduled jobs, SSE and WebSockets, object storage with presigned URLs, REST in depth, GraphQL and gRPC, and NoSQL data modelling. Every example ran against a real Redis 7 server, real HTTP and WebSocket servers, graphql-core and a generated gRPC service; each chapter maps the ideas onto Spring.
 
 | # | Guide | Practice book |
 |---|-------|---------------|
-| 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/10_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/10_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
+| 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/11_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/11_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
 
 ---
 
@@ -263,6 +277,17 @@ Start with the mathematics: linear algebra, calculus, probability and statistics
 | 05 | [ML System Design: From Metrics to Monitoring](06_AI_and_Machine_Learning/05_ML_System_Design/01_ML_System_Design_Complete_Guide.pdf) (Python simulations) | [29 exercises with hints and solutions, 5 full design prompts](06_AI_and_Machine_Learning/05_ML_System_Design/02_ML_System_Design_Practice_Book.pdf) |
 | 06 | [MLOps: From Notebook to Production](06_AI_and_Machine_Learning/06_MLOps/01_MLOps_Complete_Guide.pdf) (19 runnable programs: MLflow, Pandera, pytest, FastAPI, ONNX) | [24 exercises with hints and executed solutions](06_AI_and_Machine_Learning/06_MLOps/02_MLOps_Practice_Book.pdf) |
 | 07 | [Data Science Interviews: SQL to Product Sense](06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep/01_Data_Science_Interview_Prep_Complete_Guide.pdf) (31 runnable queries and checks) | [24 interview-format exercises with executed solutions](06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep/02_Data_Science_Interview_Prep_Practice_Book.pdf) |
+
+### 08 · TCS CPA, AI and ML stream (exam on 24 October 2026)
+
+Exam-focused preparation for the TCS CPA AI & ML stream paper: one Python OOP and collections coding question (35 marks), a 40-question technical quiz covering SQL, AI basics, EDA and visualisation, supervised, unsupervised and advanced ML, GenAI and LLMs, and agentic AI and RAG (40 marks, 2 theory and 3 scenario or code questions per topic), and 25 business-skills questions (25 marks). Every code example, coding solution and code-based MCQ answer was executed. Start with the 12-day plan in the guide; sit the two mock papers on 20 and 22 October; read the quick revision on the last day.
+
+| # | Book | Contents |
+|---|------|----------|
+| 01 | [TCS CPA AI & ML Stream: Complete Guide](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/01_TCS_CPA_AI_ML_Complete_Guide.pdf) | 11 chapters mapped to the paper, 12-day plan, 40 traps |
+| 02 | [Practice Sets](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/02_TCS_CPA_AI_ML_Practice_Sets.pdf) | 8 coding problems, 105 topic MCQs, 2 full 66-question mock papers with keys |
+| 03 | [Quick Revision](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/03_TCS_CPA_AI_ML_Quick_Revision.pdf) | Every pattern, formula and framework in 9 pages |
+| 04 | [Supplement](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/04_TCS_CPA_AI_ML_Supplement.pdf) | SQL functions, statistics, NLP, expert systems, GMM, time series, Keras, PyTorch, Hugging Face, LangChain, FAISS, Chroma; 120 more quiz questions |
 
 ---
 

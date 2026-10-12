@@ -52,38 +52,40 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
-### 3.2 Sets built with this tooling (twenty-eight rows; sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (thirty rows; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
 | DBMS Theory | `db_0.md`…`db_6.md` (guide); `dq, dh, ds1, ds2, dt` (practice) | 78 + 34 | 52 | D | `db` | `04_CS_Fundamentals/05_DBMS_Theory` (was 03, then 04) | f540af3 |
 | Low-Level Design (Java) | `ld_0`…`ld_4`; `lq, lh, ls1, ls2, ls3, lt` | 74 + 46 | 41 | L | `lld` | `05_System_Design/01_Low_Level_Design` | e55c42e |
 | System Design (HLD) | `hd_0`…`hd_6`; `hq, hh, hs1, hs2, ht` | 57 + 22 | 35 | H | `hld` | `05_System_Design/02_High_Level_Design` | bf00d05 |
-| DSA in Java | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st` | 76 + 47 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
-| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/07_Backend_Spring_Boot` (was 05, then 06) | ef0a05c |
+| DSA in Java (guide, practice book, quick revision) | `sa_0`…`sa_5`; `sq, sh, ss1, ss2, ss3, st`; `sr` (revision, key `dsa_rev`) | 76 + 47 + 14 | 49 | S | `dsa` | `03_Programming/04_DSA_in_Java` | 11bf0d1 |
+| Spring Boot Backend | `be_0`…`be_4`; `bq, bh, bs1, bs2, bt` | 59 + 38 | 31 | B | `be` | `03_Programming/08_Backend_Spring_Boot` (was 05, then 06, then 07) | ef0a05c |
 | ML System Design | `mg_0`…`mg_4`; `mq, mh, ms1, ms2, mt` | 40 + 25 | 29 | M | `mlsd` | `06_AI_and_Machine_Learning/05_ML_System_Design` (was 03, then 04) | a99854c |
 | Reasoning, Advanced Quant + NQT mocks | `ap_0`…`ap_2`; `aq, ah, as1, as2, at` | 25 + 19 | 60 | A | `apt` | `01_Quantitative_Aptitude/03_Reasoning_Advanced_Quant_and_Mocks` | 57184a4 |
 | Interview, HR and Resume | `hr_0`, `hr_1` | 20 | — | — | `hr` | `08_Interview_and_HR` | da3617f |
 | JDBC and Java Persistence | `jd_0`…`jd_3`; `jq, jh, js1, js2, jt` | 35 + 28 | 28 | J | `jdbc` | `03_Programming/03_JDBC_and_Persistence` | 5cb34d0 |
 | Mathematics and Statistics for ML | `mx_0`…`mx_5`; `nq, nh, ns1, ns2, nt` | 65 + 33 | 49 | N | `math` | `06_AI_and_Machine_Learning/01_Mathematics_for_ML` | 432f236 |
 | Linux for Software Engineers | `lx_0`…`lx_3`; `uq, uh, us1, us2, ut` | 56 + 26 | 36 | U | `linux` | `04_CS_Fundamentals/02_Linux` | 3e5158c |
-| Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/09_Frontend_Design_and_Development` (was 06, then 07) | e2afa6b |
-| Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/10_Advanced_Backend_Engineering` (was 07, then 08) | 786203a |
-| Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/06_Security_Engineering` (was 08, then 09; moved before Spring Boot so security fundamentals and JWT come before Spring Security) | 56d6d78 |
+| Front-end Design and Development | `fe_0`…`fe_4`; `fq, fh, fs1, fs2, ft` | 58 + 34 | 36 | F | `fe` | `03_Programming/10_Frontend_Design_and_Development` (was 06, then 07, then 09) | e2afa6b |
+| Advanced Back-end Engineering | `ab_0`…`ab_4`; `kq, kh, ks1, ks2, kt` | 47 + 27 | 33 | K | `abe` | `03_Programming/11_Advanced_Backend_Engineering` (was 07, then 08, then 10) | 786203a |
+| Security Engineering | `sc_0`…`sc_3`; `vq, vh, vs1, vs2, vs3, vt` | 43 + 28 | 34 | V | `sec` | `03_Programming/07_Security_Engineering` (was 08, then 09, then 06; moved before Spring Boot so security fundamentals and JWT come before Spring Security) | 56d6d78 |
 | Senior Engineer Handbook | `se_0`…`se_4`; `gq, gh, gs1, gs2, gs3, gt` | 36 + 23 | 36 | G | `senior` | `08_Interview_and_HR` (04, 05; was 02, 03) | 3f5f556 |
 | MySQL Commands and Functions reference (re-verified) | `my_0`…`my_2`, setup `my_setup.sql` | 43 | — | — | `sql` | `03_Programming/02_MySQL` (02) | see git log |
 | DevOps and Cloud | `dv_0`…`dv_4`; `oq, oh, os1, os2, ot` | 46 + 25 | 25 | O | `devops` | `04_CS_Fundamentals/06_DevOps_and_Cloud` (was 05) | see git log |
-| Java Concurrency | `cc_0`…`cc_4`; `cq, ch, cs1, cs2, ct` | 48 + 27 | 25 | C | `conc` | `03_Programming/05_Java_Concurrency` | see git log |
+| Java Concurrency | `cc_0`…`cc_4`; `cq, ch, cs1, cs2, ct` | 48 + 27 | 25 | C | `conc` | `03_Programming/06_Java_Concurrency` (was 05) | see git log |
 | Distributed Systems | `dx_0`…`dx_4`; `rq, rh, rs1, rs2, rt` | 41 + 23 | 25 | R | `dist` | `05_System_Design/03_Distributed_Systems` | see git log |
 | Applied Data Science | `ad_0`…`ad_4`; `eq, eh, es1, es2, et` | 41 + 21 | 24 | E | `ads` | `06_AI_and_Machine_Learning/03_Applied_Data_Science` | see git log |
 | Data Science Interview Prep | `ip_0`…`ip_3`; `iq, ih, is1, is2, it` | 34 + 20 | 24 | I | `dsi` | `06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep` | see git log |
 | MLOps | `mo_0`…`mo_4`; `pq, ph, ps1, ps2, pt` | 39 + 23 | 24 | P | `mlops` | `06_AI_and_Machine_Learning/06_MLOps` | see git log |
-| Software Testing | `te_0`…`te_4`; `tq, th, ts1, ts2, tt` | 40 + 26 | 20 | T | `test` | `03_Programming/08_Software_Testing` | see git log |
+| Software Testing | `te_0`…`te_4`; `tq, th, ts1, ts2, tt` | 40 + 26 | 20 | T | `test` | `03_Programming/09_Software_Testing` (was 08) | see git log |
 | Data Engineering | `de_0`…`de_4`; `wq, wh, ws1, ws2, wt` | 34 + 18 | 20 | W | `de` | `05_System_Design/05_Data_Engineering` | see git log |
 | Kafka and Stream Processing | `kf_0`…`kf_4`; `qq, qh, qs1, qs2, qt` | 33 + 16 | 20 | Q | `kafka` | `05_System_Design/04_Kafka_and_Stream_Processing` | see git log |
 | Mock Interview Loops | `mk_0`…`mk_4`; `zq, zh, zs1, zs2, zt` | 37 + 24 | 20 | Z | `mock` | `08_Interview_and_HR` (02, 03) | see git log |
 | Git Internals and Team Workflows | `gi_0`…`gi_3`; `xq, xh, xs1, xs2, xt` | 32 + 18 | 20 | X | `git` | `04_CS_Fundamentals/03_Git_Internals_and_Workflows` | see git log |
 | Compilers and Theory of Computation | `co_0`…`co_4`; `yq, yh, ys1, ys2, yt` | 44 + 20 | 20 | Y | `comp` | `04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation` | see git log |
+| TCS CPA AI & ML stream (guide, practice sets, quick revision) | `cp_0`…`cp_5`; `tcq, tch, tcs1, tcs2, tcm, tcm2, tct`; `cr_0`; supplement `su_0`…`su_4` | 65 + 52 + 9 + 44 | 8 coding + 355 MCQs | P | `cpa` | `06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream` | see git log |
+| DSA in Python (guide, practice book, quick revision) | `py_0`…`py_5`; `pyq, pyh, pys1, pys2, pys3, pyt`; `pyr` | 57 + 34 + 13 | 36 | D | `pydsa` | `03_Programming/05_DSA_in_Python` | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -142,7 +144,7 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
 | # | Set | Repo folder |
 |---|---|---|
 | 1 | DevOps and Cloud | `04_CS_Fundamentals/05_DevOps_and_Cloud` |
-| 2 | Java Concurrency | `03_Programming/05_Java_Concurrency` (Backend, Front-end, Advanced Back-end and Security renumbered 06–09) |
+| 2 | Java Concurrency | `03_Programming/06_Java_Concurrency` (was 05; Backend, Front-end, Advanced Back-end and Security were renumbered 06–09 at the time) |
 | 3 | Distributed Systems | `05_System_Design/03_Distributed_Systems` |
 
 ### 4.5 Fourth request ("build all three one after the other, then commit and push") — DONE
@@ -161,7 +163,7 @@ These were built while the user ran a heavy research job: every command ran at i
 |---|---|---|---|
 | 1 | Data Engineering | `05_System_Design/05_Data_Engineering` | Done |
 | 2 | Kafka and Stream Processing | `05_System_Design/04_Kafka_and_Stream_Processing` | Done |
-| 3 | Software Testing | `03_Programming/08_Software_Testing` | Done |
+| 3 | Software Testing | `03_Programming/09_Software_Testing` (was 08) | Done |
 | 4 | Mock Interview Loops | `08_Interview_and_HR` (02 guide, 03 workbook; Senior Handbook moved to 04, 05) | Done |
 | 5 | Git Internals and Team Workflows | `04_CS_Fundamentals/03_Git_Internals_and_Workflows` (Networks, DBMS, DevOps renumbered 04–06) | Done |
 | 6 | Compilers and Theory of Computation | `04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation` | Done |
@@ -267,7 +269,7 @@ java -version                                        # Java 21 or later for java
 python build.py dbms_guide                           # sanity check: rebuilds a finished book (~1.5 min)
 ```
 
-`out/`, `tmp/`, `figs/`, `pycache/`, `jcache/`, `shcache/`, `webcache/`, `web/node_modules/` and `.venv/` are gitignored. A guide that saves a helper module into `figs/` (`fd.py`, `sched.py`, `bplus.py`, `estimate.py`, `kafka_partitioner.py`, `automata.py`, `mini*.py`) must be built **before** its practice book, which imports it. If `pdftotext`/`pdftoppm` (poppler) are missing on Linux, install `poppler-utils` for inspecting PDFs.
+`out/`, `tmp/`, `figs/`, `pycache/`, `jcache/`, `shcache/`, `webcache/`, `web/node_modules/` and `.venv/` are gitignored. A guide that saves a helper module into `figs/` (`fd.py`, `sched.py`, `bplus.py`, `estimate.py`, `kafka_partitioner.py`, `automata.py`, `mini*.py`, `cpa_sql.py`, `cpa_data.py`) must be built **before** its practice book, which imports it. If `pdftotext`/`pdftoppm` (poppler) are missing on Linux, install `poppler-utils` for inspecting PDFs.
 
 ### Workflow per book (this is what produced every set)
 

@@ -4,6 +4,41 @@ Study material and practice sets for campus placements (TCS NQT, TCS CPA and sim
 
 Everything is numbered in the order it is meant to be completed: sections `01`–`08`, the folders inside each section, and the files inside each folder. Work through them top to bottom.
 
+## Start here: three paths through this repository
+
+The library has grown past 130 books, so here are the three routes it was built for. Each step names the folders to use, in order; the full listing follows further down.
+
+### Path A · Campus placements (November 2026 to January 2027)
+
+| Step | What | Where |
+|---|---|---|
+| 1 | Aptitude: chapter-wise, mixed sets, then timed mocks | `01_Quantitative_Aptitude`, `02_Verbal_Ability` |
+| 2 | Core language and SQL | `03_Programming/01_Java`, `03_Programming/02_MySQL` |
+| 3 | The 12-week DSA + SQL plan (1 Nov 2026 – 23 Jan 2027): one chapter block a week in Python, plus one SQL part | `03_Programming/05_DSA_in_Python`, with `03_Programming/02_MySQL` |
+| 4 | CS fundamentals asked in interviews | `04_CS_Fundamentals/01_Operating_Systems`, `04_Computer_Networks`, `05_DBMS_Theory` |
+| 5 | Exam-specific sets | `03_Programming/01_Java` (TCS CPA Java sets), `06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream` |
+| 6 | Interviews: HR, resume, then full mock loops | `08_Interview_and_HR` (01–03) |
+
+### Path B · GATE Data Science and AI (February 2028)
+
+| Period | What | Where |
+|---|---|---|
+| Nov 2026 – Jan 2027 | One hour each weekend: the warm-up book | `06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI` (07) |
+| Feb – May 2027 | Mathematics: guide and practice, Easy and Medium tiers | `09_GATE_Data_Science_and_AI` (01, 02); deeper background in `06_AI_and_Machine_Learning/01_Mathematics_for_ML` |
+| Jun – Sep 2027 | CS, ML and AI: guide and practice; register for GATE in September | `09_GATE_Data_Science_and_AI` (03, 04); support from `03_Programming/05_DSA_in_Python` and `04_CS_Fundamentals/05_DBMS_Theory` |
+| Oct – Dec 2027 | Hard tiers, official past papers, aptitude every week | `09_GATE_Data_Science_and_AI` (02, 04, 05) |
+| Jan 2028 | Three mock papers and the quick revision | `09_GATE_Data_Science_and_AI` (05, 06) |
+
+### Path C · AI engineering, then corporate training
+
+| Step | What | Where |
+|---|---|---|
+| 1 | Foundations: mathematics, ML, applied data science, deep learning | `06_AI_and_Machine_Learning` (01–04) |
+| 2 | Shipping ML: system design and MLOps | `06_AI_and_Machine_Learning` (05, 06) |
+| 3 | The engineering around it: data pipelines, streaming, distributed systems, back end, testing, security | `05_System_Design` (03–05), `03_Programming` (07, 09, 11) |
+| 4 | Interviews for data and AI roles, then senior-level habits | `06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep`, `08_Interview_and_HR` (04, 05) |
+| 5 | Teaching what you know: a ready-to-run 2-day corporate workshop on RAG and agentic AI | `06_AI_and_Machine_Learning/10_Corporate_Workshop_RAG_and_Agents` |
+
 ## Folder structure
 
 ```
@@ -50,7 +85,8 @@ Placement Preparation/
 │   ├── 06_MLOps/                 Guide → practice book (MLflow, tests, serving, rollouts)
 │   ├── 07_Data_Science_Interview_Prep/  Guide → practice book (SQL, pandas, stats, product sense)
 │   ├── 08_TCS_CPA_AI_ML_Stream/  Guide → practice sets with 2 mock papers → quick revision → supplement
-│   └── 09_GATE_Data_Science_and_AI/  2 guides → 2 practice books → aptitude and 3 mocks → revision (GATE 2028)
+│   ├── 09_GATE_Data_Science_and_AI/  2 guides → 2 practice books → aptitude and 3 mocks → revision → weekend warm-up
+│   └── 10_Corporate_Workshop_RAG_and_Agents/  Trainer guide for a 2-day corporate workshop
 ├── 07_Business_and_Finance/
 │   ├── 01_Parable_of_the_Pipeline/  Book → study report
 │   └── 02_Cashflow_Quadrant/        Book → study report
@@ -302,6 +338,15 @@ A complete course for the GATE DA paper, calibrated on the official 2025 and 202
 | 04 | [Practice, Vol. 2: CS, ML and AI](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/04_GATE_DA_Practice_Vol2_CS_ML_AI.pdf) | 15 sets, 360 questions; code and SQL questions run as printed |
 | 05 | [Aptitude and Mock Papers](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/05_GATE_DA_Aptitude_and_Mock_Papers.pdf) | 40 General Aptitude questions; three full 65-question, 100-mark mock papers with keys and a score sheet |
 | 06 | [Quick Revision](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/06_GATE_DA_Quick_Revision.pdf) | Every formula, rule, count and trap in 12 pages |
+| 07 | [Weekend Warm-up](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/07_GATE_DA_Weekend_Warm-up.pdf) | 12 one-hour Saturday sessions, 7 Nov 2026 – 23 Jan 2027: probability basics and aptitude, 96 questions |
+
+### 10 · Corporate workshop: building reliable RAG and agentic AI systems
+
+A ready-to-deliver, two-day workshop for engineering teams, written as a trainer's guide: timings, what to say, six hands-on labs that run offline on a laptop (embeddings, FAISS and BM25 retrieval, recall@k, grounded answers with citations, a tested agent loop, prompt-injection attack and defence, evaluation in CI), a quiz, a capstone rubric, and notes on discovery, tailoring and pricing. Every lab was run and its output is printed with it.
+
+| # | Book | Contents |
+|---|------|----------|
+| 01 | [RAG and Agentic AI Workshop: Trainer Guide](06_AI_and_Machine_Learning/10_Corporate_Workshop_RAG_and_Agents/01_RAG_and_Agentic_AI_Workshop_Trainer_Guide.pdf) | 6 modules, 6 labs, capstone, assessments, delivery and pricing notes |
 
 ---
 

@@ -49,7 +49,8 @@ Placement Preparation/
 │   ├── 05_ML_System_Design/      Guide → practice book (simulations + design prompts)
 │   ├── 06_MLOps/                 Guide → practice book (MLflow, tests, serving, rollouts)
 │   ├── 07_Data_Science_Interview_Prep/  Guide → practice book (SQL, pandas, stats, product sense)
-│   └── 08_TCS_CPA_AI_ML_Stream/  Guide → practice sets with 2 mock papers → quick revision → supplement
+│   ├── 08_TCS_CPA_AI_ML_Stream/  Guide → practice sets with 2 mock papers → quick revision → supplement
+│   └── 09_GATE_Data_Science_and_AI/  2 guides → 2 practice books → aptitude and 3 mocks → revision (GATE 2028)
 ├── 07_Business_and_Finance/
 │   ├── 01_Parable_of_the_Pipeline/  Book → study report
 │   └── 02_Cashflow_Quadrant/        Book → study report
@@ -288,6 +289,19 @@ Exam-focused preparation for the TCS CPA AI & ML stream paper: one Python OOP an
 | 02 | [Practice Sets](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/02_TCS_CPA_AI_ML_Practice_Sets.pdf) | 8 coding problems, 105 topic MCQs, 2 full 66-question mock papers with keys |
 | 03 | [Quick Revision](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/03_TCS_CPA_AI_ML_Quick_Revision.pdf) | Every pattern, formula and framework in 9 pages |
 | 04 | [Supplement](06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream/04_TCS_CPA_AI_ML_Supplement.pdf) | SQL functions, statistics, NLP, expert systems, GMM, time series, Keras, PyTorch, Hugging Face, LangChain, FAISS, Chroma; 120 more quiz questions |
+
+### 09 · GATE Data Science and AI (target: GATE 2028, February 2028)
+
+A complete course for the GATE DA paper, calibrated on the official 2025 and 2026 papers: their topic weightage, question types (MCQ, MSQ, NAT) and difficulty. Every question is original, written to match the published papers without copying them, and every answer was computed by a program printed with its solution. Practice sets are tiered Easy, Medium and Hard; MSQs have one, two or three correct options, and MCQ answers are balanced across A to D. Register in September 2027; the guide opens with a study plan up to the exam.
+
+| # | Book | Contents |
+|---|------|----------|
+| 01 | [Guide, Vol. 1: Mathematics](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/01_GATE_DA_Guide_Vol1_Mathematics.pdf) | 2025–26 weightage and plan; probability and statistics, linear algebra, calculus and optimisation |
+| 02 | [Practice, Vol. 1: Mathematics](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/02_GATE_DA_Practice_Vol1_Mathematics.pdf) | 13 sets, 312 questions (Easy, Medium, Hard), worked solutions |
+| 03 | [Guide, Vol. 2: CS, ML and AI](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/03_GATE_DA_Guide_Vol2_CS_ML_AI.pdf) | Python, data structures, algorithms, databases, warehousing, machine learning, AI; every example run |
+| 04 | [Practice, Vol. 2: CS, ML and AI](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/04_GATE_DA_Practice_Vol2_CS_ML_AI.pdf) | 15 sets, 360 questions; code and SQL questions run as printed |
+| 05 | [Aptitude and Mock Papers](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/05_GATE_DA_Aptitude_and_Mock_Papers.pdf) | 40 General Aptitude questions; three full 65-question, 100-mark mock papers with keys and a score sheet |
+| 06 | [Quick Revision](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/06_GATE_DA_Quick_Revision.pdf) | Every formula, rule, count and trap in 12 pages |
 
 ---
 

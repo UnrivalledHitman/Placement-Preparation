@@ -52,7 +52,7 @@ Java guide, Java exam revision, Java practice book, Java classes-and-methods ref
 
 The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...Reference.pdf`) was first built with an HTML → Edge pipeline and hand-computed outputs. It has since been **re-verified on a real MySQL 8.0.46 server and rebuilt with this tooling** (sources `my_0.md`–`my_2.md`, setup `my_setup.sql`, executed ```` ```sql ```` blocks; see §3.2). The original sources stay in `_book_tooling/legacy/mysql_reference/` for history only.
 
-### 3.2 Sets built with this tooling (thirty rows; sources in `_book_tooling/sources/`)
+### 3.2 Sets built with this tooling (thirty-one rows; sources in `_book_tooling/sources/`)
 
 | Set | Files | Pages | Exercises | Prefix | Theme | Repo folder | Commit |
 |---|---|---|---|---|---|---|---|
@@ -86,6 +86,7 @@ The **MySQL Commands and Functions reference** (`03_Programming/02_MySQL/02_...R
 | Compilers and Theory of Computation | `co_0`…`co_4`; `yq, yh, ys1, ys2, yt` | 44 + 20 | 20 | Y | `comp` | `04_CS_Fundamentals/07_Compilers_and_Theory_of_Computation` | see git log |
 | TCS CPA AI & ML stream (guide, practice sets, quick revision) | `cp_0`…`cp_5`; `tcq, tch, tcs1, tcs2, tcm, tcm2, tct`; `cr_0`; supplement `su_0`…`su_4` | 65 + 52 + 9 + 44 | 8 coding + 355 MCQs | P | `cpa` | `06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream` | see git log |
 | DSA in Python (guide, practice book, quick revision) | `py_0`…`py_5`; `pyq, pyh, pys1, pys2, pys3, pyt`; `pyr` | 57 + 34 + 13 | 36 | D | `pydsa` | `03_Programming/05_DSA_in_Python` | see git log |
+| GATE DA (2 guides, 2 practice books, aptitude and mocks, revision) | `gm_0`…`gm_4`; `gx_0`…`gx_5`, `gxs_0`…`gxs_5`, `gxt`; `gc_0`…`gc_5`; `gy_0`…`gy_4`, `gys_0`…`gys_4`, `gyt`; `gk_0`…`gk_3`, `gks_0`…`gks_3`, `gkt`; `gr_0` | 33 + 46 + 49 + 58 + 31 + 12 | 672 tiered + 40 GA + 3 × 65 mock | P L C D B M A G K | `gate_g1`, `gate_p1`, `gate_g2`, `gate_p2`, `gate_mock`, `gate_rev` | `06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI` | see git log |
 
 Highlights worth knowing (they are referenced across books, so do not contradict them):
 
@@ -155,7 +156,7 @@ Each set is a guide plus a practice book/workbook (15 PDFs in all for this queue
 | 2 | Data Science Interview Prep | `06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep` |
 | 3 | MLOps | `06_AI_and_Machine_Learning/06_MLOps` |
 
-These were built while the user ran a heavy research job: every command ran at idle priority, one thread, no GPU, through a `lowrun.cmd` wrapper (`start /low /b /wait`, with `OMP_NUM_THREADS=1` and friends). Children inherit the idle priority class. Outputs are unaffected; only speed.
+These were built while the user ran a heavy research job: every command ran at idle priority, one thread, no GPU, through a `lowrun.cmd` wrapper (`start /low /b /wait`, with `OMP_NUM_THREADS=1` and friends). Children inherit the idle priority class. Outputs are unaffected; only speed. **Environment location (October 2026):** the books venv now lives at `C:\Users\indra\.books-venv` (outside OneDrive and Temp), with the runner `C:\Users\indra\.books-venv\low` (bash) and `lowrun.cmd`. The earlier venv in the session scratchpad under `%TEMP%` was partly deleted by Windows temp cleanup (55 packages lost files); it was rebuilt from pinned versions (`_book_tooling/tmp/books_reqs.txt`).
 
 ### 4.6 Fifth request (Data Engineering, Kafka, Software Testing, Git, Compilers, Mock loops) — DONE
 
@@ -300,6 +301,7 @@ python build.py dbms_guide                           # sanity check: rebuilds a 
 ## 7. Current state at handoff
 
 - **All work requested so far is complete,** including the fifth request (§4.6): Data Engineering, Kafka and Stream Processing, Software Testing, Mock Interview Loops, Git Internals and Team Workflows, and Compilers and Theory of Computation.
-- README: 118 links, 118 PDFs, 0 broken links. `03_Programming`: 01 Java, 02 MySQL, 03 JDBC, 04 DSA, 05 Java Concurrency, 06 Security Engineering, 07 Backend Spring Boot, 08 Software Testing, 09 Front-end, 10 Advanced Back-end. `04_CS_Fundamentals`: 01 OS, 02 Linux, 03 Git, 04 Networks, 05 DBMS, 06 DevOps and Cloud, 07 Compilers and Theory of Computation. `05_System_Design`: 01 LLD, 02 HLD, 03 Distributed Systems, 04 Kafka, 05 Data Engineering. `08_Interview_and_HR`: 01 HR guide, 02–03 Mock Interview Loops, 04–05 Senior Engineer Handbook.
+- README: 132 links, 132 PDFs, 0 broken links (October 2026, after the GATE DA set). `03_Programming`: 01 Java, 02 MySQL, 03 JDBC, 04 DSA in Java, 05 DSA in Python, 06 Java Concurrency, 07 Security Engineering, 08 Backend Spring Boot, 09 Software Testing, 10 Front-end, 11 Advanced Back-end. `04_CS_Fundamentals`: 01 OS, 02 Linux, 03 Git, 04 Networks, 05 DBMS, 06 DevOps and Cloud, 07 Compilers and Theory of Computation. `05_System_Design`: 01 LLD, 02 HLD, 03 Distributed Systems, 04 Kafka, 05 Data Engineering. `08_Interview_and_HR`: 01 HR guide, 02–03 Mock Interview Loops, 04–05 Senior Engineer Handbook.
 - Tooling added in this batch: `java junit` blocks (JUnit 5 + Mockito, `// file:` multi-file blocks), `git run` blocks (`gitrun.py`, Windows Git Bash, reproducible hashes), table columns never narrower than their longest word. All heavy commands ran at idle priority through the `lowrun.cmd` wrapper while the user's research job ran.
 - Next step: none queued; wait for the user's instructions.
+- GATE DA tooling (in `_book_tooling/tmp/`): `gate_apply.py` (rebalances MCQ letters to a plan and shuffles MSQ options, remapping keys and the option labels in solutions, never notation like P(A)), `gate_flip.py` with `gate_flip_data*.py` (turns true MSQ options false to vary the number of correct options), `gate_keys.py` (tallies letters and types), `tablecheck.py` (uneven table rows), `glyphs.py` (characters missing from the DejaVu fonts; avoid 𝟏 and 𝟙), `fix_pipes.py` (escaped pipes are unescaped only in tables), `mockcheck.py` (65 questions, 100 marks). Practice questions use the ID format `X1.E1 · TYPE · n mark(s).` with options inline, so the `<<TRACKER>>` line is not used; trackers are hand-written score tables.

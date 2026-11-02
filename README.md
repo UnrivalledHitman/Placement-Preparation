@@ -14,7 +14,7 @@ The library has grown past 130 books, so here are the three routes it was built 
 |---|---|---|
 | 1 | Aptitude: chapter-wise, mixed sets, then timed mocks | `01_Quantitative_Aptitude`, `02_Verbal_Ability` |
 | 2 | Core language and SQL | `03_Programming/01_Java`, `03_Programming/02_MySQL` |
-| 3 | The 12-week DSA + SQL plan (1 Nov 2026 – 23 Jan 2027): one chapter block a week in Python, plus one SQL part | `03_Programming/05_DSA_in_Python`, with `03_Programming/02_MySQL` |
+| 3 | The 12-week DSA + SQL plan (3 Nov 2026 – 25 Jan 2027): one chapter block a week in Python, plus one SQL part | `03_Programming/05_DSA_in_Python`, with `03_Programming/02_MySQL` |
 | 4 | CS fundamentals asked in interviews | `04_CS_Fundamentals/01_Operating_Systems`, `04_Computer_Networks`, `05_DBMS_Theory` |
 | 5 | Exam-specific sets | `03_Programming/01_Java` (TCS CPA Java sets), `06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream` |
 | 6 | Interviews: HR, resume, then full mock loops | `08_Interview_and_HR` (01–03) |

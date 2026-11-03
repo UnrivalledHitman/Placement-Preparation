@@ -14,7 +14,7 @@ The library has grown past 130 books, so here are the three routes it was built 
 |---|---|---|
 | 1 | Aptitude: chapter-wise, mixed sets, then timed mocks | `01_Quantitative_Aptitude`, `02_Verbal_Ability` |
 | 2 | Core language and SQL | `03_Programming/01_Java`, `03_Programming/02_MySQL` |
-| 3 | The 12-week DSA + SQL plan (3 Nov 2026 – 25 Jan 2027): one chapter block a week in Python, plus one SQL part | `03_Programming/05_DSA_in_Python`, with `03_Programming/02_MySQL` |
+| 3 | The 12-week DSA + SQL plan (1 Dec 2026 – 22 Feb 2027): one chapter block a week in Python, plus one SQL part | `03_Programming/05_DSA_in_Python`, with `03_Programming/02_MySQL` |
 | 4 | CS fundamentals asked in interviews | `04_CS_Fundamentals/01_Operating_Systems`, `04_Computer_Networks`, `05_DBMS_Theory` |
 | 5 | Exam-specific sets | `03_Programming/01_Java` (TCS CPA Java sets), `06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream` |
 | 6 | Interviews: HR, resume, then full mock loops | `08_Interview_and_HR` (01–03) |
@@ -23,8 +23,8 @@ The library has grown past 130 books, so here are the three routes it was built 
 
 | Period | What | Where |
 |---|---|---|
-| Nov 2026 – Jan 2027 | One hour each weekend: the warm-up book | `06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI` (07) |
-| Feb – May 2027 | Mathematics: guide and practice, Easy and Medium tiers | `09_GATE_Data_Science_and_AI` (01, 02); deeper background in `06_AI_and_Machine_Learning/01_Mathematics_for_ML` |
+| Dec 2026 – Feb 2027 | One hour each weekend: the warm-up book | `06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI` (07) |
+| Mar – May 2027 | Mathematics: guide and practice, Easy and Medium tiers | `09_GATE_Data_Science_and_AI` (01, 02); deeper background in `06_AI_and_Machine_Learning/01_Mathematics_for_ML` |
 | Jun – Sep 2027 | CS, ML and AI: guide and practice; register for GATE in September | `09_GATE_Data_Science_and_AI` (03, 04); support from `03_Programming/05_DSA_in_Python` and `04_CS_Fundamentals/05_DBMS_Theory` |
 | Oct – Dec 2027 | Hard tiers, official past papers, aptitude every week | `09_GATE_Data_Science_and_AI` (02, 04, 05) |
 | Jan 2028 | Three mock papers and the quick revision | `09_GATE_Data_Science_and_AI` (05, 06) |

@@ -32,7 +32,7 @@ print('\n'.join(names) if names else 'No Data Found')
 | Group | `g = defaultdict(list); g[x.dept].append(x)` |
 | Totals per key | `d[k] = d.get(k, 0) + v` |
 | Average per key | Two dicts (sum, count) or `defaultdict(list)` then `sum/len` |
-| Both / either / only | Sets: `a & b`, `a | b`, `a - b`; subset `{x, y} <= s` |
+| Both / either / only | Sets: `a & b`, `a \| b`, `a - b`; subset `{x, y} <= s` |
 | Queue / stack | `deque`: `append`, `popleft`, `pop` |
 | Priority with ties | `heapq.heappush(h, (priority, arrival_no, obj))` |
 | Pairs in a list | `itertools.combinations(sorted(set(xs)), 2)` |
@@ -90,7 +90,7 @@ print('\n'.join(names) if names else 'No Data Found')
 | Topic | Remember |
 |---|---|
 | First look | `shape`, `info`, `dtypes`, `describe` (numeric only), `isnull().sum()`, `value_counts` (no NaN by default), `nunique` |
-| Selection | `loc[a:b]` includes b (labels); `iloc[a:b]` excludes b (positions); filters with `&`, `|`, `~` and brackets |
+| Selection | `loc[a:b]` includes b (labels); `iloc[a:b]` excludes b (positions); filters with `&`, `\|`, `~` and brackets |
 | Grouping | `groupby().agg([...])`, `transform` keeps row count, `pivot_table`, `merge(how=...)` |
 | Missing values | Median (skewed), mean (symmetric), mode (categorical), ffill (time series), drop if few |
 | Outliers | IQR fences Q1 − 1.5·IQR, Q3 + 1.5·IQR (robust); \|z\| > 3 (inflated by the outlier itself) |

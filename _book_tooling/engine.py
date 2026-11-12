@@ -109,6 +109,8 @@ def highlight(line, lang, theme):
             e = '&nbsp;' * len(t) if (len(t) > 1 or m.start() == 0) else ' '
         else:
             e = re.sub(r'  +', lambda mm: '&nbsp;' * len(mm.group(0)), escape(t))
+        if t == '↪':
+            out.append('<font name="DV" color="#7a8291">↪</font>'); continue
         if lang in ('text', 'out'):
             out.append(e); continue
         if (t.startswith('//') and lang in ('java', 'javascript', 'typescript')) or (t.startswith('--') and lang == 'sql') or t.startswith('/*') \
@@ -135,14 +137,28 @@ def highlight(line, lang, theme):
     return ''.join(out) or '&nbsp;'
 
 
-def inline(s):
+def inline(s, max_code_w=None):
     s = escape(s)
     s = re.sub(r'&lt;(/?)(sub|sup)&gt;', r'<\1\2>', s)    # allow subscripts and superscripts
     parts = re.split(r'(`[^`]+`)', s)
     res = []
     for p in parts:
         if p.startswith('`') and p.endswith('`') and len(p) > 1:
-            res.append('<font name="MONO" size="8.6" color="#9c2f12">' + p[1:-1] + '</font>')
+            code = p[1:-1]
+            if max_code_w and '.' in code and pdfmetrics.stringWidth(code, 'MONO', 8.6) > max_code_w - 15.0:
+                line_lim = min(max_code_w, 150.0)
+                segs = re.split(r'(?=\.)', code)
+                lines, cur = [], ''
+                for seg in segs:
+                    if cur and pdfmetrics.stringWidth(cur + seg, 'MONO', 8.6) > line_lim:
+                        lines.append(cur)
+                        cur = seg
+                    else:
+                        cur += seg
+                if cur:
+                    lines.append(cur)
+                code = '</font><br/><font name="MONO" size="8.6" color="#9c2f12">'.join(lines)
+            res.append('<font name="MONO" size="8.6" color="#9c2f12">' + code + '</font>')
         else:
             p = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', p)
             p = re.sub(r'(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])', r'<i>\1</i>', p)
@@ -215,6 +231,33 @@ def styles(theme):
     return S
 
 
+def _split_code_line(line, limit=94):
+    line = line.rstrip()
+    if len(line) <= limit:
+        return [line]
+    lead = len(line) - len(line.lstrip(' '))
+    indent = (' ' * min(lead + 2, 10) if lead > 0 else '  ') + '↪ '
+    out, cur = [], line
+    while len(cur) > limit:
+        chunk = cur[:limit]
+        pos = chunk.rfind(' ')
+        if pos >= 45:
+            split_at, sep_skip = pos, 1
+        else:
+            best_pos = max(chunk.rfind(sep) for sep in (',', ':{', '>'))
+            if best_pos >= 40:
+                split_at, sep_skip = best_pos + 1, 0
+            elif pos >= 20:
+                split_at, sep_skip = pos, 1
+            else:
+                split_at, sep_skip = limit, 0
+        out.append(cur[:split_at].rstrip())
+        cur = indent + cur[split_at + sep_skip:].lstrip()
+    if cur.strip():
+        out.append(cur)
+    return out
+
+
 def code_block(lines, lang, S, title=None, width=None):
     if lang == 'out':
         bg, border = colors.HexColor('#f1f2f4'), colors.HexColor('#cfd3da')
@@ -223,10 +266,9 @@ def code_block(lines, lang, S, title=None, width=None):
     rows = []
     if title:
         rows.append([Paragraph(escape(title).upper(), S['codetitle'])])
-    wrap = ParagraphStyle('codew', parent=S['code'], leftIndent=22, firstLineIndent=-22)
-    for l in lines:
-        ps = wrap if len(l.rstrip()) > 94 else S['code']
-        rows.append([Paragraph(highlight(l.rstrip(), lang, None), ps)])
+    for raw_l in lines:
+        for l in _split_code_line(raw_l, 94):
+            rows.append([Paragraph(highlight(l, lang, None), S['code'])])
     t = Table(rows, colWidths=[width], hAlign='LEFT')
     st = [('BACKGROUND', (0, 0), (-1, -1), bg), ('LEFTPADDING', (0, 0), (-1, -1), 8),
           ('RIGHTPADDING', (0, 0), (-1, -1), 6), ('TOPPADDING', (0, 0), (-1, -1), 0),
@@ -250,25 +292,106 @@ def callout(kind, text, S, width):
     return t
 
 
+def _cell_metrics(cell_str, is_header=False):
+    s = re.sub(r'</?(?:sub|sup)>', '', cell_str)
+    chars = []
+    for p in re.split(r'(`[^`]+`)', s):
+        if p.startswith('`') and p.endswith('`') and len(p) > 1:
+            code = p[1:-1]
+            dot_break = ('.' in code and len(code) > 26)
+            for ch in code:
+                chars.append((ch, 'MONO', 8.6, dot_break and ch == '.'))
+        else:
+            for sp in re.split(r'(\*\*[^*]+\*\*)', p):
+                if sp.startswith('**') and sp.endswith('**') and len(sp) > 4:
+                    for ch in sp[2:-2]:
+                        chars.append((ch, 'DV-B', 8.5, False))
+                else:
+                    clean = re.sub(r'(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])', r'\1', sp)
+                    fnt = 'DV-B' if is_header else 'DV'
+                    for ch in clean:
+                        chars.append((ch, fnt, 8.5, False))
+    max_word_w = cur_w = full_w = 0.0
+    for ch, fnt, sz, is_dot_brk in chars:
+        w = pdfmetrics.stringWidth(ch, fnt, sz)
+        full_w += w
+        if ch.isspace():
+            if cur_w > max_word_w:
+                max_word_w = cur_w
+            cur_w = 0.0
+        elif is_dot_brk:
+            if cur_w > max_word_w:
+                max_word_w = cur_w
+            cur_w = w
+        else:
+            cur_w += w
+    if cur_w > max_word_w:
+        max_word_w = cur_w
+    return max_word_w, full_w
+
+
+def _waterfill(floor_w, target_w, width):
+    ncol = len(floor_w)
+    cw = list(floor_w)
+    rem = width - sum(cw)
+    for _ in range(4):
+        if rem <= 0.1:
+            break
+        needs = [max(0.0, target_w[i] - cw[i]) ** 0.75 for i in range(ncol)]
+        tot_n = sum(needs)
+        if tot_n <= 0:
+            break
+        used = 0.0
+        for i in range(ncol):
+            if needs[i] > 0:
+                add = min(target_w[i] - cw[i], rem * (needs[i] / tot_n))
+                cw[i] += add
+                used += add
+        rem -= used
+    if rem > 0.1:
+        tot_c = sum(cw) or 1.0
+        cw = [cw[i] + rem * (cw[i] / tot_c) for i in range(ncol)]
+    return cw
+
+
 def table(rows, S, theme, width):
     ncol = len(rows[0])
-    lens = []
+    PAD = 11.2
+    word_w, full_w, hdr_w = [], [], []
     for i in range(ncol):
-        m = max(len(r[i]) if i < len(r) else 0 for r in rows)
-        # never narrower than the longest word (+ padding), so short label columns do not break words
-        word = max((len(w) for r in rows if i < len(r) for w in re.sub(r'[*`]', '', r[i]).split()),
-                   default=0)
-        lens.append(max(min(max(m, 8), 55), min(word + 3, 20)))
-    tot = sum(lens)
-    cw = [width * l / tot for l in lens]
-    data = []
-    for ri, r in enumerate(rows):
-        r = r + [''] * (ncol - len(r))
-        data.append([Paragraph(inline(c), S['cellh'] if ri == 0 else S['cell']) for c in r])
+        mw = fw = hw = 0.0
+        for ri, r in enumerate(rows):
+            if i < len(r):
+                w, f = _cell_metrics(r[i], is_header=(ri == 0))
+                if w > mw:
+                    mw = w
+                if f > fw:
+                    fw = f
+                if ri == 0:
+                    hw = f
+        word_w.append(mw)
+        full_w.append(fw)
+        hdr_w.append(hw)
+    base_min = [w + PAD for w in word_w]
+    nice_min = [max(base_min[i], min(full_w[i] + PAD, 72.0), min(hdr_w[i] + PAD, 65.0)) for i in range(ncol)]
+    target_w = [max(full_w[i] + PAD, base_min[i]) for i in range(ncol)]
+    if sum(target_w) <= width:
+        rem = width - sum(target_w)
+        tot_t = sum(target_w) or 1.0
+        cw = [target_w[i] + rem * (target_w[i] / tot_t) for i in range(ncol)]
+    elif sum(nice_min) <= width * 0.85:
+        cw = _waterfill(nice_min, target_w, width)
+    elif sum(base_min) <= width:
+        cw = _waterfill(base_min, target_w, width)
+    else:
+        tot = sum(base_min) or 1.0
+        cw = [width * b / tot for b in base_min]
+    data = [[Paragraph(inline(c, max_code_w=cw[ci] - PAD), S['cellh'] if ri == 0 else S['cell']) for ci, c in enumerate(r)] for ri, r in enumerate(rows)]
     t = Table(data, colWidths=cw, repeatRows=1, hAlign='LEFT')
     st = [('BACKGROUND', (0, 0), (-1, 0), theme['accent']), ('GRID', (0, 0), (-1, -1), 0.4, LINE),
           ('VALIGN', (0, 0), (-1, -1), 'TOP'), ('TOPPADDING', (0, 0), (-1, -1), 3.5),
-          ('BOTTOMPADDING', (0, 0), (-1, -1), 4), ('LEFTPADDING', (0, 0), (-1, -1), 5)]
+          ('BOTTOMPADDING', (0, 0), (-1, -1), 4), ('LEFTPADDING', (0, 0), (-1, -1), 4.5),
+          ('RIGHTPADDING', (0, 0), (-1, -1), 4.5)]
     for i in range(1, len(data)):
         if i % 2 == 0:
             st.append(('BACKGROUND', (0, i), (-1, i), colors.HexColor('#f7f8fa')))

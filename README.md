@@ -8,7 +8,7 @@ Everything is numbered in the order it is meant to be completed: sections `01`�
 
 The library has grown past 130 books, so here are the three routes it was built for. Each step names the folders to use, in order; the full listing follows further down.
 
-### Path A · Campus placements (November 2026 to January 2027)
+### Path A · Campus placements (November 2026 to February 2027)
 
 | Step | What | Where |
 |---|---|---|
@@ -338,7 +338,7 @@ A complete course for the GATE DA paper, calibrated on the official 2025 and 202
 | 04 | [Practice, Vol. 2: CS, ML and AI](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/04_GATE_DA_Practice_Vol2_CS_ML_AI.pdf) | 15 sets, 360 questions; code and SQL questions run as printed |
 | 05 | [Aptitude and Mock Papers](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/05_GATE_DA_Aptitude_and_Mock_Papers.pdf) | 40 General Aptitude questions; three full 65-question, 100-mark mock papers with keys and a score sheet |
 | 06 | [Quick Revision](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/06_GATE_DA_Quick_Revision.pdf) | Every formula, rule, count and trap in 12 pages |
-| 07 | [Weekend Warm-up](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/07_GATE_DA_Weekend_Warm-up.pdf) | 12 one-hour Saturday sessions, 7 Nov 2026 – 23 Jan 2027: probability basics and aptitude, 96 questions |
+| 07 | [Weekend Warm-up](06_AI_and_Machine_Learning/09_GATE_Data_Science_and_AI/07_GATE_DA_Weekend_Warm-up.pdf) | 12 one-hour Saturday sessions, 5 Dec 2026 – 20 Feb 2027: probability basics and aptitude, 96 questions |
 
 ### 10 · Corporate workshop: building reliable RAG and agentic AI systems
 

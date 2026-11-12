@@ -61,8 +61,8 @@ GATE 2028 will be held in February 2028, and registration usually opens in late 
 
 | Period | Focus | Daily time |
 |---|---|---|
-| Oct 2026 – Jan 2027 | Placements and the 12-week DSA + SQL plan come first. One hour on weekends: Chapter 1 of this guide and General Aptitude | Weekends only |
-| Feb – May 2027 | Volume 1: probability and statistics (8 weeks), linear algebra (6 weeks), calculus (3 weeks). Easy and Medium tiers of every set | 1.5–2 hours |
+| Dec 2026 – Feb 2027 | Placements and the 12-week DSA + SQL plan come first. One hour on weekends: Chapter 1 of this guide and General Aptitude | Weekends only |
+| Mar – May 2027 | Volume 1: probability and statistics (8 weeks), linear algebra (6 weeks), calculus (3 weeks). Easy and Medium tiers of every set | 1.5–2 hours |
 | Jun – Sep 2027 | Volume 2: Python and DSA (quick, since your placement prep covers it), databases, machine learning, AI. Easy and Medium tiers. **Register in September** | 1.5–2 hours |
 | Oct – Dec 2027 | Hard tiers of every set; the official 2024–2027 papers under time pressure; one General Aptitude set a week | 2 hours |
 | Jan 2028 | The three mock papers, one a week, analysed in full; the quick revision book twice | 2–3 hours |

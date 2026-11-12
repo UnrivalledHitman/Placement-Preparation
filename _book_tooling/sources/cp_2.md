@@ -86,7 +86,7 @@ print(df[['age', 'age_band', 'plan', 'plan_code']].head(3).to_string())
 |---|---|
 | `loc[a:b]` | Label-based, **includes** b |
 | `iloc[a:b]` | Position-based, **excludes** b, like Python slices |
-| Boolean filters | Combine with `&`, `|`, `~` and parentheses: `(a > 1) & (b < 2)`; `and`/`or` raise an error |
+| Boolean filters | Combine with `&`, `\|`, `~` and parentheses: `(a > 1) & (b < 2)`; `and`/`or` raise an error |
 | `axis=0` / `axis=1` | Down the rows (per column) / across columns (per row); `df.drop('col', axis=1)` drops a column |
 | `groupby().agg()` | Split–apply–combine; `transform` returns a result aligned to the original rows |
 | `merge(how=...)` | `inner`, `left`, `right`, `outer`, like SQL joins; `concat` stacks frames |

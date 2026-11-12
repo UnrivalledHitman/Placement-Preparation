@@ -21,7 +21,7 @@
 | A1.14 | 4C2 / 52C2 |
 | A1.15 | Count outcomes with 2 or 3 heads out of 8 |
 | A1.16 | 3s + 10 = 2(s + 10) |
-| A1.17 | |30 × 9 − 5.5 × 15|, then 360 minus it if over 180 |
+| A1.17 | \|30 × 9 − 5.5 × 15\|, then 360 minus it if over 180 |
 | A1.18 | Count odd days: 2026, 2027, 2028 (leap), 2029 |
 | A1.19 | πr²h |
 | A1.20 | Sort, then average the middle two |

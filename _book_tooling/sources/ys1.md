@@ -55,7 +55,7 @@ The subset construction produced more DFA states than the minimal DFA needs: sev
 | (a) aⁿbᵐ | Yes | `a*b*` |
 | (b) aⁿbⁿ, n ≤ 100 | Yes | A finite language is always regular (a DFA with about 200 states counts to 100) |
 | (c) as many `01` as `10` | **Yes** | Each `01` or `10` is a switch between runs; switches alternate, so the counts differ by at most 1 and are equal exactly when the string starts and ends with the same symbol |
-| (d) aᵖ, p prime | No | Pumping gives lengths p + k·|y| for all k; take k = p + 1: p(1 + |y|) is not prime |
+| (d) aᵖ, p prime | No | Pumping gives lengths p + k·\|y\| for all k; take k = p + 1: p(1 + \|y\|) is not prime |
 | (e) binary multiples of 7 | Yes | 7-state DFA tracking the remainder (Chapter 1) |
 
 ```python run Checking the surprising one: count 01 versus 10

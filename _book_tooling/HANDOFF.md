@@ -15,7 +15,7 @@ This file gives a new Claude Code session (cloud or local) everything needed to 
 - **Near-term exam:** TCS CPA (Java), 15 October 2026, camera-proctored.
 - **Main goal:** placement at product-based companies (SDE, with an AI/ML portfolio), plus service-company tests (TCS NQT).
 - **Languages:** Java is the interview language; Python for AI/ML.
-- **Agreed study plan:** a 12-week DSA + SQL roadmap from 19 Oct 2026 to 10 Jan 2027 at 2–3 hours a day; the AI/ML track runs on weekends during it and full-time afterwards.
+- **Agreed study plan:** a 12-week DSA + SQL roadmap from 1 Dec 2026 to 22 Feb 2027 at 2–3 hours a day; the ML roadmap runs alongside the DSA plan at about 2.6–2.9 hours a day.
 
 ## 2. The repository
 
@@ -23,12 +23,12 @@ GitHub: `UnrivalledHitman/Placement-Preparation`, branch `main`. Everything is *
 
 ```text
 Placement Preparation/
-├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20)
+├── 01_Quantitative_Aptitude/   01_Chapter_Wise (11 topics), 02_Mixed_Sets (20), 03_Reasoning_Advanced_Quant_and_Mocks (2)
 ├── 02_Verbal_Ability/          01_Topic_Wise (7), 02_Mixed_Sets (6)
-├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_Java_Concurrency, 06_Security_Engineering, 07_Backend_Spring_Boot, 08_Software_Testing, 09_Frontend_Design_and_Development, 10_Advanced_Backend_Engineering
+├── 03_Programming/             01_Java (5), 02_MySQL (4), 03_JDBC_and_Persistence, 04_DSA_in_Java, 05_DSA_in_Python, 06_Java_Concurrency, 07_Security_Engineering, 08_Backend_Spring_Boot, 09_Software_Testing, 10_Frontend_Design_and_Development, 11_Advanced_Backend_Engineering
 ├── 04_CS_Fundamentals/         01_Operating_Systems, 02_Linux, 03_Git_Internals_and_Workflows, 04_Computer_Networks, 05_DBMS_Theory, 06_DevOps_and_Cloud, 07_Compilers_and_Theory_of_Computation
-├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design, 03_Distributed_Systems
-├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Applied_Data_Science, 04_Deep_Learning, 05_ML_System_Design, 06_MLOps, 07_Data_Science_Interview_Prep
+├── 05_System_Design/           01_Low_Level_Design, 02_High_Level_Design, 03_Distributed_Systems, 04_Kafka_and_Stream_Processing, 05_Data_Engineering
+├── 06_AI_and_Machine_Learning/ 01_Mathematics_for_ML, 02_AI_ML, 03_Applied_Data_Science, 04_Deep_Learning, 05_ML_System_Design, 06_MLOps, 07_Data_Science_Interview_Prep, 08_TCS_CPA_AI_ML_Stream (4), 09_GATE_Data_Science_and_AI (7), 10_Corporate_Workshop_RAG_and_Agents (1)
 ├── 07_Business_and_Finance/    01_Parable_of_the_Pipeline, 02_Cashflow_Quadrant (book + study report each)
 ├── 08_Interview_and_HR/        01_Interview_HR_and_Resume_Guide, 02–03 Mock_Interview_Loops (guide + workbook), 04–05 Senior_Engineer_Handbook (guide + workbook)
 ├── _book_tooling/              this handoff, build scripts, markdown sources (not study material)

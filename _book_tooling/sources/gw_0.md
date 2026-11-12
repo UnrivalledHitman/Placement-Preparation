@@ -1,7 +1,7 @@
 # How to use the warm-up
-%Twelve one-hour Saturday sessions, 7 November 2026 to 23 January 2027, to start GATE without slowing placement preparation
+%Twelve one-hour Saturday sessions, 5 December 2026 to 20 February 2027, to start GATE without slowing placement preparation
 
-Your placement plan runs on weekdays until late January. This book keeps GATE moving at the cost of one hour each Saturday. Each session has a short reading from the GATE DA Guide, Volume 1, then eight questions: four on probability basics (the largest section of the paper) and four on General Aptitude (15 marks that every candidate can earn).
+Your placement plan runs on weekdays until late February. This book keeps GATE moving at the cost of one hour each Saturday. Each session has a short reading from the GATE DA Guide, Volume 1, then eight questions: four on probability basics (the largest section of the paper) and four on General Aptitude (15 marks that every candidate can earn).
 
 | Part of the hour | What to do |
 |---|---|
@@ -13,18 +13,18 @@ All questions carry 1 mark. MCQs have one correct option; NAT answers are typed 
 
 | Session | Saturday | Probability topic | Guide reading |
 |---|---|---|---|
-| 1 | 7 Nov 2026 | Counting: sum and product rules | §1.1 |
-| 2 | 14 Nov | Permutations and combinations | §1.1 |
-| 3 | 21 Nov | The axioms and unions | §1.2 |
-| 4 | 28 Nov | Conditional probability | §1.3 |
-| 5 | 5 Dec | Total probability and Bayes | §1.3 |
-| 6 | 12 Dec | Independence | §1.3 |
-| 7 | 19 Dec | Random variables and expectation | §2.1–2.2 |
-| 8 | 26 Dec | Variance and descriptive statistics | §2.2, §2.5 |
-| 9 | 2 Jan 2027 | The binomial distribution | §3.1–3.2 |
-| 10 | 9 Jan | Poisson and geometric | §3.1–3.3 |
-| 11 | 16 Jan | Uniform and normal | §3.1, §3.4 |
-| 12 | 23 Jan | Mixed review | Chapters 1–3 traps tables |
+| 1 | 5 Dec 2026 | Counting: sum and product rules | §1.1 |
+| 2 | 12 Dec | Permutations and combinations | §1.1 |
+| 3 | 19 Dec | The axioms and unions | §1.2 |
+| 4 | 26 Dec | Conditional probability | §1.3 |
+| 5 | 2 Jan 2027 | Total probability and Bayes | §1.3 |
+| 6 | 9 Jan | Independence | §1.3 |
+| 7 | 16 Jan | Random variables and expectation | §2.1–2.2 |
+| 8 | 23 Jan | Variance and descriptive statistics | §2.2, §2.5 |
+| 9 | 30 Jan | The binomial distribution | §3.1–3.2 |
+| 10 | 6 Feb | Poisson and geometric | §3.1–3.3 |
+| 11 | 13 Feb | Uniform and normal | §3.1, §3.4 |
+| 12 | 20 Feb | Mixed review | Chapters 1–3 traps tables |
 
 # The sessions
 

@@ -603,7 +603,7 @@ DOCS = {
               ['Discovery, tailoring, pricing and follow-on offers', 'Before you quote a client']]),
     'gate_warm': dict(file='GATE_DA_Weekend_Warm-up.pdf',
         title='GATE DA: Weekend Warm-up',
-        subtitle='Twelve one-hour Saturday sessions from 7 November 2026 to 23 January 2027: probability basics and General Aptitude, 96 questions with answers',
+        subtitle='Twelve one-hour Saturday sessions from 5 December 2026 to 20 February 2027: probability basics and General Aptitude, 96 questions with answers',
         theme='gate', kicker='GATE Data Science and AI · Weekend warm-up',
         files=['gw_0.md', 'gws_0.md'],
         rows=[['What is inside', 'How to use it'],

@@ -31,7 +31,7 @@ Online judges allow roughly **10<sup>8</sup> simple operations per second**. Rea
 
 ## How to study this book
 
-| Week (from 19 Oct) | Chapters | Goal |
+| Week (from 1 Dec) | Chapters | Goal |
 |---|---|---|
 | 1 | 1–2 | Complexity, Java collections, arrays, strings, hashing, two pointers, sliding window |
 | 2 | 3 | Binary search (including on the answer), sorting, intervals |

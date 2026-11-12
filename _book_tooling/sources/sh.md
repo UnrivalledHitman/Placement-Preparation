@@ -46,8 +46,8 @@
 |---|---|
 | S5.1 | Track how many opening and closing brackets are placed; add `)` only if it would not exceed the `(` count |
 | S5.2 | One recursion level per digit, one branch per letter |
-| S5.3 | `pal[i][j] = s[i] == s[j] && (j - i < 2 || pal[i+1][j-1])`; then backtrack over end positions |
-| S5.4 | Free positions = `~(cols | d1 | d2) & full`; take the lowest bit with `free & -free`; shift the diagonals when moving to the next row |
+| S5.3 | `pal[i][j] = s[i] == s[j] && (j - i < 2 \|\| pal[i+1][j-1])`; then backtrack over end positions |
+| S5.4 | Free positions = `~(cols \| d1 \| d2) & full`; take the lowest bit with `free & -free`; shift the diagonals when moving to the next row |
 
 ## Part 6 hints
 

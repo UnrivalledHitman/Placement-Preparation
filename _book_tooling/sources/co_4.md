@@ -261,7 +261,8 @@ if __name__ == '__main__':
     module = open(__file__, encoding='utf-8').read().split("if __name__ ==")[0]
     open('mini_opt.py', 'w', encoding='utf-8').write(module)
     open('mini.py', 'w').write('from mini_lex import *\nfrom mini_parse import *\n'
-                               'from mini_check import *\nfrom mini_vm import *\nfrom mini_opt import *\n')
+                               'from mini_check import *\nfrom mini_vm import *\n'
+                               'from mini_opt import *\n')
 
     src = '''fn scale(x) { return x * 1 + 0; print 999; }
 let seconds_per_day = 24 * 60 * 60;

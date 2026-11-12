@@ -444,7 +444,7 @@ public class Main {
 | `x & (x - 1)` | Clear the lowest set bit; `== 0` means a power of two (for x > 0) |
 | `x & -x` | Isolate the lowest set bit (used by Fenwick trees) |
 | `x >> k & 1` | The *k*th bit |
-| `x | (1 << k)`, `x & ~(1 << k)`, `x ^ (1 << k)` | Set, clear, toggle bit *k* |
+| `x \| (1 << k)`, `x & ~(1 << k)`, `x ^ (1 << k)` | Set, clear, toggle bit *k* |
 | `Integer.bitCount(x)` | Number of set bits |
 | `a ^ a = 0`, `a ^ 0 = a` | XOR cancels pairs |
 | `>>` versus `>>>` | Arithmetic (keeps sign) versus logical (fills with zeros) shift |

@@ -159,7 +159,6 @@
               <p class="text-xs text-muted mt-1 m-0">${S.escHtml(config.header.subtitle)}</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <a href="index.html" class="btn">&larr; All Trackers</a>
               <span id="storage-status" class="pill pill-muted">Checking localStorage...</span>
               <button id="theme-toggle-btn" type="button" class="btn" data-action="toggle-theme">Dark Theme</button>
               <button id="btn-export" type="button" class="btn" data-action="export-json">Export JSON</button>

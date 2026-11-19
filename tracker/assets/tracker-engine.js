@@ -163,6 +163,8 @@
         document.documentElement.setAttribute("data-tracker", config.id);
       }
 
+      const cleanMonthlyLabel = String(config.ui.monthlyTabLabel || "Monthly Targets & Projects").replace(/\s*\(\d+m\)\s*$/i, "");
+
       rootEl.innerHTML = `
         <div class="app-layout">
           <aside class="app-sidebar">
@@ -180,27 +182,27 @@
               <div class="sidebar-eyebrow">Workspace Views</div>
               <nav class="tabs sidebar-tabs" role="tablist" aria-label="Tracker views">
                 <button type="button" class="tab-btn active" data-action="switch-tab" data-tab="daily">
-                  <span>Daily Tasks</span>
+                  <span class="tab-label">Daily Tasks</span>
                   <span class="tab-badge font-mono">${DAYS.length}d</span>
                 </button>
                 <button type="button" class="tab-btn" data-action="switch-tab" data-tab="weekly">
-                  <span>Weekly Targets</span>
+                  <span class="tab-label">Weekly Targets</span>
                   <span class="tab-badge font-mono">${WEEKS.length}w</span>
                 </button>
                 <button type="button" class="tab-btn" data-action="switch-tab" data-tab="monthly">
-                  <span>${S.escHtml(config.ui.monthlyTabLabel)}</span>
+                  <span class="tab-label">${S.escHtml(cleanMonthlyLabel)}</span>
                   <span class="tab-badge font-mono">${MONTHS.length}m</span>
                 </button>
                 <button type="button" class="tab-btn" data-action="switch-tab" data-tab="skills">
-                  <span>Skill Matrix</span>
+                  <span class="tab-label">Skill Matrix</span>
                   <span class="tab-badge font-mono">${SKILLS.length}</span>
                 </button>
                 <button type="button" class="tab-btn" data-action="switch-tab" data-tab="report">
-                  <span>Progress Report</span>
+                  <span class="tab-label">Progress Report</span>
                   <span class="tab-badge font-mono">Log</span>
                 </button>
                 <button type="button" class="tab-btn" data-action="switch-tab" data-tab="library">
-                  <span>Redo Queue &amp; Library</span>
+                  <span class="tab-label">Redo Queue &amp; Library</span>
                   <span class="tab-badge font-mono">${Object.keys(RESOURCES).length}</span>
                 </button>
               </nav>
@@ -229,9 +231,9 @@
                   <button id="btn-export" type="button" class="btn flex-1" data-action="export-json">Export JSON</button>
                   <button id="btn-import" type="button" class="btn flex-1" data-action="import-json">Import JSON</button>
                 </div>
-                <div class="flex items-center justify-between gap-2 pt-1">
-                  <span id="storage-status" class="pill pill-muted">Checking localStorage...</span>
-                  <button id="btn-reset" type="button" class="btn btn-ghost" data-action="reset-progress">Reset Progress</button>
+                <div class="sidebar-status-box">
+                  <span id="storage-status" class="pill pill-muted w-full justify-center">Checking localStorage...</span>
+                  <button id="btn-reset" type="button" class="btn btn-ghost w-full" data-action="reset-progress">Reset Progress</button>
                 </div>
               </div>
             </div>
@@ -979,19 +981,19 @@
       telEl.innerHTML = `
         <div class="telemetry-rings">
           <div class="telemetry-ring-card clickable" data-action="switch-tab" data-tab="daily">
-            ${renderRadialSvg(m.overallPct, "var(--primary)", 54, `${m.overallPct}%`)}
-            <div class="min-w-0">
-              <div class="text-xs font-bold">Mastery</div>
-              <div class="text-[11px] text-muted font-mono">${all.done}/${all.total} tasks</div>
-              <div class="text-[11px] text-muted font-mono">${all.hrsDone.toFixed(0)}h logged</div>
+            ${renderRadialSvg(m.overallPct, "var(--primary)", 48, `${m.overallPct}%`)}
+            <div class="telemetry-meta">
+              <div class="telemetry-title">Mastery</div>
+              <div class="telemetry-sub font-mono">${all.done}/${all.total} tasks</div>
+              <div class="telemetry-sub font-mono">${all.hrsDone.toFixed(0)}h logged</div>
             </div>
           </div>
           <div class="telemetry-ring-card clickable" data-action="switch-tab" data-tab="report">
-            ${renderRadialSvg(streakPct, "var(--warning)", 54, `${m.currentStreak}d`)}
-            <div class="min-w-0">
-              <div class="text-xs font-bold">&#128293; Streak</div>
-              <div class="text-[11px] text-muted font-mono">Best: ${m.bestStreak}d</div>
-              <div class="text-[11px] text-muted font-mono">${m.completedDays}/${DAYS.length} full</div>
+            ${renderRadialSvg(streakPct, "var(--warning)", 48, `${m.currentStreak}d`)}
+            <div class="telemetry-meta">
+              <div class="telemetry-title">&#128293; Streak</div>
+              <div class="telemetry-sub font-mono">Best: ${m.bestStreak}d</div>
+              <div class="telemetry-sub font-mono">${m.completedDays}/${DAYS.length} full</div>
             </div>
           </div>
         </div>

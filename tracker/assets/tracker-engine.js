@@ -131,7 +131,7 @@
       status: "all",
       skill: "",
       openRescheduleDay: null,
-      showWelcomeBanner: false
+      pendingStartDate: ""
     };
 
     function renderShell() {
@@ -158,6 +158,7 @@
               <div class="start-date-box">
                 <label for="start-date-input" class="text-xs font-semibold text-muted whitespace-nowrap">Start Date:</label>
                 <input id="start-date-input" type="date" class="input-ctrl py-1 text-xs font-mono" aria-label="Plan start date" />
+                <button id="btn-start-tracker" type="button" class="btn btn-primary" data-action="start-tracker">Start</button>
                 <button type="button" class="btn" data-action="set-start-today">Today</button>
               </div>
               <div class="font-scale-group" role="group" aria-label="Text size">
@@ -237,7 +238,8 @@
     function defaultState(todayIso) {
       const anchor = S.isValidIsoDate(todayIso) ? todayIso : S.getTodayLocalIso();
       return {
-        version: 2,
+        version: 3,
+        isStarted: false,
         startDate: anchor,
         firstOpenedOn: anchor,
         dayShifts: {},
@@ -255,7 +257,10 @@
 
     function sanitizeState(raw, fallbackStartDate) {
       const base = defaultState(fallbackStartDate || S.getTodayLocalIso());
-      if (!raw || typeof raw !== "object") return base;
+      if (!raw || typeof raw !== "object" || raw.version !== 3 || raw.isStarted !== true) {
+        return base;
+      }
+      base.isStarted = true;
       if (S.isValidIsoDate(raw.startDate)) base.startDate = raw.startDate;
       base.firstOpenedOn = S.isValidIsoDate(raw.firstOpenedOn) ? raw.firstOpenedOn : base.startDate;
 
@@ -311,6 +316,7 @@
     function refreshStorageBadge(savedAt, snapshotExists) {
       S.updateStorageBadge(document.getElementById("storage-status"), {
         ok: storageAvailable,
+        notStarted: !state || !state.isStarted,
         savedAt,
         hasSnapshot: snapshotExists,
         storageKey: STORAGE_KEY
@@ -345,6 +351,10 @@
     }
 
     function saveState() {
+      if (!state || !state.isStarted) {
+        refreshStorageBadge(null, false);
+        return false;
+      }
       const stamp = S.formatTimeHHMMSS(new Date());
       state.lastSavedAt = stamp;
       try {
@@ -352,10 +362,12 @@
         storageAvailable = true;
         hasSavedSnapshot = true;
         refreshStorageBadge(stamp, true);
+        return true;
       } catch {
         storageAvailable = false;
         hasSavedSnapshot = false;
         refreshStorageBadge(null, false);
+        return false;
       }
     }
 
@@ -366,27 +378,38 @@
         const raw = window.localStorage.getItem(STORAGE_KEY);
         if (!raw) {
           const fresh = defaultState(todayIso);
-          ui.showWelcomeBanner = true;
-          if (storageAvailable) {
-            fresh.lastSavedAt = S.formatTimeHHMMSS(new Date());
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
-            hasSavedSnapshot = true;
-            refreshStorageBadge(fresh.lastSavedAt, true);
-          } else {
-            hasSavedSnapshot = false;
-            refreshStorageBadge(null, false);
+          ui.pendingStartDate = fresh.startDate;
+          hasSavedSnapshot = false;
+          state = fresh;
+          refreshStorageBadge(null, false);
+          return fresh;
+        }
+        const parsed = JSON.parse(raw);
+        if (!parsed || parsed.version !== 3 || parsed.isStarted !== true) {
+          if (typeof window.localStorage.removeItem === "function") {
+            window.localStorage.removeItem(STORAGE_KEY);
           }
+          const fresh = defaultState(todayIso);
+          ui.pendingStartDate = fresh.startDate;
+          hasSavedSnapshot = false;
+          state = fresh;
+          refreshStorageBadge(null, false);
           return fresh;
         }
         hasSavedSnapshot = true;
-        const loaded = sanitizeState(JSON.parse(raw), todayIso);
+        const loaded = sanitizeState(parsed, todayIso);
+        ui.pendingStartDate = loaded.startDate;
+        state = loaded;
         refreshStorageBadge(loaded.lastSavedAt, true);
         return loaded;
       } catch {
         storageAvailable = false;
         hasSavedSnapshot = false;
+        const fresh = defaultState(todayIso);
+        ui.pendingStartDate = fresh.startDate;
+        state = fresh;
         refreshStorageBadge(null, false);
-        return defaultState(todayIso);
+        return fresh;
       }
     }
 
@@ -586,7 +609,14 @@
       return true;
     }
 
+    function requireStarted() {
+      if (state && state.isStarted) return true;
+      showToast("Select your Start Date and click Start before logging progress.");
+      return false;
+    }
+
     function toggleTaskStatus(id, flagValue) {
+      if (!requireStarted()) return false;
       const todayIso = S.getTodayLocalIso();
       if (state.tasks[id] === flagValue) {
         delete state.tasks[id];
@@ -598,14 +628,16 @@
       }
       saveState();
       renderAll();
+      return true;
     }
 
-    function toggleTaskDone(id) { toggleTaskStatus(id, 1); }
-    function toggleTaskRedo(id) { toggleTaskStatus(id, 2); }
+    function toggleTaskDone(id) { return toggleTaskStatus(id, 1); }
+    function toggleTaskRedo(id) { return toggleTaskStatus(id, 2); }
 
     function toggleDayDone(dayNum) {
+      if (!requireStarted()) return false;
       const day = DAY_MAP[dayNum];
-      if (!day) return;
+      if (!day) return false;
       const todayIso = S.getTodayLocalIso();
       const visible = day.tasks.filter(matchesFilters);
       const targets = visible.length ? visible : day.tasks;
@@ -621,41 +653,86 @@
       }
       saveState();
       renderAll();
+      return true;
     }
 
     function toggleFlagMap(mapObj, id) {
+      if (!requireStarted()) return false;
       if (mapObj[id]) delete mapObj[id];
       else mapObj[id] = true;
       saveState();
       renderAll();
+      return true;
     }
 
-    function toggleWeekTarget(id) { toggleFlagMap(state.weekTargets, id); }
-    function toggleMonthTarget(id) { toggleFlagMap(state.monthTargets, id); }
+    function toggleWeekTarget(id) { return toggleFlagMap(state.weekTargets, id); }
+    function toggleMonthTarget(id) { return toggleFlagMap(state.monthTargets, id); }
 
     function saveDayNote(dayNum, value) {
+      if (!requireStarted()) return false;
       const k = `d${dayNum}`;
       if (value && value.trim()) state.notes[k] = value;
       else delete state.notes[k];
       saveState();
+      return true;
     }
 
-    function setStartDate(isoStr) {
+    function previewStartDate(isoStr) {
       if (!S.isValidIsoDate(isoStr)) {
         showToast("Please select a valid Start Date.");
         renderAll();
         return false;
       }
-      state.startDate = isoStr;
-      ui.showWelcomeBanner = false;
-      recomputeScheduleDates();
-      saveState();
+      ui.pendingStartDate = isoStr;
+      if (!state.isStarted) {
+        state.startDate = isoStr;
+        recomputeScheduleDates();
+      }
       renderAll();
-      showToast(`Timeline adjusted to start on ${DAY_MAP[1].dateLabel}.`);
+      showToast(
+        state.isStarted
+          ? "Date selected. Click Apply Date to update your timeline."
+          : "Start Date selected. Click Start to begin logging progress."
+      );
       return true;
     }
 
+    function startTracker(optionalIso) {
+      const inpEl = document.getElementById("start-date-input");
+      const candidate = S.isValidIsoDate(optionalIso)
+        ? optionalIso
+        : (inpEl && S.isValidIsoDate(inpEl.value))
+          ? inpEl.value
+          : S.isValidIsoDate(ui.pendingStartDate)
+            ? ui.pendingStartDate
+            : state.startDate;
+      if (!S.isValidIsoDate(candidate)) {
+        showToast("Please select a valid Start Date.");
+        renderAll();
+        return false;
+      }
+      const wasStarted = Boolean(state.isStarted);
+      state.isStarted = true;
+      state.startDate = candidate;
+      if (!wasStarted) state.firstOpenedOn = candidate;
+      ui.pendingStartDate = candidate;
+      recomputeScheduleDates();
+      saveState();
+      renderAll();
+      showToast(
+        wasStarted
+          ? `Timeline adjusted to start on ${DAY_MAP[1].dateLabel}.`
+          : `Tracker started on ${DAY_MAP[1].dateLabel}! Progress logging is now active.`
+      );
+      return true;
+    }
+
+    function setStartDate(isoStr) {
+      return startTracker(isoStr);
+    }
+
     function shiftDay(dayNum, delta) {
+      if (!requireStarted()) return false;
       if (!DAY_MAP[dayNum]) return false;
       const cur = state.dayShifts[dayNum] || 0;
       const next = Math.max(0, Math.min(365, cur + Number(delta || 0)));
@@ -677,6 +754,7 @@
     }
 
     function moveDayToDate(dayNum, targetIso) {
+      if (!requireStarted()) return false;
       if (!DAY_MAP[dayNum] || !S.isValidIsoDate(targetIso)) {
         renderAll();
         return false;
@@ -708,25 +786,30 @@
     }
 
     function clearDayShift(dayNum) {
-      if (!DAY_MAP[dayNum]) return;
+      if (!requireStarted()) return false;
+      if (!DAY_MAP[dayNum]) return false;
       delete state.dayShifts[dayNum];
       delete state.shiftReasons[dayNum];
       recomputeScheduleDates();
       saveState();
       renderAll();
       showToast(`Cleared reschedule shift on Day ${dayNum}.`);
+      return true;
     }
 
     function saveShiftReason(dayNum, text) {
-      if (!DAY_MAP[dayNum]) return;
+      if (!requireStarted()) return false;
+      if (!DAY_MAP[dayNum]) return false;
       const trimmed = typeof text === "string" ? text.trim() : "";
       if (trimmed) state.shiftReasons[dayNum] = trimmed;
       else delete state.shiftReasons[dayNum];
       DAY_MAP[dayNum].shiftReason = trimmed;
       saveState();
+      return true;
     }
 
     function catchUpToToday() {
+      if (!requireStarted()) return false;
       const todayIso = S.getTodayLocalIso();
       const firstPending = DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1));
       if (!firstPending || firstPending.dateIso >= todayIso) {
@@ -810,17 +893,30 @@
         streakEl.innerHTML = `&#128293; Streak: ${m.currentStreak}d &bull; Best: ${m.bestStreak}d`;
       }
       const sdInp = document.getElementById("start-date-input");
-      if (sdInp) sdInp.value = state.startDate;
+      if (sdInp) sdInp.value = ui.pendingStartDate || state.startDate;
+      const startBtn = document.getElementById("btn-start-tracker");
+      if (startBtn) {
+        if (!state.isStarted) {
+          startBtn.textContent = "Start";
+          startBtn.className = "btn btn-primary";
+        } else if (ui.pendingStartDate && ui.pendingStartDate !== state.startDate) {
+          startBtn.textContent = "Apply Date";
+          startBtn.className = "btn btn-primary";
+        } else {
+          startBtn.textContent = "Started \u2713";
+          startBtn.className = "btn";
+        }
+      }
 
       const welcomeEl = document.getElementById("welcome-banner");
       if (welcomeEl) {
-        if (ui.showWelcomeBanner) {
+        if (!state.isStarted) {
           welcomeEl.innerHTML = `
             <div class="welcome-banner">
               <div class="text-xs leading-relaxed">
-                <strong>Personalized Timeline Ready:</strong> Your start date was automatically set to <strong>${S.escHtml(DAY_MAP[1].dateLabel)}</strong> (first visit on this device). Adjust <strong>Start Date</strong> above anytime, or click <strong>Reschedule / +1d</strong> on any Day card if an event comes up.
+                <strong>Tracker Not Started:</strong> Select your <strong>Start Date</strong> above (previewing <strong>${S.escHtml(DAY_MAP[1].dateLabel)}</strong>) and click <strong>Start</strong> to unlock tasks and begin logging your progress.
               </div>
-              <button type="button" class="btn" data-action="dismiss-welcome">Got it</button>
+              <button type="button" class="btn btn-primary" data-action="start-tracker">Start Tracker &rarr;</button>
             </div>`;
         } else {
           welcomeEl.innerHTML = "";
@@ -829,7 +925,7 @@
 
       const catchSlot = document.getElementById("catchup-slot");
       if (catchSlot) {
-        const firstPending = DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1));
+        const firstPending = state.isStarted ? DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1)) : null;
         if (firstPending && firstPending.dateIso < todayIso) {
           const behindDays = S.diffDaysIso(firstPending.dateIso, todayIso);
           catchSlot.innerHTML = `<button type="button" class="btn" data-action="catch-up-today" title="Shift Day ${firstPending.dayNum} and remaining days forward to today">Catch Up (+${behindDays}d to Today)</button>`;
@@ -1532,17 +1628,17 @@
         case "set-font-scale":
           S.setFontScale(actEl.getAttribute("data-scale"));
           break;
-        case "set-start-today":
-          setStartDate(S.getTodayLocalIso());
+        case "start-tracker":
+          startTracker();
           break;
-        case "dismiss-welcome":
-          ui.showWelcomeBanner = false;
-          renderAll();
+        case "set-start-today":
+          previewStartDate(S.getTodayLocalIso());
           break;
         case "catch-up-today":
           catchUpToToday();
           break;
         case "toggle-reschedule": {
+          if (!requireStarted()) break;
           const dn = Number(actEl.getAttribute("data-day"));
           ui.openRescheduleDay = ui.openRescheduleDay === dn ? null : dn;
           renderAll();
@@ -1583,12 +1679,20 @@
         case "reset-progress": {
           const now = Date.now();
           if (now < resetArmedUntil) {
-            state = defaultState(S.getTodayLocalIso());
+            const todayIso = S.getTodayLocalIso();
+            state = defaultState(todayIso);
+            ui.pendingStartDate = todayIso;
             ui.openRescheduleDay = null;
             resetArmedUntil = 0;
             actEl.textContent = "Reset Progress";
+            try {
+              if (typeof window.localStorage.removeItem === "function") {
+                window.localStorage.removeItem(STORAGE_KEY);
+              }
+            } catch {}
+            hasSavedSnapshot = false;
             recomputeScheduleDates();
-            saveState();
+            refreshStorageBadge(null, false);
             renderAll();
             showToast(config.ui.resetToast);
           } else {
@@ -1710,7 +1814,7 @@
           ui.status = target.value;
           renderAll();
         } else if (target.id === "start-date-input") {
-          setStartDate(target.value);
+          previewStartDate(target.value);
         } else if (act === "move-day-date") {
           moveDayToDate(Number(target.getAttribute("data-day")), target.value);
         } else if (target.id === "io-file") {
@@ -1769,6 +1873,8 @@
       toggleWeekTarget,
       toggleMonthTarget,
       saveDayNote,
+      previewStartDate,
+      startTracker,
       setStartDate,
       shiftDay,
       moveDayToDate,

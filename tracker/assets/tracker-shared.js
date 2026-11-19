@@ -161,11 +161,17 @@
 
   function updateStorageBadge(badgeEl, opts) {
     if (!badgeEl) return;
-    const { ok, savedAt, hasSnapshot, storageKey, readyLabel } = opts || {};
+    const { ok, notStarted, savedAt, hasSnapshot, storageKey, readyLabel } = opts || {};
     if (!ok) {
       badgeEl.className = "pill pill-warn";
       badgeEl.textContent = "Storage Blocked — Export JSON";
       badgeEl.title = "browser localStorage threw an error; use Export JSON to save progress";
+      return;
+    }
+    if (notStarted) {
+      badgeEl.className = "pill pill-warn";
+      badgeEl.textContent = "Not Started — Click Start";
+      badgeEl.title = "Select your Start Date and click Start to begin logging progress";
       return;
     }
     if (savedAt || hasSnapshot) {

@@ -324,6 +324,60 @@
     return `<span class="delta-flat font-mono">0 &rarr;</span>`;
   }
 
+  function renderHeatmapGrid(daySeries, todayIso) {
+    const weeksMap = new Map();
+    for (const d of daySeries) {
+      if (!weeksMap.has(d.week)) weeksMap.set(d.week, []);
+      weeksMap.get(d.week).push(d);
+    }
+    const cols = [];
+    for (const [wk, days] of weeksMap.entries()) {
+      const cells = days.map((d) => {
+        const level = d.isFull ? "full" : d.done >= 2 ? "high" : d.done === 1 ? "low" : "empty";
+        const isToday = d.dateIso === todayIso;
+        return `<span class="heatmap-cell heatmap-cell--${level}${isToday ? " is-today" : ""}" title="Day ${d.dayNum} (W${wk} • ${S.escHtml(d.dateLabel)}): ${d.done}/${d.total} tasks (${d.pct}%)"></span>`;
+      }).join("");
+      cols.push(`
+        <div class="heatmap-col">
+          <span class="heatmap-wk font-mono">W${wk}</span>
+          <div class="heatmap-cells">${cells}</div>
+        </div>`);
+    }
+    return `
+      <div class="heatmap-wrap">
+        <div class="heatmap-grid">${cols.join("")}</div>
+        <div class="heatmap-legend text-xs text-muted">
+          <span>Consistency Map:</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--empty"></span> 0/3</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--low"></span> 1/3</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--high"></span> 2/3</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--full"></span> 3/3 (100% Day)</span>
+        </div>
+      </div>`;
+  }
+
+  function renderMilestoneBadges(a) {
+    const milestones = [
+      { id: "m1", title: "First Spark", req: "1+ Full Day", unlocked: a.fullDays >= 1, tag: `${Math.min(1, a.fullDays)}/1d` },
+      { id: "m3", title: "3-Day Momentum", req: "3d Streak", unlocked: a.bestStreak >= 3, tag: `${Math.min(3, a.bestStreak)}/3d` },
+      { id: "m7", title: "7-Day Iron Week", req: "7d Streak", unlocked: a.bestStreak >= 7, tag: `${Math.min(7, a.bestStreak)}/7d` },
+      { id: "m14", title: "14-Day Forge", req: "14d Streak", unlocked: a.bestStreak >= 14, tag: `${Math.min(14, a.bestStreak)}/14d` },
+      { id: "m30", title: "30-Day Unstoppable", req: "30d Streak", unlocked: a.bestStreak >= 30, tag: `${Math.min(30, a.bestStreak)}/30d` },
+      { id: "m50", title: "Halfway Mastery", req: "50% Tasks", unlocked: (a.totalDone / Math.max(1, a.totalTasks)) >= 0.5, tag: `${Math.round((a.totalDone / Math.max(1, a.totalTasks)) * 100)}%` }
+    ];
+    return `
+      <div class="milestone-grid">
+        ${milestones.map((m) => `
+          <div class="milestone-badge${m.unlocked ? " is-unlocked" : ""}">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-bold text-xs">${S.escHtml(m.title)}</span>
+              <span class="pill ${m.unlocked ? "pill-ok" : "pill-muted"} font-mono">${m.unlocked ? "Unlocked" : S.escHtml(m.tag)}</span>
+            </div>
+            <div class="text-[11px] text-muted">${S.escHtml(m.req)}</div>
+          </div>`).join("")}
+      </div>`;
+  }
+
   function renderReportView(ctx) {
     const a = analyzeProgress(ctx);
     const { trackSummary, stage } = a;
@@ -437,6 +491,18 @@
       <section class="card p-4 flex flex-col gap-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
+            <h3 class="text-base font-bold m-0">Consistency Heatmap &amp; Milestone Badges</h3>
+            <p class="text-xs text-muted m-0">Every cell represents one roadmap day (${a.totalDays} days across ${Math.round(a.totalDays / 7)} weeks). Unlock streak milestones as you build daily discipline.</p>
+          </div>
+          <span class="pill streak-pill font-mono">&#128293; ${a.currentStreak}d Active &bull; Best ${a.bestStreak}d</span>
+        </div>
+        ${renderHeatmapGrid(a.daySeries, a.todayIso)}
+        ${renderMilestoneBadges(a)}
+      </section>
+
+      <section class="card p-4 flex flex-col gap-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
             <h3 class="text-base font-bold m-0">Day-by-Day Discipline Trend</h3>
             <p class="text-xs text-muted m-0">Daily task completion bars paired with a 3-day rolling discipline trend line (latest 28 tracked days).</p>
           </div>
@@ -532,6 +598,8 @@
 
   window.TrackerReport = {
     analyzeProgress,
+    renderHeatmapGrid,
+    renderMilestoneBadges,
     renderReportView,
     generateMarkdownReport
   };

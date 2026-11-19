@@ -128,12 +128,11 @@
   }
 
   function initPreferences(onStorageEvent) {
-    let savedTheme = "light";
+    let savedTheme = "dark";
     let savedScale = "md";
     try {
       const t = window.localStorage.getItem(THEME_KEY);
       if (t === "dark" || t === "light") savedTheme = t;
-      else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) savedTheme = "dark";
     } catch {}
     try {
       const fs = window.localStorage.getItem(FONT_SCALE_KEY);

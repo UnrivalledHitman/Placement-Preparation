@@ -131,6 +131,7 @@
       status: "all",
       skill: "",
       openRescheduleDay: null,
+      openNoteDay: null,
       pendingStartDate: ""
     };
 
@@ -142,72 +143,141 @@
         .map((tr) => `<button type="button" class="filter-pill" data-action="set-track" data-track="${S.escHtml(tr.key)}">${S.escHtml(tr.label)}</button>`)
         .join("");
 
+      const trackerSuite = [
+        { id: "python", label: "Python Roadmap", badge: "24W", href: "python_dsa_sql_aiml_tracker.html" },
+        { id: "java", label: "Java Backend", badge: "24W", href: "java_dsa_sql_backend_tracker.html" },
+        { id: "aptitude", label: "TCS Aptitude", badge: "12W", href: "aptitude_tracker.html" }
+      ];
+      const suiteSwitcherHtml = trackerSuite.map((item) => {
+        const isCurrent = item.id === config.id;
+        return `
+          <a href="${S.escHtml(item.href)}" class="suite-pill${isCurrent ? " active" : ""}">
+            <span class="suite-dot suite-dot--${S.escHtml(item.id)}"></span>
+            <span class="flex-1 font-semibold">${S.escHtml(item.label)}</span>
+            <span class="font-mono text-[11px]">${S.escHtml(item.badge)}</span>
+          </a>`;
+      }).join("");
+
+      rootEl.setAttribute("data-tracker", config.id);
+      if (document.documentElement && typeof document.documentElement.setAttribute === "function") {
+        document.documentElement.setAttribute("data-tracker", config.id);
+      }
+
       rootEl.innerHTML = `
-        <header class="card p-4 flex flex-col gap-3">
-          <div class="flex flex-wrap items-start justify-between gap-3">
-            <div class="flex-1 min-w-[240px]">
-              <div class="flex flex-wrap items-center gap-2 mb-1">
-                ${headerPills}
-                <span id="timeline-badge" class="pill pill-muted font-mono"></span>
-                <span id="header-streak-pill" class="pill streak-pill font-mono">&#128293; Streak: 0d &bull; Best: 0d</span>
-              </div>
-              <h1 class="text-lg font-bold tracking-tight m-0">${S.escHtml(config.header.title)}</h1>
-              <p class="text-xs text-muted mt-1 m-0">${S.escHtml(config.header.subtitle)}</p>
+        <div class="app-layout">
+          <aside class="app-sidebar">
+            <div class="sidebar-panel">
+              <div class="sidebar-eyebrow">Placement Studio Suite</div>
+              <nav class="suite-switcher" aria-label="Switch Tracker">${suiteSwitcherHtml}</nav>
             </div>
-            <div class="flex flex-wrap items-center gap-2">
+
+            <div class="sidebar-panel">
+              <div class="sidebar-eyebrow">Progress &amp; Streak Telemetry</div>
+              <div id="sidebar-telemetry" class="sidebar-telemetry"></div>
+            </div>
+
+            <div class="sidebar-panel">
+              <div class="sidebar-eyebrow">Workspace Views</div>
+              <nav class="tabs sidebar-tabs" role="tablist" aria-label="Tracker views">
+                <button type="button" class="tab-btn active" data-action="switch-tab" data-tab="daily">
+                  <span>Daily Tasks</span>
+                  <span class="tab-badge font-mono">${DAYS.length}d</span>
+                </button>
+                <button type="button" class="tab-btn" data-action="switch-tab" data-tab="weekly">
+                  <span>Weekly Targets</span>
+                  <span class="tab-badge font-mono">${WEEKS.length}w</span>
+                </button>
+                <button type="button" class="tab-btn" data-action="switch-tab" data-tab="monthly">
+                  <span>${S.escHtml(config.ui.monthlyTabLabel)}</span>
+                  <span class="tab-badge font-mono">${MONTHS.length}m</span>
+                </button>
+                <button type="button" class="tab-btn" data-action="switch-tab" data-tab="skills">
+                  <span>Skill Matrix</span>
+                  <span class="tab-badge font-mono">${SKILLS.length}</span>
+                </button>
+                <button type="button" class="tab-btn" data-action="switch-tab" data-tab="report">
+                  <span>Progress Report</span>
+                  <span class="tab-badge font-mono">Log</span>
+                </button>
+                <button type="button" class="tab-btn" data-action="switch-tab" data-tab="library">
+                  <span>Redo Queue &amp; Library</span>
+                  <span class="tab-badge font-mono">${Object.keys(RESOURCES).length}</span>
+                </button>
+              </nav>
+            </div>
+
+            <div class="sidebar-panel">
+              <div class="sidebar-eyebrow">Schedule &amp; Controls</div>
               <div class="start-date-box">
                 <label for="start-date-input" class="text-xs font-semibold text-muted whitespace-nowrap">Start Date:</label>
-                <input id="start-date-input" type="date" class="input-ctrl py-1 text-xs font-mono" aria-label="Plan start date" />
-                <button id="btn-start-tracker" type="button" class="btn btn-primary" data-action="start-tracker">Start</button>
-                <button type="button" class="btn" data-action="set-start-today">Today</button>
+                <input id="start-date-input" type="date" class="input-ctrl py-1 text-xs font-mono w-full" aria-label="Plan start date" />
+                <div class="flex items-center gap-1.5 w-full">
+                  <button id="btn-start-tracker" type="button" class="btn btn-primary flex-1" data-action="start-tracker">Start</button>
+                  <button type="button" class="btn" data-action="set-start-today">Today</button>
+                </div>
               </div>
-              <div class="font-scale-group" role="group" aria-label="Text size">
-                <button type="button" class="scale-btn" data-action="set-font-scale" data-scale="sm" title="Smaller text">A-</button>
-                <button type="button" class="scale-btn active" data-action="set-font-scale" data-scale="md" title="Default readable text">A</button>
-                <button type="button" class="scale-btn" data-action="set-font-scale" data-scale="lg" title="Large text">A+</button>
+              <div class="sidebar-utils">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="font-scale-group" role="group" aria-label="Text size">
+                    <button type="button" class="scale-btn" data-action="set-font-scale" data-scale="sm" title="Smaller text">A-</button>
+                    <button type="button" class="scale-btn active" data-action="set-font-scale" data-scale="md" title="Default readable text">A</button>
+                    <button type="button" class="scale-btn" data-action="set-font-scale" data-scale="lg" title="Large text">A+</button>
+                  </div>
+                  <button id="theme-toggle-btn" type="button" class="btn flex-1" data-action="toggle-theme">Light Theme</button>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button id="btn-export" type="button" class="btn flex-1" data-action="export-json">Export JSON</button>
+                  <button id="btn-import" type="button" class="btn flex-1" data-action="import-json">Import JSON</button>
+                </div>
+                <div class="flex items-center justify-between gap-2 pt-1">
+                  <span id="storage-status" class="pill pill-muted">Checking localStorage...</span>
+                  <button id="btn-reset" type="button" class="btn btn-ghost" data-action="reset-progress">Reset Progress</button>
+                </div>
               </div>
-              <span id="storage-status" class="pill pill-muted">Checking localStorage...</span>
-              <button id="theme-toggle-btn" type="button" class="btn" data-action="toggle-theme">Dark Theme</button>
-              <button id="btn-export" type="button" class="btn" data-action="export-json">Export JSON</button>
-              <button id="btn-import" type="button" class="btn" data-action="import-json">Import JSON</button>
-              <button id="btn-reset" type="button" class="btn btn-ghost" data-action="reset-progress">Reset Progress</button>
             </div>
-          </div>
-          <div id="welcome-banner"></div>
-          <div id="kpi-grid" class="kpi-grid"></div>
-        </header>
+          </aside>
 
-        <section class="card p-3 flex flex-wrap items-center justify-between gap-2">
-          <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[240px]">
-            <input id="search-input" type="search" class="input-ctrl flex-1 min-w-[180px]" placeholder="${S.escHtml(config.ui.searchPlaceholder)}" />
-            <div class="flex flex-wrap items-center gap-1" role="group" aria-label="Track filter">
-              <button type="button" class="filter-pill active" data-action="set-track" data-track="all">All</button>
-              ${trackFilters}
-            </div>
-            <select id="status-filter" class="input-ctrl" aria-label="Status filter">
-              <option value="all">Status: All</option>
-              <option value="pending">Status: Pending</option>
-              <option value="done">Status: Done</option>
-              <option value="redo">Status: Needs Redo (~)</option>
-            </select>
-            <span id="active-skill-filter"></span>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span id="catchup-slot"></span>
-            <button id="btn-next-pending" type="button" class="btn btn-primary" data-action="next-pending-day">Next Pending Day &rarr;</button>
-          </div>
-        </section>
+          <div class="app-workspace">
+            <header class="card workspace-hero p-4 flex flex-col gap-3">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div class="flex-1 min-w-[240px]">
+                  <div class="flex flex-wrap items-center gap-2 mb-1">
+                    ${headerPills}
+                    <span id="timeline-badge" class="pill pill-muted font-mono"></span>
+                    <span id="header-streak-pill" class="pill streak-pill font-mono">&#128293; Streak: 0d &bull; Best: 0d</span>
+                  </div>
+                  <h1 class="text-lg font-bold tracking-tight m-0">${S.escHtml(config.header.title)}</h1>
+                  <p class="text-xs text-muted mt-1 m-0">${S.escHtml(config.header.subtitle)}</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span id="catchup-slot"></span>
+                  <button id="btn-next-pending" type="button" class="btn btn-primary" data-action="next-pending-day">Next Pending Day &rarr;</button>
+                </div>
+              </div>
+              <div id="welcome-banner"></div>
+              <div id="kpi-grid" class="kpi-grid"></div>
+            </header>
 
-        <nav class="tabs" role="tablist" aria-label="Tracker views">
-          <button type="button" class="tab-btn active" data-action="switch-tab" data-tab="daily">Daily Tasks (${DAYS.length}d)</button>
-          <button type="button" class="tab-btn" data-action="switch-tab" data-tab="weekly">Weekly Targets (${WEEKS.length}w)</button>
-          <button type="button" class="tab-btn" data-action="switch-tab" data-tab="monthly">${S.escHtml(config.ui.monthlyTabLabel)}</button>
-          <button type="button" class="tab-btn" data-action="switch-tab" data-tab="skills">Skill Matrix (${SKILLS.length})</button>
-          <button type="button" class="tab-btn" data-action="switch-tab" data-tab="report">Progress Report</button>
-          <button type="button" class="tab-btn" data-action="switch-tab" data-tab="library">Redo Queue &amp; Library</button>
-        </nav>
+            <section class="card command-bar p-3 flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[240px]">
+                <input id="search-input" type="search" class="input-ctrl flex-1 min-w-[180px]" placeholder="${S.escHtml(config.ui.searchPlaceholder)}" />
+                <div class="flex flex-wrap items-center gap-1" role="group" aria-label="Track filter">
+                  <button type="button" class="filter-pill active" data-action="set-track" data-track="all">All</button>
+                  ${trackFilters}
+                </div>
+                <select id="status-filter" class="input-ctrl" aria-label="Status filter">
+                  <option value="all">Status: All</option>
+                  <option value="pending">Status: Pending</option>
+                  <option value="done">Status: Done</option>
+                  <option value="redo">Status: Needs Redo (~)</option>
+                </select>
+                <span id="active-skill-filter"></span>
+              </div>
+            </section>
 
-        <main id="main-view" class="flex flex-col gap-3"></main>
+            <main id="main-view" class="flex flex-col gap-3"></main>
+          </div>
+        </div>
 
         <div id="io-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="io-modal-title">
           <div class="card p-4 w-full max-w-xl flex flex-col gap-3">
@@ -881,6 +951,56 @@
       showToast(`Jumped to Day ${day.dayNum} (Week ${day.week} • ${day.dateLabel})`);
     }
 
+    function renderRadialSvg(pct, colorExpr, sizePx, centerText) {
+      const sz = sizePx || 56;
+      const r = (sz - 8) / 2;
+      const c = sz / 2;
+      const circ = 2 * Math.PI * r;
+      const safePct = Math.max(0, Math.min(100, Number(pct) || 0));
+      const dash = ((safePct / 100) * circ).toFixed(1);
+      return `
+        <svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" class="radial-ring" role="img" aria-label="Progress ${safePct}%">
+          <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--secondary)" stroke-width="5" />
+          <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${colorExpr || "var(--primary)"}" stroke-width="5" stroke-linecap="round" stroke-dasharray="${dash} ${circ.toFixed(1)}" transform="rotate(-90 ${c} ${c})" />
+          <text x="${c}" y="${c + 4}" text-anchor="middle" fill="var(--foreground)" font-size="11" font-family="monospace" font-weight="700">${S.escHtml(centerText)}</text>
+        </svg>`;
+    }
+
+    function renderSidebarTelemetry(m) {
+      const telEl = document.getElementById("sidebar-telemetry");
+      if (!telEl) return;
+      const all = m.byTrack.all;
+      const streakPct = Math.min(100, Math.round((m.currentStreak / Math.max(7, m.bestStreak || 7)) * 100));
+      const trailHtml = m.recentTrail.map((pt) => {
+        const cls = pt.state === "full" ? "streak-dot--full" : pt.state === "partial" ? "streak-dot--partial" : "streak-dot--empty";
+        return `<span class="streak-dot ${cls}" title="Day ${pt.dayNum} (${S.escHtml(pt.dateLabel)}): ${pt.state}"></span>`;
+      }).join("");
+
+      telEl.innerHTML = `
+        <div class="telemetry-rings">
+          <div class="telemetry-ring-card clickable" data-action="switch-tab" data-tab="daily">
+            ${renderRadialSvg(m.overallPct, "var(--primary)", 54, `${m.overallPct}%`)}
+            <div class="min-w-0">
+              <div class="text-xs font-bold">Mastery</div>
+              <div class="text-[11px] text-muted font-mono">${all.done}/${all.total} tasks</div>
+              <div class="text-[11px] text-muted font-mono">${all.hrsDone.toFixed(0)}h logged</div>
+            </div>
+          </div>
+          <div class="telemetry-ring-card clickable" data-action="switch-tab" data-tab="report">
+            ${renderRadialSvg(streakPct, "var(--warning)", 54, `${m.currentStreak}d`)}
+            <div class="min-w-0">
+              <div class="text-xs font-bold">&#128293; Streak</div>
+              <div class="text-[11px] text-muted font-mono">Best: ${m.bestStreak}d</div>
+              <div class="text-[11px] text-muted font-mono">${m.completedDays}/${DAYS.length} full</div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 pt-1">
+          <span class="text-[11px] text-muted font-semibold">7-Day Trail</span>
+          <span class="streak-dots">${trailHtml}</span>
+        </div>`;
+    }
+
     function renderHeaderMeta(m, todayIso) {
       const totalShifts = getTotalShiftDays();
       const tlEl = document.getElementById("timeline-badge");
@@ -898,13 +1018,13 @@
       if (startBtn) {
         if (!state.isStarted) {
           startBtn.textContent = "Start";
-          startBtn.className = "btn btn-primary";
+          startBtn.className = "btn btn-primary flex-1";
         } else if (ui.pendingStartDate && ui.pendingStartDate !== state.startDate) {
           startBtn.textContent = "Apply Date";
-          startBtn.className = "btn btn-primary";
+          startBtn.className = "btn btn-primary flex-1";
         } else {
           startBtn.textContent = "Started \u2713";
-          startBtn.className = "btn";
+          startBtn.className = "btn flex-1";
         }
       }
 
@@ -913,10 +1033,19 @@
         if (!state.isStarted) {
           welcomeEl.innerHTML = `
             <div class="welcome-banner">
-              <div class="text-xs leading-relaxed">
-                <strong>Tracker Not Started:</strong> Select your <strong>Start Date</strong> above (previewing <strong>${S.escHtml(DAY_MAP[1].dateLabel)}</strong>) and click <strong>Start</strong> to unlock tasks and begin logging your progress.
+              <div class="flex flex-col gap-1 flex-1 min-w-[240px]">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="pill pill-warn font-mono">Tracker Not Started</span>
+                  <span class="pill pill-1 font-mono">Previewing ${S.escHtml(DAY_MAP[1].dateLabel)} &rarr; ${S.escHtml(DAYS[DAYS.length - 1].dateLabel)}</span>
+                </div>
+                <div class="text-xs leading-relaxed">
+                  <strong>Launch Your Personalized Schedule:</strong> Select your <strong>Start Date</strong> in the sidebar (currently <strong>${S.escHtml(DAY_MAP[1].dateLabel)}</strong>) and click <strong>Start</strong> to unlock all ${ALL_TASKS.length} tasks and begin logging daily progress.
+                </div>
               </div>
-              <button type="button" class="btn btn-primary" data-action="start-tracker">Start Tracker &rarr;</button>
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" class="btn" data-action="set-start-today">Use Today</button>
+                <button type="button" class="btn btn-primary" data-action="start-tracker">Launch My Roadmap &rarr;</button>
+              </div>
             </div>`;
         } else {
           welcomeEl.innerHTML = "";
@@ -933,6 +1062,7 @@
           catchSlot.innerHTML = "";
         }
       }
+      renderSidebarTelemetry(m);
     }
 
     function renderKpis(m) {
@@ -1076,7 +1206,7 @@
         </div>`;
     }
 
-    function renderDayCard(day, filteredTasks, dayStreak, todayIso) {
+    function renderDayCard(day, filteredTasks, dayStreak, todayIso, isSpotlight) {
       const allDone = day.tasks.every((t) => getTaskStatus(t.id) === 1);
       const doneCount = day.tasks.filter((t) => getTaskStatus(t.id) === 1).length;
       const totalHrs = day.tasks.reduce((acc, t) => acc + t.hrs, 0);
@@ -1087,7 +1217,9 @@
       const isToday = day.dateIso === todayIso;
       const isOverdue = day.dateIso < todayIso && !allDone;
       const isPanelOpen = ui.openRescheduleDay === day.dayNum;
+      const isNoteOpen = Boolean(noteVal.trim()) || ui.openNoteDay === day.dayNum || day.dayNum === 1 || isSpotlight;
       const minTargetIso = day.dayNum > 1 ? S.addDaysIso(DAY_MAP[day.dayNum - 1].dateIso, 1).iso : "";
+      const cardIdAttr = isSpotlight ? `id="spotlight-day-${day.dayNum}"` : `id="day-${day.dayNum}"`;
 
       const shiftBanner = day.ownShift > 0
         ? `<div class="shift-banner">
@@ -1117,10 +1249,18 @@
           </div>`
         : "";
 
+      const noteDrawer = isNoteOpen
+        ? `<div class="note-drawer px-3.5 py-2 bg-content border-t flex items-center gap-2">
+            <span class="text-xs font-semibold text-muted whitespace-nowrap">${S.escHtml(config.ui.noteLabel)}</span>
+            <input type="text" class="input-ctrl flex-1 py-1 text-xs" data-action="save-day-note" data-day="${day.dayNum}" value="${S.escHtml(noteVal)}" placeholder="${S.escHtml(notePlaceholder)}" />
+          </div>`
+        : "";
+
       return `
-        <article id="day-${day.dayNum}" class="card day-card${isToday ? " is-today" : ""}">
+        <article ${cardIdAttr} class="card day-card${isToday ? " is-today" : ""}${allDone ? " is-complete" : ""}${isSpotlight ? " day-card--spotlight" : ""}">
           <div class="day-head">
             <div class="flex flex-wrap items-center gap-2">
+              ${isSpotlight ? `<span class="pill pill-1 font-mono">&#9733; TODAY'S FOCUS</span>` : ""}
               <span class="pill pill-muted font-mono">Day ${day.dayNum}/${DAYS.length}</span>
               <span class="font-bold text-sm">${S.escHtml(day.weekday)}, ${S.escHtml(day.dateLabel)}</span>
               ${isToday ? `<span class="pill pill-1 font-mono">TODAY</span>` : ""}
@@ -1132,6 +1272,7 @@
             <div class="flex flex-wrap items-center gap-2">
               <span class="text-xs font-mono text-muted">${doneCount}/${day.tasks.length} tasks &bull; ${totalHrs.toFixed(1)}h</span>
               ${!allDone ? `<button type="button" class="btn" data-action="shift-day" data-day="${day.dayNum}" data-delta="1" title="Missed or busy? Push this day +1 day">+1d &curvearrowright;</button>` : ""}
+              <button type="button" class="btn" data-action="toggle-day-note" data-day="${day.dayNum}">${isNoteOpen ? "Hide Note" : (noteVal.trim() ? "Edit Note" : "+ Note")}</button>
               <button type="button" class="btn" data-action="toggle-reschedule" data-day="${day.dayNum}">${isPanelOpen ? "Hide Shift" : "Reschedule"}</button>
               <button type="button" class="btn ${allDone ? "btn-primary" : ""}" data-action="toggle-day-done" data-day="${day.dayNum}">${allDone ? "&#10003; Day Completed" : "Mark Day Done"}</button>
             </div>
@@ -1139,10 +1280,7 @@
           ${shiftBanner}
           ${reschedulePanel}
           <div>${filteredTasks.map(renderTaskRow).join("")}</div>
-          <div class="px-3.5 py-2 bg-content border-t flex items-center gap-2">
-            <span class="text-xs font-semibold text-muted whitespace-nowrap">${S.escHtml(config.ui.noteLabel)}</span>
-            <input type="text" class="input-ctrl flex-1 py-1 text-xs" data-action="save-day-note" data-day="${day.dayNum}" value="${S.escHtml(noteVal)}" placeholder="${S.escHtml(notePlaceholder)}" />
-          </div>
+          ${noteDrawer}
         </article>`;
     }
 
@@ -1155,7 +1293,7 @@
           const sub = day.tasks.filter(matchesFilters);
           if (sub.length) {
             count += sub.length;
-            cards.push(renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso));
+            cards.push(renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso, false));
           }
         }
         return `
@@ -1170,6 +1308,16 @@
       const wStats = getWeekStats(activeW.id);
       const phases = config.phases || [];
       const activePhase = phases.find((p) => activeW.id >= p.minWeek && activeW.id <= p.maxWeek) || phases[0];
+
+      const focusDay = DAYS.find((d) => d.dateIso === todayIso && d.tasks.some((t) => getTaskStatus(t.id) !== 1))
+        || DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1))
+        || DAYS[DAYS.length - 1];
+      const focusSub = focusDay ? focusDay.tasks.filter(matchesFilters) : [];
+      const spotlightHtml = focusDay && focusSub.length
+        ? `<section class="spotlight-section flex flex-col gap-2">
+            ${renderDayCard(focusDay, focusSub, m.dayStreakMap[focusDay.dayNum] || 0, todayIso, true)}
+          </section>`
+        : "";
 
       const mBtns = MONTHS.map((mo) => `<button type="button" class="filter-pill ${mo.weeks.includes(activeW.id) ? "active" : ""}" data-action="open-week" data-week="${mo.weeks[0]}">M${mo.id}: W${mo.weeks[0]}–W${mo.weeks[mo.weeks.length - 1]}</button>`).join("");
       const weekChips = WEEKS.map((w) => {
@@ -1189,10 +1337,30 @@
       const dayCards = activeW.dayNums.map((dn) => {
         const day = DAY_MAP[dn];
         const sub = day.tasks.filter(matchesFilters);
-        return sub.length ? renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso) : "";
+        return sub.length ? renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso, false) : "";
       }).filter(Boolean).join("");
 
+      const collapsedWeeksHtml = WEEKS.filter((w) => w.id !== activeW.id).map((w) => {
+        const st = getWeekStats(w.id);
+        const firstDay = DAY_MAP[w.dayNums[0]];
+        const lastDay = DAY_MAP[w.dayNums[w.dayNums.length - 1]];
+        return `
+          <div class="week-accordion-row clickable" data-action="open-week" data-week="${w.id}">
+            <div class="flex flex-wrap items-center gap-2 min-w-0">
+              <span class="pill ${st.pct === 100 ? "pill-ok" : "pill-muted"} font-mono">W${w.id}</span>
+              <span class="font-semibold text-sm">${S.escHtml(w.title)}</span>
+              <span class="text-xs text-muted font-mono">${S.escHtml(firstDay.dateLabel)} &ndash; ${S.escHtml(lastDay.dateLabel)}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div style="width:100px">${S.renderProgressBar(st.pct, st.pct === 100 ? "var(--success)" : "var(--primary)", 6)}</div>
+              <span class="font-mono text-xs font-bold">${st.done}/${st.total} (${st.pct}%)</span>
+              <span class="btn">Expand &darr;</span>
+            </div>
+          </div>`;
+      }).join("");
+
       return `
+        ${spotlightHtml}
         <section class="card p-3 flex flex-col gap-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex flex-wrap items-center gap-1.5">${mBtns}</div>
@@ -1203,7 +1371,7 @@
         <section class="card p-4 flex flex-col gap-2">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <span class="pill pill-muted font-mono mb-1">Week ${activeW.id} / ${WEEKS.length} &bull; Month ${activeW.month}</span>
+              <span class="pill pill-1 font-mono mb-1">Expanded Week ${activeW.id} / ${WEEKS.length} &bull; Month ${activeW.month}</span>
               <h2 class="text-base font-bold m-0">${S.escHtml(activeW.title)}</h2>
               <p class="text-xs text-muted mt-0.5 m-0">${S.escHtml(activeW.practiceTag)}</p>
             </div>
@@ -1236,7 +1404,14 @@
             </div>
           </div>
         </section>
-        ${dayCards || `<div class="card p-6 text-center text-sm text-muted">No tasks in Week ${activeW.id} match the current filter.</div>`}`;
+        ${dayCards || `<div class="card p-6 text-center text-sm text-muted">No tasks in Week ${activeW.id} match the current filter.</div>`}
+        <section class="card p-4 flex flex-col gap-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-sm font-bold m-0">Other Weeks Accordion (Click any week to expand its days)</h3>
+            <span class="pill pill-muted font-mono">${WEEKS.length - 1} collapsed weeks</span>
+          </div>
+          <div class="week-accordion-list">${collapsedWeeksHtml}</div>
+        </section>`;
     }
 
     function renderWeekCardsGrid(list) {
@@ -1473,79 +1648,92 @@
         .sort((a, b) => a.dayNum - b.dayNum);
 
       return `
-        <div class="grid-2">
-          <section class="card p-4 flex flex-col gap-2.5">
-            <div class="flex items-center justify-between gap-2">
-              <h2 class="text-sm font-bold m-0">7-Day Redo Queue (~ Flagged)</h2>
+        <div class="queue-notes-grid">
+          <section class="card queue-panel">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h2 class="text-base font-bold m-0">7-Day Redo Queue (~ Flagged)</h2>
               <span class="pill pill-warn font-mono">${redoTasks.length} queued</span>
             </div>
-            <p class="text-xs text-muted m-0">${S.escHtml(config.ui.redoDesc)}</p>
+            <p class="text-xs text-muted m-0 leading-relaxed">${S.escHtml(config.ui.redoDesc)}</p>
             ${redoTasks.length
-              ? `<div class="flex flex-col gap-2">${redoTasks.map((t) => {
+              ? `<div class="queue-list">${redoTasks.map((t) => {
                   const scheduledDay = DAY_MAP[t.dayNum];
                   const target = S.addDaysIso(scheduledDay ? scheduledDay.dateIso : state.startDate, 7);
                   const meta = trackMeta[t.track] || { pillClass: "pill-muted", label: t.track };
                   return `
-                    <div class="subcard p-2.5 flex items-start justify-between gap-2">
-                      <div class="text-xs">
-                        <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+                    <article class="queue-item">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-1.5">
                           <span class="pill ${meta.pillClass}">${S.escHtml(meta.label)}</span>
-                          <strong>Day ${t.dayNum} (W${t.week}): ${S.escHtml(t.title)}</strong>
+                          <span class="pill pill-muted font-mono">Day ${t.dayNum} &bull; W${t.week}</span>
                         </div>
-                        <div class="text-muted">Redo due by: <strong>${S.escHtml(target.label)}</strong> &bull; ${renderResRef(t.res)}</div>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                          <button type="button" class="btn btn-primary" data-action="toggle-task-done" data-id="${S.escHtml(t.id)}">&#10003; Mastered</button>
+                          <button type="button" class="btn" data-action="open-week" data-week="${t.week}">Open W${t.week} &rarr;</button>
+                        </div>
                       </div>
-                      <div class="flex gap-1">
-                        <button type="button" class="btn btn-primary" data-action="toggle-task-done" data-id="${S.escHtml(t.id)}">&#10003; Mastered</button>
-                        <button type="button" class="btn" data-action="open-week" data-week="${t.week}">W${t.week}</button>
+                      <div class="font-bold text-sm leading-snug wrap-anywhere">${S.escHtml(t.title)}</div>
+                      <div class="pt-1.5 border-t flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
+                        <span>Redo due by: <strong>${S.escHtml(target.label)}</strong></span>
+                        <div class="wrap-anywhere">${renderResRef(t.res)}</div>
                       </div>
-                    </div>`;
+                    </article>`;
                 }).join("")}</div>`
               : `<div class="subcard p-4 text-xs text-center text-muted">${S.escHtml(config.ui.redoEmptyText)}</div>`}
           </section>
 
-          <section class="card p-4 flex flex-col gap-2.5">
-            <div class="flex items-center justify-between gap-2">
-              <h2 class="text-sm font-bold m-0">${S.escHtml(config.ui.notesPanelTitle)}</h2>
+          <section class="card queue-panel">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h2 class="text-base font-bold m-0">${S.escHtml(config.ui.notesPanelTitle)}</h2>
               <span class="pill pill-muted font-mono">${noteEntries.length} entries</span>
             </div>
-            <p class="text-xs text-muted m-0">${S.escHtml(config.ui.notesPanelDesc)}</p>
+            <p class="text-xs text-muted m-0 leading-relaxed">${S.escHtml(config.ui.notesPanelDesc)}</p>
             ${noteEntries.length
-              ? `<div class="flex flex-col gap-2">${noteEntries.map((e) => {
+              ? `<div class="queue-list">${noteEntries.map((e) => {
                   const d = DAY_MAP[e.dayNum];
                   return `
-                    <div class="subcard p-2.5 flex items-start justify-between gap-2 text-xs">
-                      <div>
-                        <div class="font-semibold">Day ${d.dayNum} (${S.escHtml(d.dateLabel)} &bull; W${d.week})</div>
-                        <div class="text-muted mt-0.5">${S.escHtml(e.val)}</div>
+                    <article class="note-item">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                          <span class="pill pill-1 font-mono">Day ${d.dayNum}</span>
+                          <span class="text-xs font-semibold text-muted">${S.escHtml(d.weekday)}, ${S.escHtml(d.dateLabel)} &bull; Week ${d.week}</span>
+                        </div>
+                        <button type="button" class="btn" data-action="open-week" data-week="${d.week}">Open W${d.week} &rarr;</button>
                       </div>
-                      <button type="button" class="btn" data-action="open-week" data-week="${d.week}">Go &rarr;</button>
-                    </div>`;
+                      <div class="text-sm leading-relaxed wrap-anywhere">${S.escHtml(e.val)}</div>
+                    </article>`;
                 }).join("")}</div>`
               : `<div class="subcard p-4 text-xs text-center text-muted">${S.escHtml(config.ui.notesEmptyText)}</div>`}
           </section>
         </div>
 
-        <section class="card p-4 flex flex-col gap-3">
-          <div>
-            <h2 class="text-sm font-bold m-0">${S.escHtml(config.ui.libraryTitle)} (${Object.keys(RESOURCES).length} Mapped PDFs)</h2>
-            <p class="text-xs text-muted m-0">Click any PDF below to open it directly from the repository.</p>
+        <section class="card library-section">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-bold m-0">${S.escHtml(config.ui.libraryTitle)} (${Object.keys(RESOURCES).length} Mapped PDFs)</h2>
+              <p class="text-xs text-muted mt-0.5 m-0">Click any book card below to open the PDF directly from the repository.</p>
+            </div>
+            <span class="pill pill-muted font-mono">${Object.keys(RESOURCES).length} Total Books</span>
           </div>
-          <div class="grid-3">
+          <div class="library-groups">
             ${config.tracks.map((tr) => {
               const meta = trackMeta[tr.key];
               const items = Object.entries(RESOURCES).filter(([, r]) => r.track === tr.key);
               return `
-                <div class="subcard p-3 flex flex-col gap-2">
-                  <div class="flex items-center justify-between">
-                    <span class="pill ${meta.pillClass}">${S.escHtml(tr.libraryHeading)}</span>
-                    <span class="text-xs font-mono text-muted">${items.length} PDFs</span>
+                <div class="library-group">
+                  <div class="library-group__head">
+                    <div class="flex flex-wrap items-center gap-2 min-w-0">
+                      <span class="pill ${meta.pillClass}">${S.escHtml(tr.label)}</span>
+                      <h3 class="library-group__title">${S.escHtml(tr.libraryHeading)}</h3>
+                    </div>
+                    <span class="pill pill-muted font-mono">${items.length} PDFs</span>
                   </div>
-                  <div class="flex flex-col gap-1.5 text-xs">
+                  <div class="library-books-grid">
                     ${items.map(([k, r]) => `
-                      <div class="flex flex-col border-b pb-1.5 last:border-none">
+                      <article class="library-book-card">
                         <div>${renderResRef(k)}</div>
-                        <code class="text-[11px] text-muted break-all">${S.escHtml(r.path)}</code>
-                      </div>`).join("")}
+                        <code class="library-book-path">${S.escHtml(r.path)}</code>
+                      </article>`).join("")}
                   </div>
                 </div>`;
             }).join("")}
@@ -1641,6 +1829,13 @@
           if (!requireStarted()) break;
           const dn = Number(actEl.getAttribute("data-day"));
           ui.openRescheduleDay = ui.openRescheduleDay === dn ? null : dn;
+          renderAll();
+          break;
+        }
+        case "toggle-day-note": {
+          if (!requireStarted()) break;
+          const dn = Number(actEl.getAttribute("data-day"));
+          ui.openNoteDay = ui.openNoteDay === dn ? null : dn;
           renderAll();
           break;
         }

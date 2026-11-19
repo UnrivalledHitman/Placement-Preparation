@@ -1,21 +1,8 @@
 (function () {
   "use strict";
 
-  const WD_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const MON_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const VALID_TABS = ["daily", "weekly", "monthly", "skills", "library"];
-
+  const VALID_TABS = ["daily", "weekly", "monthly", "skills", "report", "library"];
   const S = window.TrackerShared;
-
-  function addDaysUTC(startDateUtc, offset) {
-    const [yr, mo, dy] = startDateUtc;
-    const dt = new Date(Date.UTC(yr, mo, dy + offset));
-    return {
-      iso: dt.toISOString().slice(0, 10),
-      weekday: WD_NAMES[dt.getUTCDay()],
-      label: `${dt.getUTCDate()} ${MON_NAMES[dt.getUTCMonth()]} ${dt.getUTCFullYear()}`
-    };
-  }
 
   function getSkillStage(pct) {
     if (pct === 0) return { label: "Not Started", cls: "pill-muted" };
@@ -81,15 +68,13 @@
     const TASK_MAP = {};
 
     (function buildSchedule() {
-      let dayOffset = 0;
       const phases = config.phases || [];
+      let dayNum = 1;
       for (const w of WEEKS) {
         w.dayNums = [];
         const phaseObj = phases.find((p) => w.id >= p.minWeek && w.id <= p.maxWeek);
         const phaseId = phaseObj ? phaseObj.id : 1;
         for (let dIdx = 0; dIdx < w.days.length; dIdx++) {
-          const info = addDaysUTC(config.startDateUtc, dayOffset);
-          const dayNum = dayOffset + 1;
           const dayTasks = [];
           const tuples = w.days[dIdx] || [];
           tuples.forEach((tup, tIdx) => {
@@ -98,9 +83,9 @@
             const taskObj = {
               id,
               dayNum,
-              dateIso: info.iso,
-              dateLabel: info.label,
-              weekday: info.weekday,
+              dateIso: "",
+              dateLabel: "",
+              weekday: "",
               week: w.id,
               month: w.month,
               phase: phaseId,
@@ -121,13 +106,16 @@
             week: w.id,
             month: w.month,
             phase: phaseId,
-            dateIso: info.iso,
-            dateLabel: info.label,
-            weekday: info.weekday,
+            dateIso: "",
+            dateLabel: "",
+            weekday: "",
+            ownShift: 0,
+            cumShift: 0,
+            shiftReason: "",
             tasks: dayTasks
           });
           w.dayNums.push(dayNum);
-          dayOffset++;
+          dayNum++;
         }
       }
     })();
@@ -137,7 +125,14 @@
     let storageAvailable = true;
     let hasSavedSnapshot = false;
     let resetArmedUntil = 0;
-    const ui = { search: "", track: "all", status: "all", skill: "" };
+    const ui = {
+      search: "",
+      track: "all",
+      status: "all",
+      skill: "",
+      openRescheduleDay: null,
+      showWelcomeBanner: false
+    };
 
     function renderShell() {
       const headerPills = config.tracks
@@ -150,15 +145,26 @@
       rootEl.innerHTML = `
         <header class="card p-4 flex flex-col gap-3">
           <div class="flex flex-wrap items-start justify-between gap-3">
-            <div>
+            <div class="flex-1 min-w-[240px]">
               <div class="flex flex-wrap items-center gap-2 mb-1">
                 ${headerPills}
-                <span class="pill pill-muted">${S.escHtml(config.header.timelineBadge)}</span>
+                <span id="timeline-badge" class="pill pill-muted font-mono"></span>
+                <span id="header-streak-pill" class="pill streak-pill font-mono">&#128293; Streak: 0d &bull; Best: 0d</span>
               </div>
               <h1 class="text-lg font-bold tracking-tight m-0">${S.escHtml(config.header.title)}</h1>
               <p class="text-xs text-muted mt-1 m-0">${S.escHtml(config.header.subtitle)}</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
+              <div class="start-date-box">
+                <label for="start-date-input" class="text-xs font-semibold text-muted whitespace-nowrap">Start Date:</label>
+                <input id="start-date-input" type="date" class="input-ctrl py-1 text-xs font-mono" aria-label="Plan start date" />
+                <button type="button" class="btn" data-action="set-start-today">Today</button>
+              </div>
+              <div class="font-scale-group" role="group" aria-label="Text size">
+                <button type="button" class="scale-btn" data-action="set-font-scale" data-scale="sm" title="Smaller text">A-</button>
+                <button type="button" class="scale-btn active" data-action="set-font-scale" data-scale="md" title="Default readable text">A</button>
+                <button type="button" class="scale-btn" data-action="set-font-scale" data-scale="lg" title="Large text">A+</button>
+              </div>
               <span id="storage-status" class="pill pill-muted">Checking localStorage...</span>
               <button id="theme-toggle-btn" type="button" class="btn" data-action="toggle-theme">Dark Theme</button>
               <button id="btn-export" type="button" class="btn" data-action="export-json">Export JSON</button>
@@ -166,6 +172,7 @@
               <button id="btn-reset" type="button" class="btn btn-ghost" data-action="reset-progress">Reset Progress</button>
             </div>
           </div>
+          <div id="welcome-banner"></div>
           <div id="kpi-grid" class="kpi-grid"></div>
         </header>
 
@@ -184,7 +191,8 @@
             </select>
             <span id="active-skill-filter"></span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="catchup-slot"></span>
             <button id="btn-next-pending" type="button" class="btn btn-primary" data-action="next-pending-day">Next Pending Day &rarr;</button>
           </div>
         </section>
@@ -194,6 +202,7 @@
           <button type="button" class="tab-btn" data-action="switch-tab" data-tab="weekly">Weekly Targets (${WEEKS.length}w)</button>
           <button type="button" class="tab-btn" data-action="switch-tab" data-tab="monthly">${S.escHtml(config.ui.monthlyTabLabel)}</button>
           <button type="button" class="tab-btn" data-action="switch-tab" data-tab="skills">Skill Matrix (${SKILLS.length})</button>
+          <button type="button" class="tab-btn" data-action="switch-tab" data-tab="report">Progress Report</button>
           <button type="button" class="tab-btn" data-action="switch-tab" data-tab="library">Redo Queue &amp; Library</button>
         </nav>
 
@@ -225,9 +234,15 @@
       `;
     }
 
-    function defaultState() {
+    function defaultState(todayIso) {
+      const anchor = S.isValidIsoDate(todayIso) ? todayIso : S.getTodayLocalIso();
       return {
-        version: 1,
+        version: 2,
+        startDate: anchor,
+        firstOpenedOn: anchor,
+        dayShifts: {},
+        shiftReasons: {},
+        taskCompletedOn: {},
         tasks: {},
         weekTargets: {},
         monthTargets: {},
@@ -238,12 +253,37 @@
       };
     }
 
-    function sanitizeState(raw) {
-      const base = defaultState();
+    function sanitizeState(raw, fallbackStartDate) {
+      const base = defaultState(fallbackStartDate || S.getTodayLocalIso());
       if (!raw || typeof raw !== "object") return base;
+      if (S.isValidIsoDate(raw.startDate)) base.startDate = raw.startDate;
+      base.firstOpenedOn = S.isValidIsoDate(raw.firstOpenedOn) ? raw.firstOpenedOn : base.startDate;
+
+      if (raw.dayShifts && typeof raw.dayShifts === "object") {
+        for (const [k, v] of Object.entries(raw.dayShifts)) {
+          const dn = Number(k);
+          const sv = Number(v);
+          if (Number.isInteger(dn) && dn >= 1 && dn <= DAYS.length && Number.isInteger(sv) && sv >= 1 && sv <= 365) {
+            base.dayShifts[dn] = sv;
+          }
+        }
+      }
+      if (raw.shiftReasons && typeof raw.shiftReasons === "object") {
+        for (const [k, v] of Object.entries(raw.shiftReasons)) {
+          const dn = Number(k);
+          if (Number.isInteger(dn) && dn >= 1 && dn <= DAYS.length && typeof v === "string" && v.trim()) {
+            base.shiftReasons[dn] = v.trim();
+          }
+        }
+      }
       if (raw.tasks && typeof raw.tasks === "object") {
         for (const [k, v] of Object.entries(raw.tasks)) {
           if ((v === 1 || v === 2) && TASK_MAP[k]) base.tasks[k] = v;
+        }
+      }
+      if (raw.taskCompletedOn && typeof raw.taskCompletedOn === "object") {
+        for (const [k, v] of Object.entries(raw.taskCompletedOn)) {
+          if (TASK_MAP[k] && S.isValidIsoDate(v)) base.taskCompletedOn[k] = v;
         }
       }
       if (raw.weekTargets && typeof raw.weekTargets === "object") {
@@ -277,28 +317,32 @@
       });
     }
 
-    function loadState() {
-      storageAvailable = S.probeLocalStorage(`__${config.id}_probe__`);
-      try {
-        const raw = window.localStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          hasSavedSnapshot = false;
-          refreshStorageBadge(null, false);
-          return defaultState();
+    let state = null;
+
+    function recomputeScheduleDates() {
+      const anchorIso = (state && S.isValidIsoDate(state.startDate)) ? state.startDate : S.getTodayLocalIso();
+      let cumShift = 0;
+      for (const d of DAYS) {
+        const ownShift = (state && state.dayShifts && state.dayShifts[d.dayNum]) || 0;
+        cumShift += ownShift;
+        const info = S.addDaysIso(anchorIso, (d.dayNum - 1) + cumShift);
+        d.dateIso = info.iso;
+        d.dateLabel = info.label;
+        d.weekday = info.weekday;
+        d.ownShift = ownShift;
+        d.cumShift = cumShift;
+        d.shiftReason = (state && state.shiftReasons && state.shiftReasons[d.dayNum]) || "";
+        for (const t of d.tasks) {
+          t.dateIso = info.iso;
+          t.dateLabel = info.label;
+          t.weekday = info.weekday;
         }
-        hasSavedSnapshot = true;
-        const loaded = sanitizeState(JSON.parse(raw));
-        refreshStorageBadge(loaded.lastSavedAt, true);
-        return loaded;
-      } catch {
-        storageAvailable = false;
-        hasSavedSnapshot = false;
-        refreshStorageBadge(null, false);
-        return defaultState();
       }
     }
 
-    let state = null;
+    function getTotalShiftDays() {
+      return Object.values(state.dayShifts || {}).reduce((acc, n) => acc + (Number(n) || 0), 0);
+    }
 
     function saveState() {
       const stamp = S.formatTimeHHMMSS(new Date());
@@ -312,6 +356,37 @@
         storageAvailable = false;
         hasSavedSnapshot = false;
         refreshStorageBadge(null, false);
+      }
+    }
+
+    function loadState() {
+      const todayIso = S.getTodayLocalIso();
+      storageAvailable = S.probeLocalStorage(`__${config.id}_probe__`);
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          const fresh = defaultState(todayIso);
+          ui.showWelcomeBanner = true;
+          if (storageAvailable) {
+            fresh.lastSavedAt = S.formatTimeHHMMSS(new Date());
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
+            hasSavedSnapshot = true;
+            refreshStorageBadge(fresh.lastSavedAt, true);
+          } else {
+            hasSavedSnapshot = false;
+            refreshStorageBadge(null, false);
+          }
+          return fresh;
+        }
+        hasSavedSnapshot = true;
+        const loaded = sanitizeState(JSON.parse(raw), todayIso);
+        refreshStorageBadge(loaded.lastSavedAt, true);
+        return loaded;
+      } catch {
+        storageAvailable = false;
+        hasSavedSnapshot = false;
+        refreshStorageBadge(null, false);
+        return defaultState(todayIso);
       }
     }
 
@@ -355,7 +430,7 @@
       return { total, done, redo, pct, hrsTotal, hrsDone, stage: getSkillStage(pct) };
     }
 
-    function computeMetrics() {
+    function computeMetrics(todayIso) {
       const byTrack = { all: { total: 0, done: 0, redo: 0, hrsTotal: 0, hrsDone: 0 } };
       for (const tr of config.tracks) {
         byTrack[tr.key] = { total: 0, done: 0, redo: 0, hrsTotal: 0, hrsDone: 0 };
@@ -395,16 +470,26 @@
       let currentStreak = 0;
       let bestStreak = 0;
       let run = 0;
-      for (const d of DAYS) {
+      const dayStreakMap = {};
+      let lastStartedIdx = -1;
+      let scheduledTodayIdx = -1;
+
+      DAYS.forEach((d, idx) => {
         const full = d.tasks.length > 0 && d.tasks.every((t) => getTaskStatus(t.id) === 1);
+        const anyDone = d.tasks.some((t) => getTaskStatus(t.id) === 1);
+        if (anyDone) lastStartedIdx = idx;
+        if (todayIso && d.dateIso <= todayIso) scheduledTodayIdx = idx;
         if (full) {
           completedDays++;
           run++;
+          dayStreakMap[d.dayNum] = run;
           if (run > bestStreak) bestStreak = run;
         } else {
           run = 0;
+          dayStreakMap[d.dayNum] = 0;
         }
-      }
+      });
+
       for (let i = DAYS.length - 1; i >= 0; i--) {
         if (DAYS[i].tasks.some((t) => getTaskStatus(t.id) === 1)) {
           let k = i;
@@ -416,6 +501,20 @@
         }
       }
 
+      const trailEnd = Math.max(6, Math.min(DAYS.length - 1, Math.max(lastStartedIdx, scheduledTodayIdx)));
+      const trailStart = Math.max(0, trailEnd - 6);
+      const recentTrail = [];
+      for (let i = trailStart; i <= trailEnd && i < DAYS.length; i++) {
+        const d = DAYS[i];
+        const doneCount = d.tasks.filter((t) => getTaskStatus(t.id) === 1).length;
+        const stLabel = d.tasks.length > 0 && doneCount === d.tasks.length
+          ? "full"
+          : doneCount > 0
+            ? "partial"
+            : "empty";
+        recentTrail.push({ dayNum: d.dayNum, dateLabel: d.dateLabel, state: stLabel });
+      }
+
       return {
         byTrack,
         trackPct,
@@ -425,7 +524,9 @@
         skillStats,
         completedDays,
         currentStreak,
-        bestStreak
+        bestStreak,
+        dayStreakMap,
+        recentTrail
       };
     }
 
@@ -486,8 +587,15 @@
     }
 
     function toggleTaskStatus(id, flagValue) {
-      if (state.tasks[id] === flagValue) delete state.tasks[id];
-      else state.tasks[id] = flagValue;
+      const todayIso = S.getTodayLocalIso();
+      if (state.tasks[id] === flagValue) {
+        delete state.tasks[id];
+        delete state.taskCompletedOn[id];
+      } else {
+        state.tasks[id] = flagValue;
+        if (flagValue === 1) state.taskCompletedOn[id] = todayIso;
+        else delete state.taskCompletedOn[id];
+      }
       saveState();
       renderAll();
     }
@@ -498,12 +606,18 @@
     function toggleDayDone(dayNum) {
       const day = DAY_MAP[dayNum];
       if (!day) return;
+      const todayIso = S.getTodayLocalIso();
       const visible = day.tasks.filter(matchesFilters);
       const targets = visible.length ? visible : day.tasks;
       const allDone = targets.every((t) => state.tasks[t.id] === 1);
       for (const t of targets) {
-        if (allDone) delete state.tasks[t.id];
-        else state.tasks[t.id] = 1;
+        if (allDone) {
+          delete state.tasks[t.id];
+          delete state.taskCompletedOn[t.id];
+        } else {
+          state.tasks[t.id] = 1;
+          state.taskCompletedOn[t.id] = todayIso;
+        }
       }
       saveState();
       renderAll();
@@ -524,6 +638,113 @@
       if (value && value.trim()) state.notes[k] = value;
       else delete state.notes[k];
       saveState();
+    }
+
+    function setStartDate(isoStr) {
+      if (!S.isValidIsoDate(isoStr)) {
+        showToast("Please select a valid Start Date.");
+        renderAll();
+        return false;
+      }
+      state.startDate = isoStr;
+      ui.showWelcomeBanner = false;
+      recomputeScheduleDates();
+      saveState();
+      renderAll();
+      showToast(`Timeline adjusted to start on ${DAY_MAP[1].dateLabel}.`);
+      return true;
+    }
+
+    function shiftDay(dayNum, delta) {
+      if (!DAY_MAP[dayNum]) return false;
+      const cur = state.dayShifts[dayNum] || 0;
+      const next = Math.max(0, Math.min(365, cur + Number(delta || 0)));
+      if (next === 0) {
+        delete state.dayShifts[dayNum];
+        delete state.shiftReasons[dayNum];
+      } else {
+        state.dayShifts[dayNum] = next;
+      }
+      recomputeScheduleDates();
+      saveState();
+      renderAll();
+      showToast(
+        next > 0
+          ? `Day ${dayNum} shifted to ${DAY_MAP[dayNum].weekday}, ${DAY_MAP[dayNum].dateLabel} (+${next}d).`
+          : `Cleared shift for Day ${dayNum} (${DAY_MAP[dayNum].dateLabel}).`
+      );
+      return true;
+    }
+
+    function moveDayToDate(dayNum, targetIso) {
+      if (!DAY_MAP[dayNum] || !S.isValidIsoDate(targetIso)) {
+        renderAll();
+        return false;
+      }
+      if (dayNum === 1) {
+        delete state.dayShifts[1];
+        delete state.shiftReasons[1];
+        return setStartDate(targetIso);
+      }
+      const prevDay = DAY_MAP[dayNum - 1];
+      const naturalIso = S.addDaysIso(prevDay.dateIso, 1).iso;
+      const neededShift = S.diffDaysIso(naturalIso, targetIso);
+      if (neededShift < 0) {
+        showToast(`Cannot move Day ${dayNum} on or before Day ${dayNum - 1} (${prevDay.dateLabel}).`);
+        renderAll();
+        return false;
+      }
+      if (neededShift === 0) {
+        delete state.dayShifts[dayNum];
+        delete state.shiftReasons[dayNum];
+      } else {
+        state.dayShifts[dayNum] = Math.min(365, neededShift);
+      }
+      recomputeScheduleDates();
+      saveState();
+      renderAll();
+      showToast(`Moved Day ${dayNum} to ${DAY_MAP[dayNum].weekday}, ${DAY_MAP[dayNum].dateLabel}.`);
+      return true;
+    }
+
+    function clearDayShift(dayNum) {
+      if (!DAY_MAP[dayNum]) return;
+      delete state.dayShifts[dayNum];
+      delete state.shiftReasons[dayNum];
+      recomputeScheduleDates();
+      saveState();
+      renderAll();
+      showToast(`Cleared reschedule shift on Day ${dayNum}.`);
+    }
+
+    function saveShiftReason(dayNum, text) {
+      if (!DAY_MAP[dayNum]) return;
+      const trimmed = typeof text === "string" ? text.trim() : "";
+      if (trimmed) state.shiftReasons[dayNum] = trimmed;
+      else delete state.shiftReasons[dayNum];
+      DAY_MAP[dayNum].shiftReason = trimmed;
+      saveState();
+    }
+
+    function catchUpToToday() {
+      const todayIso = S.getTodayLocalIso();
+      const firstPending = DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1));
+      if (!firstPending || firstPending.dateIso >= todayIso) {
+        showToast("You are already caught up to today!");
+        return false;
+      }
+      const delta = S.diffDaysIso(firstPending.dateIso, todayIso);
+      state.dayShifts[firstPending.dayNum] = Math.min(365, (state.dayShifts[firstPending.dayNum] || 0) + delta);
+      if (!state.shiftReasons[firstPending.dayNum]) {
+        state.shiftReasons[firstPending.dayNum] = "Caught up to today";
+      }
+      state.activeWeek = firstPending.week;
+      state.activeTab = "daily";
+      recomputeScheduleDates();
+      saveState();
+      renderAll();
+      showToast(`Shifted Day ${firstPending.dayNum} (+${delta}d) to Today (${DAY_MAP[firstPending.dayNum].dateLabel}).`);
+      return true;
     }
 
     function setTrackFilter(track) {
@@ -577,6 +798,47 @@
       showToast(`Jumped to Day ${day.dayNum} (Week ${day.week} • ${day.dateLabel})`);
     }
 
+    function renderHeaderMeta(m, todayIso) {
+      const totalShifts = getTotalShiftDays();
+      const tlEl = document.getElementById("timeline-badge");
+      if (tlEl && DAYS.length) {
+        const shiftText = totalShifts > 0 ? ` • +${totalShifts}d shifted` : "";
+        tlEl.textContent = `${DAYS[0].dateLabel} – ${DAYS[DAYS.length - 1].dateLabel} (${WEEKS.length}w / ${DAYS.length}d${shiftText})`;
+      }
+      const streakEl = document.getElementById("header-streak-pill");
+      if (streakEl) {
+        streakEl.innerHTML = `&#128293; Streak: ${m.currentStreak}d &bull; Best: ${m.bestStreak}d`;
+      }
+      const sdInp = document.getElementById("start-date-input");
+      if (sdInp) sdInp.value = state.startDate;
+
+      const welcomeEl = document.getElementById("welcome-banner");
+      if (welcomeEl) {
+        if (ui.showWelcomeBanner) {
+          welcomeEl.innerHTML = `
+            <div class="welcome-banner">
+              <div class="text-xs leading-relaxed">
+                <strong>Personalized Timeline Ready:</strong> Your start date was automatically set to <strong>${S.escHtml(DAY_MAP[1].dateLabel)}</strong> (first visit on this device). Adjust <strong>Start Date</strong> above anytime, or click <strong>Reschedule / +1d</strong> on any Day card if an event comes up.
+              </div>
+              <button type="button" class="btn" data-action="dismiss-welcome">Got it</button>
+            </div>`;
+        } else {
+          welcomeEl.innerHTML = "";
+        }
+      }
+
+      const catchSlot = document.getElementById("catchup-slot");
+      if (catchSlot) {
+        const firstPending = DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1));
+        if (firstPending && firstPending.dateIso < todayIso) {
+          const behindDays = S.diffDaysIso(firstPending.dateIso, todayIso);
+          catchSlot.innerHTML = `<button type="button" class="btn" data-action="catch-up-today" title="Shift Day ${firstPending.dayNum} and remaining days forward to today">Catch Up (+${behindDays}d to Today)</button>`;
+        } else {
+          catchSlot.innerHTML = "";
+        }
+      }
+    }
+
     function renderKpis(m) {
       const kpiEl = document.getElementById("kpi-grid");
       if (!kpiEl) return;
@@ -622,19 +884,24 @@
         footHtml: S.escHtml(config.ui.skillsKpiSub)
       });
 
-      const daysCard = renderKpiCard({
+      const trailHtml = m.recentTrail.map((pt) => {
+        const cls = pt.state === "full" ? "streak-dot--full" : pt.state === "partial" ? "streak-dot--partial" : "streak-dot--empty";
+        return `<span class="streak-dot ${cls}" title="Day ${pt.dayNum} (${S.escHtml(pt.dateLabel)}): ${pt.state}"></span>`;
+      }).join("");
+
+      const streakCard = renderKpiCard({
         action: "switch-tab",
-        attrs: 'data-tab="library"',
-        title: "Days &amp; Redo Queue",
-        badgeText: `${all.redo} redo`,
+        attrs: 'data-tab="report"',
+        title: "Daily Streak",
+        badgeText: `Best ${m.bestStreak}d`,
         badgeColor: "var(--warning)",
-        mainHtml: `${m.completedDays} / ${DAYS.length} <span class="text-xs font-normal text-muted">days</span>`,
+        mainHtml: `&#128293; ${m.currentStreak} <span class="text-xs font-normal text-muted">days &bull; ${m.completedDays}/${DAYS.length} full</span>`,
         pct: Math.round((m.completedDays / DAYS.length) * 100),
         barColor: "var(--warning)",
-        footHtml: `Streak: ${m.currentStreak}d (Best ${m.bestStreak}d)`
+        footHtml: `<span class="flex items-center justify-between gap-2"><span class="streak-dots">${trailHtml}</span><span>${all.redo} redo</span></span>`
       });
 
-      kpiEl.innerHTML = overallCard + trackCards + skillsCard + daysCard;
+      kpiEl.innerHTML = overallCard + trackCards + skillsCard + streakCard;
     }
 
     function renderToolbarControls() {
@@ -712,7 +979,7 @@
         </div>`;
     }
 
-    function renderDayCard(day, filteredTasks) {
+    function renderDayCard(day, filteredTasks, dayStreak, todayIso) {
       const allDone = day.tasks.every((t) => getTaskStatus(t.id) === 1);
       const doneCount = day.tasks.filter((t) => getTaskStatus(t.id) === 1).length;
       const totalHrs = day.tasks.reduce((acc, t) => acc + t.hrs, 0);
@@ -720,21 +987,60 @@
       const dayBadgeCfg = config.ui.dayBadge;
       const showDayBadge = dayBadgeCfg && day.week <= dayBadgeCfg.maxWeek && day.dayInWeek === dayBadgeCfg.dayInWeek;
       const notePlaceholder = config.ui.notePlaceholder.replace("{dayNum}", String(day.dayNum));
+      const isToday = day.dateIso === todayIso;
+      const isOverdue = day.dateIso < todayIso && !allDone;
+      const isPanelOpen = ui.openRescheduleDay === day.dayNum;
+      const minTargetIso = day.dayNum > 1 ? S.addDaysIso(DAY_MAP[day.dayNum - 1].dateIso, 1).iso : "";
+
+      const shiftBanner = day.ownShift > 0
+        ? `<div class="shift-banner">
+            <div>
+              <strong>+${day.ownShift}d Event / Off-Day Shift</strong> inserted before Day ${day.dayNum}${day.shiftReason ? ` &bull; ${S.escHtml(day.shiftReason)}` : ""}
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" class="btn" data-action="shift-day" data-day="${day.dayNum}" data-delta="-1">Undo -1d</button>
+              <button type="button" class="btn btn-ghost" data-action="clear-day-shift" data-day="${day.dayNum}">Clear Shift</button>
+            </div>
+          </div>`
+        : "";
+
+      const reschedulePanel = isPanelOpen
+        ? `<div class="reschedule-panel">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-semibold text-muted">Shift Day ${day.dayNum} &amp; later days:</span>
+              <button type="button" class="btn" data-action="shift-day" data-day="${day.dayNum}" data-delta="1">+1 Day (Event / Missed)</button>
+              <button type="button" class="btn" ${day.ownShift <= 0 ? "disabled" : ""} data-action="shift-day" data-day="${day.dayNum}" data-delta="-1">-1 Day</button>
+              <button type="button" class="btn btn-ghost" ${day.ownShift <= 0 ? "disabled" : ""} data-action="clear-day-shift" data-day="${day.dayNum}">Clear Shift</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <label class="text-xs text-muted">Move to Date:</label>
+              <input type="date" class="input-ctrl py-1 text-xs font-mono" data-action="move-day-date" data-day="${day.dayNum}" value="${S.escHtml(day.dateIso)}" ${minTargetIso ? `min="${S.escHtml(minTargetIso)}"` : ""} aria-label="Move Day ${day.dayNum} to date" />
+              <input type="text" class="input-ctrl py-1 text-xs" data-action="shift-reason" data-day="${day.dayNum}" value="${S.escHtml(day.shiftReason)}" placeholder="Reason (e.g. College Fest, Travel, Sick)..." />
+            </div>
+          </div>`
+        : "";
 
       return `
-        <article id="day-${day.dayNum}" class="card day-card">
+        <article id="day-${day.dayNum}" class="card day-card${isToday ? " is-today" : ""}">
           <div class="day-head">
             <div class="flex flex-wrap items-center gap-2">
               <span class="pill pill-muted font-mono">Day ${day.dayNum}/${DAYS.length}</span>
               <span class="font-bold text-sm">${S.escHtml(day.weekday)}, ${S.escHtml(day.dateLabel)}</span>
+              ${isToday ? `<span class="pill pill-1 font-mono">TODAY</span>` : ""}
+              ${isOverdue ? `<span class="pill pill-warn font-mono">Overdue</span>` : ""}
               <span class="text-xs text-muted">Week ${day.week} &bull; Month ${day.month}</span>
+              ${allDone && dayStreak > 0 ? `<span class="pill streak-pill font-mono">&#128293; Streak #${dayStreak}d</span>` : ""}
               ${showDayBadge ? `<span class="pill ${S.escHtml(dayBadgeCfg.pillClass)}">${S.escHtml(dayBadgeCfg.label)}</span>` : ""}
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
               <span class="text-xs font-mono text-muted">${doneCount}/${day.tasks.length} tasks &bull; ${totalHrs.toFixed(1)}h</span>
+              ${!allDone ? `<button type="button" class="btn" data-action="shift-day" data-day="${day.dayNum}" data-delta="1" title="Missed or busy? Push this day +1 day">+1d &curvearrowright;</button>` : ""}
+              <button type="button" class="btn" data-action="toggle-reschedule" data-day="${day.dayNum}">${isPanelOpen ? "Hide Shift" : "Reschedule"}</button>
               <button type="button" class="btn ${allDone ? "btn-primary" : ""}" data-action="toggle-day-done" data-day="${day.dayNum}">${allDone ? "&#10003; Day Completed" : "Mark Day Done"}</button>
             </div>
           </div>
+          ${shiftBanner}
+          ${reschedulePanel}
           <div>${filteredTasks.map(renderTaskRow).join("")}</div>
           <div class="px-3.5 py-2 bg-content border-t flex items-center gap-2">
             <span class="text-xs font-semibold text-muted whitespace-nowrap">${S.escHtml(config.ui.noteLabel)}</span>
@@ -743,7 +1049,7 @@
         </article>`;
     }
 
-    function renderDailyView() {
+    function renderDailyView(m, todayIso) {
       const globalFilter = Boolean(ui.skill || ui.search.trim() || ui.status === "redo");
       if (globalFilter) {
         const cards = [];
@@ -752,7 +1058,7 @@
           const sub = day.tasks.filter(matchesFilters);
           if (sub.length) {
             count += sub.length;
-            cards.push(renderDayCard(day, sub));
+            cards.push(renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso));
           }
         }
         return `
@@ -786,7 +1092,7 @@
       const dayCards = activeW.dayNums.map((dn) => {
         const day = DAY_MAP[dn];
         const sub = day.tasks.filter(matchesFilters);
-        return sub.length ? renderDayCard(day, sub) : "";
+        return sub.length ? renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso) : "";
       }).filter(Boolean).join("");
 
       return `
@@ -877,12 +1183,18 @@
       if (phases.length > 1) {
         return phases.map((ph) => {
           const list = WEEKS.filter((w) => w.id >= ph.minWeek && w.id <= ph.maxWeek);
+          const firstW = list[0];
+          const lastW = list[list.length - 1];
+          const pFirst = firstW ? DAY_MAP[firstW.dayNums[0]] : null;
+          const pLast = lastW ? DAY_MAP[lastW.dayNums[lastW.dayNums.length - 1]] : null;
+          const spanPrefix = pFirst && pLast ? `${pFirst.dateLabel} – ${pLast.dateLabel} • ` : "";
+          const cleanSub = ph.subtitle.replace(/^[^•]+•\s*/, "");
           return `
             <section class="flex flex-col gap-3">
               <div class="card p-3 flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <h2 class="text-sm font-bold m-0">${S.escHtml(ph.heading)}</h2>
-                  <p class="text-xs text-muted m-0">${S.escHtml(ph.subtitle)}</p>
+                  <p class="text-xs text-muted m-0">${S.escHtml(spanPrefix + cleanSub)}</p>
                 </div>
                 <span class="pill pill-muted font-mono">${list.length} Weeks</span>
               </div>
@@ -898,6 +1210,12 @@
         <div class="grid-2">
           ${MONTHS.map((m) => {
             const ms = getMonthStats(m.id);
+            const firstW = WEEK_MAP[m.weeks[0]];
+            const lastW = WEEK_MAP[m.weeks[m.weeks.length - 1]];
+            const mFirst = firstW ? DAY_MAP[firstW.dayNums[0]] : null;
+            const mLast = lastW ? DAY_MAP[lastW.dayNums[lastW.dayNums.length - 1]] : null;
+            const periodLabel = mFirst && mLast ? `${mFirst.dateLabel} – ${mLast.dateLabel}` : m.period;
+
             const skPills = m.skills.map((sid) => {
               const sk = SKILL_MAP[sid];
               if (!sk) return "";
@@ -924,7 +1242,7 @@
                   <div>
                     <div class="flex flex-wrap items-center gap-1.5 mb-1">
                       <span class="pill pill-muted font-mono">Weeks ${m.weeks[0]}–${m.weeks[m.weeks.length - 1]}</span>
-                      <span class="text-xs text-muted">${S.escHtml(m.period)}</span>
+                      <span class="text-xs text-muted">${S.escHtml(periodLabel)}</span>
                     </div>
                     <h2 class="text-base font-bold m-0">${S.escHtml(m.title)}</h2>
                     <div class="text-xs text-muted">${S.escHtml(m.phase)}</div>
@@ -971,11 +1289,11 @@
       ];
 
       const svgChart = `
-        <svg viewBox="0 0 640 132" class="w-full max-w-3xl" role="img" aria-label="${S.escHtml(config.ui.skillsChartAriaLabel)}">
+        <svg viewBox="0 0 700 152" class="w-full max-w-3xl" role="img" aria-label="${S.escHtml(config.ui.skillsChartAriaLabel)}">
           ${rowsSvg.map((r, i) => {
-            const y = 14 + i * 29;
+            const y = 16 + i * 33;
             const fw = Math.round((r.pct / 100) * barW);
-            return `<text x="4" y="${y + 13}" fill="var(--foreground)" font-size="12" font-weight="600">${S.escHtml(r.label)}</text><rect x="225" y="${y + 2}" width="${barW}" height="12" rx="6" fill="var(--secondary)" /><rect x="225" y="${y + 2}" width="${fw}" height="12" rx="6" fill="${r.color}" /><text x="476" y="${y + 13}" fill="var(--muted-foreground)" font-size="12" font-family="monospace" font-weight="700">${r.pct}%</text>`;
+            return `<text x="4" y="${y + 15}" fill="var(--foreground)" font-size="14" font-weight="600">${S.escHtml(r.label)}</text><rect x="260" y="${y + 3}" width="${barW}" height="14" rx="7" fill="var(--secondary)" /><rect x="260" y="${y + 3}" width="${fw}" height="14" rx="7" fill="${r.color}" /><text x="514" y="${y + 15}" fill="var(--muted-foreground)" font-size="14" font-family="monospace" font-weight="700">${r.pct}%</text>`;
           }).join("")}
         </svg>`;
 
@@ -1044,7 +1362,8 @@
             <p class="text-xs text-muted m-0">${S.escHtml(config.ui.redoDesc)}</p>
             ${redoTasks.length
               ? `<div class="flex flex-col gap-2">${redoTasks.map((t) => {
-                  const target = addDaysUTC(config.startDateUtc, t.dayNum - 1 + 7);
+                  const scheduledDay = DAY_MAP[t.dayNum];
+                  const target = S.addDaysIso(scheduledDay ? scheduledDay.dateIso : state.startDate, 7);
                   const meta = trackMeta[t.track] || { pillClass: "pill-muted", label: t.track };
                   return `
                     <div class="subcard p-2.5 flex items-start justify-between gap-2">
@@ -1114,16 +1433,37 @@
         </section>`;
     }
 
+    function buildReportContext(m, todayIso) {
+      const metrics = m || computeMetrics(todayIso || S.getTodayLocalIso());
+      return {
+        config,
+        DAYS,
+        ALL_TASKS,
+        SKILLS,
+        state,
+        metrics,
+        todayIso: todayIso || S.getTodayLocalIso()
+      };
+    }
+
+    function getReportAnalysis() {
+      const todayIso = S.getTodayLocalIso();
+      return window.TrackerReport.analyzeProgress(buildReportContext(null, todayIso));
+    }
+
     function renderAll() {
-      const m = computeMetrics();
+      const todayIso = S.getTodayLocalIso();
+      const m = computeMetrics(todayIso);
+      renderHeaderMeta(m, todayIso);
       renderKpis(m);
       renderToolbarControls();
       const mainEl = document.getElementById("main-view");
       if (!mainEl) return;
-      if (state.activeTab === "daily") mainEl.innerHTML = renderDailyView();
+      if (state.activeTab === "daily") mainEl.innerHTML = renderDailyView(m, todayIso);
       else if (state.activeTab === "weekly") mainEl.innerHTML = renderWeeklyView();
       else if (state.activeTab === "monthly") mainEl.innerHTML = renderMonthlyView();
       else if (state.activeTab === "skills") mainEl.innerHTML = renderSkillsView(m);
+      else if (state.activeTab === "report") mainEl.innerHTML = window.TrackerReport.renderReportView(buildReportContext(m, todayIso));
       else mainEl.innerHTML = renderQueueAndLibraryView();
     }
 
@@ -1165,6 +1505,51 @@
         case "toggle-theme":
           S.toggleTheme();
           break;
+        case "set-font-scale":
+          S.setFontScale(actEl.getAttribute("data-scale"));
+          break;
+        case "set-start-today":
+          setStartDate(S.getTodayLocalIso());
+          break;
+        case "dismiss-welcome":
+          ui.showWelcomeBanner = false;
+          renderAll();
+          break;
+        case "catch-up-today":
+          catchUpToToday();
+          break;
+        case "toggle-reschedule": {
+          const dn = Number(actEl.getAttribute("data-day"));
+          ui.openRescheduleDay = ui.openRescheduleDay === dn ? null : dn;
+          renderAll();
+          break;
+        }
+        case "shift-day":
+          shiftDay(Number(actEl.getAttribute("data-day")), Number(actEl.getAttribute("data-delta")));
+          break;
+        case "clear-day-shift":
+          clearDayShift(Number(actEl.getAttribute("data-day")));
+          break;
+        case "copy-report": {
+          const md = window.TrackerReport.generateMarkdownReport(getReportAnalysis(), config);
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(md).catch(() => {});
+          }
+          showToast("Markdown progress report copied to clipboard.");
+          break;
+        }
+        case "download-report": {
+          const md = window.TrackerReport.generateMarkdownReport(getReportAnalysis(), config);
+          const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${config.backupFilePrefix}_report_${S.getTodayLocalIso()}.md`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast("Downloaded Markdown progress report.");
+          break;
+        }
         case "export-json":
           openIoModal("export");
           break;
@@ -1174,9 +1559,11 @@
         case "reset-progress": {
           const now = Date.now();
           if (now < resetArmedUntil) {
-            state = defaultState();
+            state = defaultState(S.getTodayLocalIso());
+            ui.openRescheduleDay = null;
             resetArmedUntil = 0;
             actEl.textContent = "Reset Progress";
+            recomputeScheduleDates();
             saveState();
             renderAll();
             showToast(config.ui.resetToast);
@@ -1207,7 +1594,7 @@
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = `${config.backupFilePrefix}_${new Date().toISOString().slice(0, 10)}.json`;
+          a.download = `${config.backupFilePrefix}_${S.getTodayLocalIso()}.json`;
           a.click();
           URL.revokeObjectURL(url);
           break;
@@ -1215,7 +1602,8 @@
         case "apply-io": {
           try {
             const parsed = JSON.parse(document.getElementById("io-textarea").value);
-            state = sanitizeState(parsed);
+            state = sanitizeState(parsed, S.getTodayLocalIso());
+            recomputeScheduleDates();
             saveState();
             renderAll();
             const modal = document.getElementById("io-modal");
@@ -1280,19 +1668,27 @@
       rootEl.addEventListener("input", (e) => {
         const target = e && e.target;
         if (!target) return;
+        const act = target.getAttribute ? target.getAttribute("data-action") : null;
         if (target.id === "search-input") {
           ui.search = target.value;
           renderAll();
-        } else if (target.getAttribute && target.getAttribute("data-action") === "save-day-note") {
+        } else if (act === "save-day-note") {
           saveDayNote(Number(target.getAttribute("data-day")), target.value);
+        } else if (act === "shift-reason") {
+          saveShiftReason(Number(target.getAttribute("data-day")), target.value);
         }
       });
       rootEl.addEventListener("change", (e) => {
         const target = e && e.target;
         if (!target) return;
+        const act = target.getAttribute ? target.getAttribute("data-action") : null;
         if (target.id === "status-filter") {
           ui.status = target.value;
           renderAll();
+        } else if (target.id === "start-date-input") {
+          setStartDate(target.value);
+        } else if (act === "move-day-date") {
+          moveDayToDate(Number(target.getAttribute("data-day")), target.value);
         } else if (target.id === "io-file") {
           const f = target.files && target.files[0];
           if (!f) return;
@@ -1310,10 +1706,12 @@
 
     renderShell();
     state = loadState();
-    S.initTheme((e) => {
+    recomputeScheduleDates();
+    S.initPreferences((e) => {
       if (e && e.key === STORAGE_KEY) {
         try {
-          state = e.newValue ? sanitizeState(JSON.parse(e.newValue)) : defaultState();
+          state = e.newValue ? sanitizeState(JSON.parse(e.newValue), S.getTodayLocalIso()) : defaultState(S.getTodayLocalIso());
+          recomputeScheduleDates();
           hasSavedSnapshot = Boolean(e.newValue);
           refreshStorageBadge(state.lastSavedAt, hasSavedSnapshot);
           renderAll();
@@ -1339,7 +1737,7 @@
       config,
       getState: () => state,
       switchTab,
-      computeMetrics,
+      computeMetrics: () => computeMetrics(S.getTodayLocalIso()),
       computeSkillStats,
       toggleTaskDone,
       toggleTaskRedo,
@@ -1347,6 +1745,13 @@
       toggleWeekTarget,
       toggleMonthTarget,
       saveDayNote,
+      setStartDate,
+      shiftDay,
+      moveDayToDate,
+      clearDayShift,
+      saveShiftReason,
+      catchUpToToday,
+      getReportAnalysis,
       setTrackFilter,
       filterBySkill,
       openWeek,

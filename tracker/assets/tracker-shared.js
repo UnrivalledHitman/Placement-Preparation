@@ -2,6 +2,10 @@
   "use strict";
 
   const THEME_KEY = "placement_roadmap_theme_v1";
+  const FONT_SCALE_KEY = "placement_roadmap_font_scale_v1";
+  const WD_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const MON_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const VALID_FONT_SCALES = ["sm", "md", "lg"];
   const registry = new Map();
 
   function registerTracker(config) {
@@ -35,6 +39,44 @@
     return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
   }
 
+  function getTodayLocalIso(dateObj) {
+    const d = dateObj || new Date();
+    const y = String(d.getFullYear()).padStart(4, "0");
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function isValidIsoDate(str) {
+    if (typeof str !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(str)) return false;
+    const [y, m, d] = str.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d;
+  }
+
+  function addDaysIso(isoStr, offsetDays) {
+    const baseIso = isValidIsoDate(isoStr) ? isoStr : getTodayLocalIso();
+    const [y, m, d] = baseIso.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d + (Number(offsetDays) || 0)));
+    const yr = dt.getUTCFullYear();
+    const mo = dt.getUTCMonth();
+    const dy = dt.getUTCDate();
+    const mon = MON_NAMES[mo];
+    return {
+      iso: `${String(yr).padStart(4, "0")}-${String(mo + 1).padStart(2, "0")}-${String(dy).padStart(2, "0")}`,
+      weekday: WD_NAMES[dt.getUTCDay()],
+      label: `${dy} ${mon} ${yr}`,
+      shortLabel: `${dy} ${mon}`,
+    };
+  }
+
+  function diffDaysIso(isoA, isoB) {
+    if (!isValidIsoDate(isoA) || !isValidIsoDate(isoB)) return 0;
+    const [ay, am, ad] = isoA.split("-").map(Number);
+    const [by, bm, bd] = isoB.split("-").map(Number);
+    return Math.round((Date.UTC(by, bm - 1, bd) - Date.UTC(ay, am - 1, ad)) / 86400000);
+  }
+
   function probeLocalStorage(probeKey) {
     try {
       const k = probeKey || "__tracker_probe__";
@@ -66,24 +108,55 @@
     return next;
   }
 
-  function initTheme(onStorageEvent) {
-    let saved = "light";
+  function applyFontScale(scale) {
+    const mode = VALID_FONT_SCALES.includes(scale) ? scale : "md";
+    document.documentElement.setAttribute("data-font-scale", mode);
+    if (typeof document.querySelectorAll === "function") {
+      document.querySelectorAll('[data-action="set-font-scale"]').forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-scale") === mode);
+      });
+    }
+    return mode;
+  }
+
+  function setFontScale(scale) {
+    const mode = VALID_FONT_SCALES.includes(scale) ? scale : "md";
+    try {
+      window.localStorage.setItem(FONT_SCALE_KEY, mode);
+    } catch {}
+    return applyFontScale(mode);
+  }
+
+  function initPreferences(onStorageEvent) {
+    let savedTheme = "light";
+    let savedScale = "md";
     try {
       const t = window.localStorage.getItem(THEME_KEY);
-      if (t === "dark" || t === "light") saved = t;
-      else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) saved = "dark";
+      if (t === "dark" || t === "light") savedTheme = t;
+      else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) savedTheme = "dark";
     } catch {}
-    applyTheme(saved);
+    try {
+      const fs = window.localStorage.getItem(FONT_SCALE_KEY);
+      if (VALID_FONT_SCALES.includes(fs)) savedScale = fs;
+    } catch {}
+    applyTheme(savedTheme);
+    applyFontScale(savedScale);
     if (typeof window.addEventListener === "function") {
       window.addEventListener("storage", (e) => {
         if (e && e.key === THEME_KEY && (e.newValue === "dark" || e.newValue === "light")) {
           applyTheme(e.newValue);
+        } else if (e && e.key === FONT_SCALE_KEY && VALID_FONT_SCALES.includes(e.newValue)) {
+          applyFontScale(e.newValue);
         }
         if (typeof onStorageEvent === "function") {
           onStorageEvent(e);
         }
       });
     }
+  }
+
+  function initTheme(onStorageEvent) {
+    return initPreferences(onStorageEvent);
   }
 
   function updateStorageBadge(badgeEl, opts) {
@@ -185,14 +258,24 @@
 
   window.TrackerShared = {
     THEME_KEY,
+    FONT_SCALE_KEY,
+    WD_NAMES,
+    MON_NAMES,
     registerTracker,
     getTracker,
     getAllTrackers,
     escHtml,
     formatTimeHHMMSS,
+    getTodayLocalIso,
+    isValidIsoDate,
+    addDaysIso,
+    diffDaysIso,
     probeLocalStorage,
     applyTheme,
     toggleTheme,
+    applyFontScale,
+    setFontScale,
+    initPreferences,
     initTheme,
     updateStorageBadge,
     renderProgressBar,

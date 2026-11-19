@@ -930,16 +930,17 @@
     function renderTargetItem(opts) {
       const { action, tg, checked, pillText, tag, labelSuffix } = opts;
       const meta = trackMeta[tg.track] || { pillClass: "pill-muted" };
-      const tagBadge = tag ? `<span class="pill pill-muted font-mono">${S.escHtml(tag)}</span>` : "";
+      const tagClass = tag && /^Project\b/i.test(tag) ? "pill-ok" : "pill-muted";
+      const tagBadge = tag ? `<span class="pill ${tagClass} font-mono">${S.escHtml(tag)}</span>` : "";
       return `
-        <div class="subcard p-2.5 flex items-start gap-2">
+        <div class="target-item${checked ? " is-checked" : ""}">
           ${S.renderCheckButton({ action, id: tg.id, checked })}
-          <div class="flex-1 text-xs">
-            <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+          <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+            <div class="flex flex-wrap items-center gap-1.5">
               <span class="pill ${meta.pillClass}">${S.escHtml(pillText)}${labelSuffix || ""}</span>
               ${tagBadge}
             </div>
-            <div class="leading-snug${checked ? " line-through text-muted" : ""}">${S.escHtml(tg.text)}</div>
+            <div class="text-xs leading-relaxed${checked ? " line-through text-muted" : ""}">${S.escHtml(tg.text)}</div>
           </div>
         </div>`;
     }
@@ -1121,17 +1122,22 @@
               </div>
             </div>
           </div>
-          <div class="grid-3 pt-1">
-            ${activeW.targets.map((tg) => {
-              const meta = trackMeta[tg.track] || { label: tg.track };
-              return renderTargetItem({
-                action: "toggle-week-target",
-                tg,
-                checked: Boolean(state.weekTargets[tg.id]),
-                pillText: meta.label,
-                labelSuffix: " Weekly Target"
-              });
-            }).join("")}
+          <div class="pt-2 border-t flex flex-col gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-bold text-muted">Weekly Mastery Targets</span>
+              <span class="pill pill-muted font-mono">${wStats.targetsDone}/${wStats.targetsTotal} verified</span>
+            </div>
+            <div class="daily-targets-grid">
+              ${activeW.targets.map((tg) => {
+                const meta = trackMeta[tg.track] || { label: tg.track };
+                return renderTargetItem({
+                  action: "toggle-week-target",
+                  tg,
+                  checked: Boolean(state.weekTargets[tg.id]),
+                  pillText: meta.label
+                });
+              }).join("")}
+            </div>
           </div>
         </section>
         ${dayCards || `<div class="card p-6 text-center text-sm text-muted">No tasks in Week ${activeW.id} match the current filter.</div>`}`;
@@ -1139,38 +1145,42 @@
 
     function renderWeekCardsGrid(list) {
       return `
-        <div class="grid-2">
+        <div class="weekly-grid">
           ${list.map((w) => {
             const st = getWeekStats(w.id);
             const firstDay = DAY_MAP[w.dayNums[0]];
             const lastDay = DAY_MAP[w.dayNums[w.dayNums.length - 1]];
-            const focusPills = (w.focus || []).map((fText, idx) => `<span class="pill pill-${idx + 1}">${S.escHtml(fText)}</span>`).join("");
+            const focusPills = (w.focus || []).map((fText, idx) => `<span class="focus-chip pill-${idx + 1}">${S.escHtml(fText)}</span>`).join("");
             return `
-              <article class="card p-3.5 flex flex-col gap-2.5">
-                <div class="flex items-start justify-between gap-2">
-                  <div>
-                    <div class="flex items-center gap-1.5 mb-0.5">
-                      <span class="pill pill-muted font-mono">Week ${w.id}</span>
-                      <span class="text-xs text-muted">${S.escHtml(firstDay.dateLabel)} – ${S.escHtml(lastDay.dateLabel)}</span>
+              <article class="card week-card${st.pct === 100 ? " is-complete" : ""}">
+                <div class="week-card__head">
+                  <div class="flex-1 min-w-0 flex flex-col gap-1">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <span class="pill pill-1 font-mono">Week ${w.id}</span>
+                      <span class="pill pill-muted font-mono">Month ${w.month}</span>
+                      <span class="text-xs text-muted whitespace-nowrap">${S.escHtml(firstDay.dateLabel)} &ndash; ${S.escHtml(lastDay.dateLabel)}</span>
                     </div>
-                    <h3 class="text-sm font-bold m-0">${S.escHtml(w.title)}</h3>
+                    <h3 class="text-base font-bold m-0 leading-snug">${S.escHtml(w.title)}</h3>
                   </div>
                   <button type="button" class="btn btn-primary" data-action="open-week" data-week="${w.id}">Open Days &rarr;</button>
                 </div>
-                <div class="flex flex-wrap gap-1.5 text-xs">${focusPills}</div>
-                <div class="flex items-center gap-2 text-xs">
-                  <div class="flex-1">${S.renderProgressBar(st.pct, st.pct === 100 ? "var(--success)" : "var(--primary)")}</div>
-                  <span class="font-mono font-semibold">${st.done}/${st.total} (${st.pct}%)</span>
+                <div class="focus-strip">${focusPills}</div>
+                <div class="week-card__progress">
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span class="font-semibold">Tasks: <span class="font-mono">${st.done}/${st.total} (${st.pct}%)</span></span>
+                    <span class="font-mono text-muted">Targets: ${st.targetsDone}/${st.targetsTotal} verified</span>
+                  </div>
+                  ${S.renderProgressBar(st.pct, st.pct === 100 ? "var(--success)" : "var(--primary)", 10)}
                 </div>
-                <div class="flex flex-col gap-1.5 pt-1 border-t">
+                <div class="target-list">
                   ${w.targets.map((tg) => {
-                    const chk = Boolean(state.weekTargets[tg.id]);
-                    const meta = trackMeta[tg.track] || { colorVar: "var(--foreground)", label: tg.track };
-                    return `
-                      <label class="flex items-start gap-2 text-xs cursor-pointer">
-                        ${S.renderCheckButton({ action: "toggle-week-target", id: tg.id, checked: chk })}
-                        <span class="${chk ? "line-through text-muted" : ""}"><strong style="color:${meta.colorVar}">${S.escHtml(meta.label)}:</strong> ${S.escHtml(tg.text)}</span>
-                      </label>`;
+                    const meta = trackMeta[tg.track] || { label: tg.track };
+                    return renderTargetItem({
+                      action: "toggle-week-target",
+                      tg,
+                      checked: Boolean(state.weekTargets[tg.id]),
+                      pillText: meta.label
+                    });
                   }).join("")}
                 </div>
               </article>`;
@@ -1189,14 +1199,21 @@
           const pLast = lastW ? DAY_MAP[lastW.dayNums[lastW.dayNums.length - 1]] : null;
           const spanPrefix = pFirst && pLast ? `${pFirst.dateLabel} – ${pLast.dateLabel} • ` : "";
           const cleanSub = ph.subtitle.replace(/^[^•]+•\s*/, "");
+          let phaseDone = 0;
+          let phaseTotal = 0;
+          for (const w of list) {
+            const ws = getWeekStats(w.id);
+            phaseDone += ws.done;
+            phaseTotal += ws.total;
+          }
           return `
-            <section class="flex flex-col gap-3">
-              <div class="card p-3 flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <h2 class="text-sm font-bold m-0">${S.escHtml(ph.heading)}</h2>
-                  <p class="text-xs text-muted m-0">${S.escHtml(spanPrefix + cleanSub)}</p>
+            <section class="phase-section">
+              <div class="card phase-banner${ph.id > 1 ? " phase-banner--p2" : ""}">
+                <div class="flex-1 min-w-[240px] flex flex-col gap-1">
+                  <h2 class="text-base font-bold m-0">${S.escHtml(ph.heading)}</h2>
+                  <p class="text-xs text-muted m-0 leading-relaxed">${S.escHtml(spanPrefix + cleanSub)}</p>
                 </div>
-                <span class="pill pill-muted font-mono">${list.length} Weeks</span>
+                <span class="pill pill-muted font-mono">${phaseDone}/${phaseTotal} tasks &bull; ${list.length} Weeks</span>
               </div>
               ${renderWeekCardsGrid(list)}
             </section>`;
@@ -1207,7 +1224,7 @@
 
     function renderMonthlyView() {
       return `
-        <div class="grid-2">
+        <div class="monthly-list">
           ${MONTHS.map((m) => {
             const ms = getMonthStats(m.id);
             const firstW = WEEK_MAP[m.weeks[0]];
@@ -1223,55 +1240,62 @@
               return `<button type="button" data-action="filter-skill" data-skill="${S.escHtml(sid)}" class="pill ${meta.pillClass} cursor-pointer">${S.escHtml(sk.short)}</button>`;
             }).join("");
 
-            const trackBars = config.tracks.map((tr) => {
+            const trackBoxes = config.tracks.map((tr) => {
               const meta = trackMeta[tr.key];
-              const pct = ms.trackPct[tr.key].pct;
+              const sub = ms.trackPct[tr.key];
               return `
-                <div class="subcard p-2">
-                  <div class="flex justify-between text-xs mb-1">
-                    <span class="font-semibold">${S.escHtml(tr.label)}</span>
-                    <span class="font-mono">${pct}%</span>
+                <div class="month-track-box">
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span class="pill ${meta.pillClass}">${S.escHtml(tr.label)}</span>
+                    <span class="font-mono font-semibold">${sub.done}/${sub.total} (${sub.pct}%)</span>
                   </div>
-                  ${S.renderProgressBar(pct, meta.colorVar, 5)}
+                  ${S.renderProgressBar(sub.pct, meta.colorVar, 7)}
                 </div>`;
             }).join("");
 
             return `
-              <article class="card p-4 flex flex-col gap-3">
-                <div class="flex flex-wrap items-start justify-between gap-2">
-                  <div>
-                    <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                      <span class="pill pill-muted font-mono">Weeks ${m.weeks[0]}–${m.weeks[m.weeks.length - 1]}</span>
-                      <span class="text-xs text-muted">${S.escHtml(periodLabel)}</span>
+              <article class="card month-card${ms.pct === 100 ? " is-complete" : ""}">
+                <div class="month-card__head">
+                  <div class="flex-1 min-w-[240px] flex flex-col gap-1.5">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="pill pill-1 font-mono">Month ${m.id}</span>
+                      <span class="pill pill-muted font-mono">Weeks ${m.weeks[0]}&ndash;${m.weeks[m.weeks.length - 1]}</span>
+                      <span class="text-xs text-muted whitespace-nowrap">${S.escHtml(periodLabel)}</span>
                     </div>
-                    <h2 class="text-base font-bold m-0">${S.escHtml(m.title)}</h2>
-                    <div class="text-xs text-muted">${S.escHtml(m.phase)}</div>
+                    <h2 class="text-lg font-bold m-0">${S.escHtml(m.title)}</h2>
+                    <div class="text-xs font-semibold text-muted">${S.escHtml(m.phase)}</div>
+                    <p class="month-card__summary">${S.escHtml(m.summary)}</p>
                   </div>
-                  <div class="text-right">
-                    <div class="text-lg font-bold font-mono">${ms.pct}%</div>
-                    <div class="text-xs text-muted">${ms.done}/${ms.total} tasks</div>
+                  <div class="month-card__metric">
+                    <div class="text-xl font-bold font-mono">${ms.pct}%</div>
+                    <div class="text-xs text-muted font-mono">${ms.done} / ${ms.total} tasks &bull; ${ms.targetsDone} / ${ms.targetsTotal} gates</div>
+                    <button type="button" class="btn btn-primary" data-action="open-week" data-week="${m.weeks[0]}">Open Week ${m.weeks[0]} &rarr;</button>
                   </div>
                 </div>
-                <p class="text-xs text-muted m-0 leading-relaxed">${S.escHtml(m.summary)}</p>
-                ${S.renderProgressBar(ms.pct, "var(--primary)")}
-                <div class="grid grid-cols-3 gap-2">${trackBars}</div>
-                <div class="flex flex-col gap-2 pt-1 border-t">
-                  <div class="flex items-center justify-between text-xs font-semibold">
-                    <span>${S.escHtml(config.ui.monthlyTargetsHeading)}</span>
-                    <span class="font-mono text-muted">${ms.targetsDone}/${ms.targetsTotal} verified</span>
+                ${S.renderProgressBar(ms.pct, ms.pct === 100 ? "var(--success)" : "var(--primary)", 10)}
+                <div class="month-tracks-grid">${trackBoxes}</div>
+                <div class="pt-2 border-t flex flex-col gap-3">
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold">
+                    <span class="text-sm font-bold">${S.escHtml(config.ui.monthlyTargetsHeading)}</span>
+                    <span class="pill pill-muted font-mono">${ms.targetsDone}/${ms.targetsTotal} verified</span>
                   </div>
-                  ${m.targets.map((tg) => {
-                    const meta = trackMeta[tg.track] || { label: tg.track };
-                    return renderTargetItem({
-                      action: "toggle-month-target",
-                      tg,
-                      checked: Boolean(state.monthTargets[tg.id]),
-                      pillText: meta.label,
-                      tag: tg.tag
-                    });
-                  }).join("")}
+                  <div class="month-targets-grid">
+                    ${m.targets.map((tg) => {
+                      const meta = trackMeta[tg.track] || { label: tg.track };
+                      return renderTargetItem({
+                        action: "toggle-month-target",
+                        tg,
+                        checked: Boolean(state.monthTargets[tg.id]),
+                        pillText: meta.label,
+                        tag: tg.tag
+                      });
+                    }).join("")}
+                  </div>
                 </div>
-                <div class="flex flex-wrap gap-1 pt-1 border-t">${skPills}</div>
+                <div class="month-card__skills">
+                  <span class="text-xs font-semibold text-muted">Skills Covered:</span>
+                  ${skPills}
+                </div>
               </article>`;
           }).join("")}
         </div>`;

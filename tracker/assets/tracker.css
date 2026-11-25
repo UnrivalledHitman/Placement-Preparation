@@ -1630,3 +1630,135 @@ body {
 .course-guide-table tr.is-skipped {
   opacity: 0.74;
 }
+
+/* Unified Single-Focus Navigator, Compact KPI Strip & 7-Day Pill Strip */
+.kpi-grid--compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 10px;
+}
+
+.kpi-grid--compact .kpi-card {
+  padding: 10px 12px;
+  gap: 5px;
+}
+
+.unified-nav {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.unified-nav__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.unified-nav__week-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.seg-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--content);
+  gap: 3px;
+}
+
+.seg-btn {
+  padding: 5px 11px;
+  border-radius: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .14s ease;
+}
+
+.seg-btn:hover {
+  color: var(--foreground);
+}
+
+.seg-btn.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.unified-nav__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--card-border);
+}
+
+.day-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.day-pill {
+  padding: 8px 9px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--content);
+  color: var(--foreground);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  transition: border-color .14s ease, background .14s ease, transform .12s ease;
+}
+
+.day-pill:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.day-pill.active {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 15%, var(--card));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.day-pill.is-done {
+  border-color: color-mix(in srgb, var(--success) 55%, var(--border));
+  background: color-mix(in srgb, var(--success) 8%, var(--content));
+}
+
+.day-pill.is-today:not(.active) {
+  border-style: dashed;
+  border-color: var(--warning);
+}
+
+.day-pager {
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .day-strip {
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+  }
+}

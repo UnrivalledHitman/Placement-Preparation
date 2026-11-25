@@ -132,6 +132,8 @@
       track: "all",
       status: "all",
       skill: "",
+      dailyViewMode: "day",
+      showWeekTargets: false,
       openRescheduleDay: null,
       openNoteDay: null,
       openSwapDay: null,
@@ -256,11 +258,11 @@
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                   <span id="catchup-slot"></span>
-                  <button id="btn-next-pending" type="button" class="btn btn-primary" data-action="next-pending-day">Next Pending Day &rarr;</button>
+                  <button id="btn-next-pending" type="button" class="btn btn-primary" data-action="next-pending-day">Jump to Today / Active &rarr;</button>
                 </div>
               </div>
               <div id="welcome-banner"></div>
-              <div id="kpi-grid" class="kpi-grid"></div>
+              <div id="kpi-grid" class="kpi-grid kpi-grid--compact"></div>
             </header>
 
             <section class="card command-bar p-3 flex flex-wrap items-center justify-between gap-2">
@@ -329,6 +331,7 @@
         monthTargets: {},
         notes: {},
         activeWeek: 1,
+        activeDay: null,
         activeTab: "daily",
         lastSavedAt: null
       };
@@ -396,6 +399,8 @@
       }
       const wk = Number(raw.activeWeek);
       if (Number.isInteger(wk) && wk >= 1 && wk <= WEEKS.length) base.activeWeek = wk;
+      const dnActive = Number(raw.activeDay);
+      if (Number.isInteger(dnActive) && dnActive >= 1 && dnActive <= DAYS.length) base.activeDay = dnActive;
       if (VALID_TABS.includes(raw.activeTab)) base.activeTab = raw.activeTab;
       if (typeof raw.lastSavedAt === "string" && raw.lastSavedAt.trim()) base.lastSavedAt = raw.lastSavedAt;
       return base;
@@ -992,12 +997,50 @@
         state.shiftReasons[firstPending.dayNum] = "Caught up to today";
       }
       state.activeWeek = firstPending.week;
+      state.activeDay = firstPending.dayNum;
       state.activeTab = "daily";
       recomputeScheduleDates();
       saveState();
       renderAll();
       showToast(`Shifted Day ${firstPending.dayNum} (+${delta}d) to Today (${DAY_MAP[firstPending.dayNum].dateLabel}).`);
       return true;
+    }
+
+    function getDefaultFocusDayNum(todayIso) {
+      const iso = todayIso || S.getTodayLocalIso();
+      const todayPending = DAYS.find((d) => d.dateIso === iso && d.tasks.some((t) => getTaskStatus(t.id) !== 1));
+      if (todayPending) return todayPending.dayNum;
+      const firstPending = DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1));
+      if (firstPending) return firstPending.dayNum;
+      return DAYS.length ? DAYS[DAYS.length - 1].dayNum : 1;
+    }
+
+    function selectDay(dayNum) {
+      const dn = Number(dayNum);
+      if (!DAY_MAP[dn]) return false;
+      state.activeDay = dn;
+      state.activeWeek = DAY_MAP[dn].week;
+      state.activeTab = "daily";
+      ui.skill = "";
+      saveState();
+      renderAll();
+      if (ui.dailyViewMode === "week") {
+        const card = document.getElementById(`day-${dn}`);
+        if (card && typeof card.scrollIntoView === "function") {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+      return true;
+    }
+
+    function setDailyViewMode(mode) {
+      ui.dailyViewMode = mode === "week" ? "week" : "day";
+      renderAll();
+    }
+
+    function toggleWeekTargetsPanel() {
+      ui.showWeekTargets = !ui.showWeekTargets;
+      renderAll();
     }
 
     function setTrackFilter(track) {
@@ -1014,7 +1057,11 @@
     }
 
     function openWeek(weekId) {
+      const w = WEEK_MAP[weekId];
+      if (!w) return;
       state.activeWeek = weekId;
+      const firstPendingInWeek = w.dayNums.find((dn) => DAY_MAP[dn].tasks.some((t) => getTaskStatus(t.id) !== 1));
+      state.activeDay = firstPendingInWeek || w.dayNums[0];
       state.activeTab = "daily";
       ui.skill = "";
       saveState();
@@ -1028,7 +1075,9 @@
     }
 
     function findNextPendingDay() {
-      const day = DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1));
+      const todayIso = S.getTodayLocalIso();
+      const targetDn = getDefaultFocusDayNum(todayIso);
+      const day = DAY_MAP[targetDn];
       if (!day) {
         showToast(`All ${DAYS.length} days complete!`);
         return;
@@ -1037,6 +1086,7 @@
       ui.status = "all";
       ui.skill = "";
       state.activeWeek = day.week;
+      state.activeDay = day.dayNum;
       state.activeTab = "daily";
       const sInp = document.getElementById("search-input");
       const sSel = document.getElementById("status-filter");
@@ -1168,18 +1218,6 @@
     function renderKpis(m) {
       const kpiEl = document.getElementById("kpi-grid");
       if (!kpiEl) return;
-      const all = m.byTrack.all;
-      const overallCard = renderKpiCard({
-        action: "toggle-track-kpi",
-        attrs: 'data-track="all"',
-        title: "Overall Progress",
-        badgeText: `${m.overallPct}%`,
-        badgeColor: "var(--foreground)",
-        mainHtml: `${all.done} / ${all.total} <span class="text-xs font-normal text-muted">tasks</span>`,
-        pct: m.overallPct,
-        barColor: "var(--primary)",
-        footHtml: `${all.hrsDone.toFixed(1)}h / ${all.hrsTotal.toFixed(0)}h logged`
-      });
 
       const trackCards = config.tracks.map((tr) => {
         const meta = trackMeta[tr.key];
@@ -1210,24 +1248,7 @@
         footHtml: S.escHtml(config.ui.skillsKpiSub)
       });
 
-      const trailHtml = m.recentTrail.map((pt) => {
-        const cls = pt.state === "full" ? "streak-dot--full" : pt.state === "partial" ? "streak-dot--partial" : "streak-dot--empty";
-        return `<span class="streak-dot ${cls}" title="Day ${pt.dayNum} (${S.escHtml(pt.dateLabel)}): ${pt.state}"></span>`;
-      }).join("");
-
-      const streakCard = renderKpiCard({
-        action: "switch-tab",
-        attrs: 'data-tab="report"',
-        title: "Daily Streak",
-        badgeText: `Best ${m.bestStreak}d`,
-        badgeColor: "var(--warning)",
-        mainHtml: `&#128293; ${m.currentStreak} <span class="text-xs font-normal text-muted">days &bull; ${m.completedDays}/${DAYS.length} full</span>`,
-        pct: Math.round((m.completedDays / DAYS.length) * 100),
-        barColor: "var(--warning)",
-        footHtml: `<span class="flex items-center justify-between gap-2"><span class="streak-dots">${trailHtml}</span><span>${all.redo} redo</span></span>`
-      });
-
-      kpiEl.innerHTML = overallCard + trackCards + skillsCard + streakCard;
+      kpiEl.innerHTML = trackCards + skillsCard;
     }
 
     function renderToolbarControls() {
@@ -1322,7 +1343,7 @@
         </div>`;
     }
 
-    function renderDayCard(day, filteredTasks, dayStreak, todayIso, isSpotlight) {
+    function renderDayCard(day, filteredTasks, dayStreak, todayIso, isActiveFocus) {
       const allDone = day.tasks.every((t) => getTaskStatus(t.id) === 1);
       const doneCount = day.tasks.filter((t) => getTaskStatus(t.id) === 1).length;
       const totalHrs = day.tasks.reduce((acc, t) => acc + t.hrs, 0);
@@ -1339,9 +1360,9 @@
       const hasB4 = day.tasks.some((t) => t.blockKey === "b4");
       const hasB1a = day.tasks.some((t) => t.blockKey === "b1a");
       const hasB2 = day.tasks.some((t) => t.blockKey === "b2");
-      const isNoteOpen = Boolean(noteVal.trim()) || ui.openNoteDay === day.dayNum || day.dayNum === 1 || isSpotlight;
+      const isNoteOpen = Boolean(noteVal.trim()) || ui.openNoteDay === day.dayNum || day.dayNum === 1 || Boolean(isActiveFocus);
       const minTargetIso = day.dayNum > 1 ? S.addDaysIso(DAY_MAP[day.dayNum - 1].dateIso, 1).iso : "";
-      const cardIdAttr = isSpotlight ? `id="spotlight-day-${day.dayNum}"` : `id="day-${day.dayNum}"`;
+      const cardIdAttr = `id="day-${day.dayNum}"`;
 
       const rhythmStrip = hasDailySchedule
         ? `<div class="rhythm-strip">
@@ -1413,13 +1434,13 @@
       const resolvedTasks = resolveDayTaskDisplay(day, filteredTasks);
 
       return `
-        <article ${cardIdAttr} class="card day-card${isToday ? " is-today" : ""}${allDone ? " is-complete" : ""}${isSpotlight ? " day-card--spotlight" : ""}">
+        <article ${cardIdAttr} class="card day-card${isToday ? " is-today" : ""}${allDone ? " is-complete" : ""}${isActiveFocus && ui.dailyViewMode === "week" ? " day-card--spotlight" : ""}">
           <div class="day-head">
             <div class="flex flex-wrap items-center gap-2">
-              ${isSpotlight ? `<span class="pill pill-1 font-mono">&#9733; TODAY'S FOCUS</span>` : ""}
               <span class="pill pill-muted font-mono">Day ${day.dayNum}/${DAYS.length}</span>
               <span class="font-bold text-sm">${S.escHtml(day.weekday)}, ${S.escHtml(day.dateLabel)}</span>
               ${isToday ? `<span class="pill pill-1 font-mono">TODAY</span>` : ""}
+              ${isActiveFocus && ui.dailyViewMode === "week" ? `<span class="pill pill-1 font-mono">ACTIVE</span>` : ""}
               ${isOverdue ? `<span class="pill pill-warn font-mono">Overdue</span>` : ""}
               <span class="text-xs text-muted">Week ${day.week} &bull; Month ${day.month}</span>
               ${allDone && dayStreak > 0 ? `<span class="pill streak-pill font-mono">&#128293; Streak #${dayStreak}d</span>` : ""}
@@ -1428,7 +1449,6 @@
             <div class="flex flex-wrap items-center gap-2">
               <span class="text-xs font-mono text-muted">${doneCount}/${day.tasks.length} tasks &bull; ${totalHrs.toFixed(1)}h</span>
               ${hasDailySchedule ? `<button type="button" class="btn${activeSwapMode ? " btn-swap-active" : ""}" data-action="toggle-day-swap" data-day="${day.dayNum}">${isSwapOpen ? "Hide Swap" : (activeSwapMode ? "Client Swap *" : "Client Swap")}</button>` : ""}
-              ${!allDone ? `<button type="button" class="btn" data-action="shift-day" data-day="${day.dayNum}" data-delta="1" title="Missed or busy? Push this day +1 day">+1d &curvearrowright;</button>` : ""}
               <button type="button" class="btn" data-action="toggle-day-note" data-day="${day.dayNum}">${isNoteOpen ? "Hide Note" : (noteVal.trim() ? "Edit Note" : "+ Note")}</button>
               <button type="button" class="btn" data-action="toggle-reschedule" data-day="${day.dayNum}">${isPanelOpen ? "Hide Shift" : "Reschedule"}</button>
               <button type="button" class="btn ${allDone ? "btn-primary" : ""}" data-action="toggle-day-done" data-day="${day.dayNum}">${allDone ? "&#10003; Day Completed" : "Mark Day Done"}</button>
@@ -1469,88 +1489,46 @@
       const phases = config.phases || [];
       const activePhase = phases.find((p) => activeW.id >= p.minWeek && activeW.id <= p.maxWeek) || phases[0];
 
-      const focusDay = DAYS.find((d) => d.dateIso === todayIso && d.tasks.some((t) => getTaskStatus(t.id) !== 1))
-        || DAYS.find((d) => d.tasks.some((t) => getTaskStatus(t.id) !== 1))
-        || DAYS[DAYS.length - 1];
-      const focusSub = focusDay ? focusDay.tasks.filter(matchesFilters) : [];
-      const spotlightHtml = focusDay && focusSub.length
-        ? `<section class="spotlight-section flex flex-col gap-2">
-            ${renderDayCard(focusDay, focusSub, m.dayStreakMap[focusDay.dayNum] || 0, todayIso, true)}
-          </section>`
-        : "";
+      const defaultFocusDn = getDefaultFocusDayNum(todayIso);
+      const activeDayNum = (state.activeDay && DAY_MAP[state.activeDay] && activeW.dayNums.includes(state.activeDay))
+        ? state.activeDay
+        : activeW.dayNums.includes(defaultFocusDn)
+          ? defaultFocusDn
+          : (activeW.dayNums.find((dn) => DAY_MAP[dn].tasks.some((t) => getTaskStatus(t.id) !== 1)) || activeW.dayNums[0]);
 
-      const mBtns = MONTHS.map((mo) => `<button type="button" class="filter-pill ${mo.weeks.includes(activeW.id) ? "active" : ""}" data-action="open-week" data-week="${mo.weeks[0]}">M${mo.id}: W${mo.weeks[0]}–W${mo.weeks[mo.weeks.length - 1]}</button>`).join("");
-      const weekChips = WEEKS.map((w) => {
+      const mBtns = MONTHS.map((mo) => `<button type="button" class="filter-pill ${mo.weeks.includes(activeW.id) ? "active" : ""}" data-action="open-week" data-week="${mo.weeks[0]}">M${mo.id}</button>`).join("");
+      const weekOptions = WEEKS.map((w) => {
         const st = getWeekStats(w.id);
-        const wPhase = phases.find((p) => w.id >= p.minWeek && w.id <= p.maxWeek);
-        const chipColor = (wPhase && wPhase.chipColor) || "var(--primary)";
+        const fD = DAY_MAP[w.dayNums[0]];
+        const lD = DAY_MAP[w.dayNums[w.dayNums.length - 1]];
+        const fShort = fD.dateLabel.replace(/\s+\d{4}$/, "");
+        const lShort = lD.dateLabel.replace(/\s+\d{4}$/, "");
+        return `<option value="${w.id}"${w.id === activeW.id ? " selected" : ""}>W${w.id} &middot; ${S.escHtml(fShort)}&ndash;${S.escHtml(lShort)} (${st.pct}%)</option>`;
+      }).join("");
+
+      const dayStripHtml = activeW.dayNums.map((dn) => {
+        const d = DAY_MAP[dn];
+        const done = d.tasks.filter((t) => getTaskStatus(t.id) === 1).length;
+        const total = d.tasks.length;
+        const isDone = total > 0 && done === total;
+        const isToday = d.dateIso === todayIso;
+        const isActive = dn === activeDayNum;
+        const shortDate = d.dateLabel.replace(/\s+\d{4}$/, "");
         return `
-          <button type="button" class="week-chip ${w.id === activeW.id ? "active" : ""}" data-action="open-week" data-week="${w.id}">
-            <div class="flex items-center justify-between w-full">
-              <span class="font-bold">W${w.id}</span>
-              <span class="font-mono text-xs ${st.pct === 100 ? "text-success" : "text-muted"}">${st.pct}%</span>
+          <button type="button" class="day-pill${isActive ? " active" : ""}${isDone ? " is-done" : ""}${isToday ? " is-today" : ""}" data-action="select-day" data-day="${dn}">
+            <div class="flex items-center justify-between gap-1 w-full">
+              <span class="font-bold text-xs">${S.escHtml(d.weekday)} ${S.escHtml(shortDate)}</span>
+              <span class="font-mono text-[11px] ${isDone ? "text-success" : "text-muted"}">${isDone ? "&#10003;" : `${done}/${total}`}</span>
             </div>
-            ${S.renderProgressBar(st.pct, chipColor, 4)}
+            <div class="flex items-center justify-between gap-1 w-full text-[11px] text-muted font-mono">
+              <span>Day ${dn}</span>
+              ${isToday ? `<span class="text-warning font-bold">TODAY</span>` : ""}
+            </div>
           </button>`;
       }).join("");
 
-      const dayCards = activeW.dayNums.map((dn) => {
-        const day = DAY_MAP[dn];
-        const sub = day.tasks.filter(matchesFilters);
-        return sub.length ? renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso, false) : "";
-      }).filter(Boolean).join("");
-
-      const collapsedWeeksHtml = WEEKS.filter((w) => w.id !== activeW.id).map((w) => {
-        const st = getWeekStats(w.id);
-        const firstDay = DAY_MAP[w.dayNums[0]];
-        const lastDay = DAY_MAP[w.dayNums[w.dayNums.length - 1]];
-        return `
-          <div class="week-accordion-row clickable" data-action="open-week" data-week="${w.id}">
-            <div class="flex flex-wrap items-center gap-2 min-w-0">
-              <span class="pill ${st.pct === 100 ? "pill-ok" : "pill-muted"} font-mono">W${w.id}</span>
-              <span class="font-semibold text-sm">${S.escHtml(w.title)}</span>
-              <span class="text-xs text-muted font-mono">${S.escHtml(firstDay.dateLabel)} &ndash; ${S.escHtml(lastDay.dateLabel)}</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div style="width:100px">${S.renderProgressBar(st.pct, st.pct === 100 ? "var(--success)" : "var(--primary)", 6)}</div>
-              <span class="font-mono text-xs font-bold">${st.done}/${st.total} (${st.pct}%)</span>
-              <span class="btn">Expand &darr;</span>
-            </div>
-          </div>`;
-      }).join("");
-
-      return `
-        ${spotlightHtml}
-        <section class="card p-3 flex flex-col gap-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex flex-wrap items-center gap-1.5">${mBtns}</div>
-            <div class="text-xs text-muted">${activePhase ? S.escHtml(activePhase.dailyLabel) : ""}</div>
-          </div>
-          <div class="week-strip">${weekChips}</div>
-        </section>
-        <section class="card p-4 flex flex-col gap-2">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <span class="pill pill-1 font-mono mb-1">Expanded Week ${activeW.id} / ${WEEKS.length} &bull; Month ${activeW.month}</span>
-              <h2 class="text-base font-bold m-0">${S.escHtml(activeW.title)}</h2>
-              <p class="text-xs text-muted mt-0.5 m-0">${S.escHtml(activeW.practiceTag)}</p>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="text-right">
-                <div class="text-sm font-bold font-mono">${wStats.done}/${wStats.total} (${wStats.pct}%)</div>
-                <div class="text-xs text-muted">${wStats.targetsDone}/${wStats.targetsTotal} weekly targets</div>
-              </div>
-              <div class="flex gap-1">
-                <button type="button" class="btn" ${activeW.id <= 1 ? "disabled" : ""} data-action="open-week" data-week="${Math.max(1, activeW.id - 1)}">&larr; Prev</button>
-                <button type="button" class="btn" ${activeW.id >= WEEKS.length ? "disabled" : ""} data-action="open-week" data-week="${Math.min(WEEKS.length, activeW.id + 1)}">Next &rarr;</button>
-              </div>
-            </div>
-          </div>
-          <div class="pt-2 border-t flex flex-col gap-2">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-bold text-muted">Weekly Mastery Targets</span>
-              <span class="pill pill-muted font-mono">${wStats.targetsDone}/${wStats.targetsTotal} verified</span>
-            </div>
+      const targetsDrawerHtml = ui.showWeekTargets
+        ? `<div class="pt-2 border-t flex flex-col gap-2">
             <div class="daily-targets-grid">
               ${activeW.targets.map((tg) => {
                 const meta = trackMeta[tg.track] || { label: tg.track };
@@ -1562,16 +1540,69 @@
                 });
               }).join("")}
             </div>
+          </div>`
+        : "";
+
+      let dayBodyHtml = "";
+      if (ui.dailyViewMode === "day") {
+        const activeDayObj = DAY_MAP[activeDayNum];
+        const sub = activeDayObj ? activeDayObj.tasks.filter(matchesFilters) : [];
+        const cardHtml = activeDayObj && sub.length
+          ? renderDayCard(activeDayObj, sub, m.dayStreakMap[activeDayObj.dayNum] || 0, todayIso, true)
+          : `<div class="card p-6 text-center text-sm text-muted flex flex-col items-center gap-2">
+              <div>No tasks on Day ${activeDayNum} match the active track/status filter.</div>
+              <button type="button" class="btn" data-action="set-daily-mode" data-mode="week">Show All 7 Days of Week ${activeW.id}</button>
+            </div>`;
+        dayBodyHtml = `
+          ${cardHtml}
+          <div class="card day-pager">
+            <button type="button" class="btn" ${activeDayNum <= 1 ? "disabled" : ""} data-action="select-day" data-day="${Math.max(1, activeDayNum - 1)}">&larr; Prev Day</button>
+            <span class="text-xs font-mono text-muted">Day ${activeDayNum} of ${DAYS.length} &bull; Week ${activeW.id} (${S.escHtml(activeDayObj.weekday)}, ${S.escHtml(activeDayObj.dateLabel)})</span>
+            <button type="button" class="btn" ${activeDayNum >= DAYS.length ? "disabled" : ""} data-action="select-day" data-day="${Math.min(DAYS.length, activeDayNum + 1)}">Next Day &rarr;</button>
+          </div>`;
+      } else {
+        const dayCards = activeW.dayNums.map((dn) => {
+          const day = DAY_MAP[dn];
+          const sub = day.tasks.filter(matchesFilters);
+          return sub.length ? renderDayCard(day, sub, m.dayStreakMap[day.dayNum] || 0, todayIso, dn === activeDayNum) : "";
+        }).filter(Boolean).join("");
+        dayBodyHtml = dayCards || `<div class="card p-6 text-center text-sm text-muted">No tasks in Week ${activeW.id} match the current filter.</div>`;
+      }
+
+      return `
+        <section class="card unified-nav">
+          <div class="unified-nav__bar">
+            <div class="flex flex-wrap items-center gap-1.5">${mBtns}</div>
+            <div class="unified-nav__week-ctrl">
+              <button type="button" class="btn" ${activeW.id <= 1 ? "disabled" : ""} data-action="open-week" data-week="${Math.max(1, activeW.id - 1)}" title="Previous Week">&larr;</button>
+              <select id="week-select" class="input-ctrl py-1 text-xs font-mono" data-action="select-week" aria-label="Select Week">${weekOptions}</select>
+              <button type="button" class="btn" ${activeW.id >= WEEKS.length ? "disabled" : ""} data-action="open-week" data-week="${Math.min(WEEKS.length, activeW.id + 1)}" title="Next Week">&rarr;</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" class="btn" data-action="toggle-week-targets">Week Targets (${wStats.targetsDone}/${wStats.targetsTotal}) ${ui.showWeekTargets ? "&#9652;" : "&#9662;"}</button>
+              <div class="seg-toggle" role="group" aria-label="Daily view mode">
+                <button type="button" class="seg-btn${ui.dailyViewMode === "day" ? " active" : ""}" data-action="set-daily-mode" data-mode="day">Focus Day</button>
+                <button type="button" class="seg-btn${ui.dailyViewMode === "week" ? " active" : ""}" data-action="set-daily-mode" data-mode="week">All 7 Days</button>
+              </div>
+            </div>
           </div>
+          <div class="unified-nav__meta">
+            <div class="flex-1 min-w-[220px]">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="pill pill-1 font-mono">Week ${activeW.id} / ${WEEKS.length}</span>
+                <span class="font-bold text-sm">${S.escHtml(activeW.title)}</span>
+              </div>
+              <div class="text-xs text-muted mt-0.5">${activePhase ? S.escHtml(activePhase.dailyLabel) : ""} &bull; ${S.escHtml(activeW.practiceTag)}</div>
+            </div>
+            <div class="flex items-center gap-2.5" style="min-width:190px">
+              <div class="flex-1">${S.renderProgressBar(wStats.pct, wStats.pct === 100 ? "var(--success)" : "var(--primary)", 7)}</div>
+              <span class="font-mono text-xs font-bold whitespace-nowrap">${wStats.done}/${wStats.total} (${wStats.pct}%)</span>
+            </div>
+          </div>
+          ${targetsDrawerHtml}
+          <div class="day-strip">${dayStripHtml}</div>
         </section>
-        ${dayCards || `<div class="card p-6 text-center text-sm text-muted">No tasks in Week ${activeW.id} match the current filter.</div>`}
-        <section class="card p-4 flex flex-col gap-2">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="text-sm font-bold m-0">Other Weeks Accordion (Click any week to expand its days)</h3>
-            <span class="pill pill-muted font-mono">${WEEKS.length - 1} collapsed weeks</span>
-          </div>
-          <div class="week-accordion-list">${collapsedWeeksHtml}</div>
-        </section>`;
+        ${dayBodyHtml}`;
     }
 
     function renderWeekCardsGrid(list) {
@@ -2201,6 +2232,15 @@
         case "open-week":
           openWeek(Number(actEl.getAttribute("data-week")));
           break;
+        case "select-day":
+          selectDay(Number(actEl.getAttribute("data-day")));
+          break;
+        case "set-daily-mode":
+          setDailyViewMode(actEl.getAttribute("data-mode"));
+          break;
+        case "toggle-week-targets":
+          toggleWeekTargetsPanel();
+          break;
       }
     }
 
@@ -2233,6 +2273,8 @@
           renderAll();
         } else if (target.id === "start-date-input") {
           previewStartDate(target.value);
+        } else if (act === "select-week") {
+          openWeek(Number(target.value));
         } else if (act === "move-day-date") {
           moveDayToDate(Number(target.getAttribute("data-day")), target.value);
         } else if (target.id === "io-file") {
@@ -2299,6 +2341,8 @@
       clearDayShift,
       saveShiftReason,
       setDaySwap,
+      selectDay,
+      setDailyViewMode,
       catchUpToToday,
       getReportAnalysis,
       setTrackFilter,

@@ -78,7 +78,7 @@
           const dayTasks = [];
           const tuples = w.days[dIdx] || [];
           tuples.forEach((tup, tIdx) => {
-            const [track, skills, title, detail, res, hrs] = tup;
+            const [track, skills, title, detail, res, hrs, slot, blockKey] = tup;
             const id = `${config.taskIdPrefix}w${w.id}d${dIdx + 1}_t${tIdx + 1}`;
             const taskObj = {
               id,
@@ -94,7 +94,9 @@
               title,
               detail,
               res,
-              hrs: Number(hrs)
+              hrs: Number(hrs),
+              slot: slot || "",
+              blockKey: blockKey || ""
             };
             dayTasks.push(taskObj);
             ALL_TASKS.push(taskObj);
@@ -132,6 +134,7 @@
       skill: "",
       openRescheduleDay: null,
       openNoteDay: null,
+      openSwapDay: null,
       pendingStartDate: ""
     };
 
@@ -144,7 +147,7 @@
         .join("");
 
       const trackerSuite = [
-        { id: "python", label: "Python Roadmap", badge: "24W", href: "python_dsa_sql_aiml_tracker.html" },
+        { id: "python", label: "Master Roadmap", badge: "24W", href: "python_dsa_sql_aiml_tracker.html" },
         { id: "java", label: "Java Backend", badge: "24W", href: "java_dsa_sql_backend_tracker.html" },
         { id: "aptitude", label: "TCS Aptitude", badge: "12W", href: "aptitude_tracker.html" }
       ];
@@ -308,7 +311,10 @@
     }
 
     function defaultState(todayIso) {
-      const anchor = S.isValidIsoDate(todayIso) ? todayIso : S.getTodayLocalIso();
+      const fallback = (config.defaultStartIso && S.isValidIsoDate(config.defaultStartIso))
+        ? config.defaultStartIso
+        : S.getTodayLocalIso();
+      const anchor = S.isValidIsoDate(todayIso) ? todayIso : fallback;
       return {
         version: 3,
         isStarted: false,
@@ -316,6 +322,7 @@
         firstOpenedOn: anchor,
         dayShifts: {},
         shiftReasons: {},
+        daySwaps: {},
         taskCompletedOn: {},
         tasks: {},
         weekTargets: {},
@@ -328,7 +335,7 @@
     }
 
     function sanitizeState(raw, fallbackStartDate) {
-      const base = defaultState(fallbackStartDate || S.getTodayLocalIso());
+      const base = defaultState(fallbackStartDate || config.defaultStartIso || S.getTodayLocalIso());
       if (!raw || typeof raw !== "object" || raw.version !== 3 || raw.isStarted !== true) {
         return base;
       }
@@ -350,6 +357,15 @@
           const dn = Number(k);
           if (Number.isInteger(dn) && dn >= 1 && dn <= DAYS.length && typeof v === "string" && v.trim()) {
             base.shiftReasons[dn] = v.trim();
+          }
+        }
+      }
+      const VALID_SWAPS = new Set(["swap_b1a", "swap_b2", "client_overflow"]);
+      if (raw.daySwaps && typeof raw.daySwaps === "object") {
+        for (const [k, v] of Object.entries(raw.daySwaps)) {
+          const dn = Number(k);
+          if (Number.isInteger(dn) && dn >= 1 && dn <= DAYS.length && VALID_SWAPS.has(v)) {
+            base.daySwaps[dn] = v;
           }
         }
       }
@@ -445,11 +461,14 @@
 
     function loadState() {
       const todayIso = S.getTodayLocalIso();
+      const initAnchor = (config.defaultStartIso && S.isValidIsoDate(config.defaultStartIso))
+        ? config.defaultStartIso
+        : todayIso;
       storageAvailable = S.probeLocalStorage(`__${config.id}_probe__`);
       try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
         if (!raw) {
-          const fresh = defaultState(todayIso);
+          const fresh = defaultState(initAnchor);
           ui.pendingStartDate = fresh.startDate;
           hasSavedSnapshot = false;
           state = fresh;
@@ -461,7 +480,7 @@
           if (typeof window.localStorage.removeItem === "function") {
             window.localStorage.removeItem(STORAGE_KEY);
           }
-          const fresh = defaultState(todayIso);
+          const fresh = defaultState(initAnchor);
           ui.pendingStartDate = fresh.startDate;
           hasSavedSnapshot = false;
           state = fresh;
@@ -469,7 +488,7 @@
           return fresh;
         }
         hasSavedSnapshot = true;
-        const loaded = sanitizeState(parsed, todayIso);
+        const loaded = sanitizeState(parsed, initAnchor);
         ui.pendingStartDate = loaded.startDate;
         state = loaded;
         refreshStorageBadge(loaded.lastSavedAt, true);
@@ -477,7 +496,7 @@
       } catch {
         storageAvailable = false;
         hasSavedSnapshot = false;
-        const fresh = defaultState(todayIso);
+        const fresh = defaultState(initAnchor);
         ui.pendingStartDate = fresh.startDate;
         state = fresh;
         refreshStorageBadge(null, false);
@@ -501,7 +520,14 @@
     function renderResRef(resKey) {
       const r = RESOURCES[resKey];
       if (!r) return "";
-      return `<a class="res-link" href="${S.escHtml(RESOURCE_PREFIX + r.path)}" target="_blank" rel="noopener">${S.escHtml(r.title)} &nearr;</a>`;
+      if (r.path) {
+        return `<a class="res-link" href="${S.escHtml(RESOURCE_PREFIX + r.path)}" target="_blank" rel="noopener">${S.escHtml(r.title)} &nearr;</a>`;
+      }
+      if (r.url) {
+        return `<a class="res-link" href="${S.escHtml(r.url)}" target="_blank" rel="noopener">${S.escHtml(r.title)} &nearr;</a>`;
+      }
+      const badge = r.badge ? `<strong>${S.escHtml(r.badge)}</strong> &middot; ` : "";
+      return `<span class="res-badge">${badge}${S.escHtml(r.title)}</span>`;
     }
 
     function computeSkillStats(skillId) {
@@ -880,6 +906,78 @@
       return true;
     }
 
+    function setDaySwap(dayNum, mode) {
+      if (!requireStarted()) return false;
+      if (!DAY_MAP[dayNum]) return false;
+      const VALID_SWAPS = new Set(["swap_b1a", "swap_b2", "client_overflow"]);
+      if (!mode || !VALID_SWAPS.has(mode)) {
+        delete state.daySwaps[dayNum];
+      } else {
+        state.daySwaps[dayNum] = mode;
+      }
+      saveState();
+      renderAll();
+      const labels = {
+        swap_b1a: "Swapped 07:30 DSA \u2194 17:30 Client Meeting",
+        swap_b2: "Swapped 12:30 Research \u2194 17:30 Client Meeting",
+        client_overflow: "Marked Flex slots (15:00 & 22:45) as OK to defer"
+      };
+      showToast(mode && labels[mode] ? `Day ${dayNum}: ${labels[mode]}.` : `Day ${dayNum}: Restored default time slots.`);
+      return true;
+    }
+
+    function slotStartMinutes(slotStr) {
+      const m = /^(\d{1,2}):(\d{2})/.exec(String(slotStr || "").trim());
+      return m ? Number(m[1]) * 60 + Number(m[2]) : 9999;
+    }
+
+    function resolveDayTaskDisplay(day, tasks) {
+      const swapMode = (state && state.daySwaps && state.daySwaps[day.dayNum]) || "";
+      const b1aTask = day.tasks.find((x) => x.blockKey === "b1a");
+      const b2Task = day.tasks.find((x) => x.blockKey === "b2");
+      const b4Task = day.tasks.find((x) => x.blockKey === "b4");
+
+      const items = tasks.map((t) => {
+        let effectiveSlot = t.slot || "";
+        let swapped = false;
+        let swapNote = "";
+        let flexDefer = false;
+
+        if (swapMode === "swap_b1a" && b1aTask && b4Task) {
+          if (t.blockKey === "b1a") {
+            effectiveSlot = b4Task.slot || effectiveSlot;
+            swapped = true;
+            swapNote = `Swapped \u2194 ${b4Task.slot} Client`;
+          } else if (t.blockKey === "b4") {
+            effectiveSlot = b1aTask.slot || effectiveSlot;
+            swapped = true;
+            swapNote = `Client moved to ${b1aTask.slot}`;
+          }
+        } else if (swapMode === "swap_b2" && b2Task && b4Task) {
+          if (t.blockKey === "b2") {
+            effectiveSlot = b4Task.slot || effectiveSlot;
+            swapped = true;
+            swapNote = `Swapped \u2194 ${b4Task.slot} Client`;
+          } else if (t.blockKey === "b4") {
+            effectiveSlot = b2Task.slot || effectiveSlot;
+            swapped = true;
+            swapNote = `Client moved to ${b2Task.slot}`;
+          }
+        } else if (swapMode === "client_overflow") {
+          if (t.blockKey === "b3" || t.blockKey === "b6") {
+            flexDefer = true;
+          }
+        }
+
+        return { task: t, effectiveSlot, swapped, swapNote, flexDefer };
+      });
+
+      if (items.some((it) => it.effectiveSlot)) {
+        items.sort((a, b) => slotStartMinutes(a.effectiveSlot) - slotStartMinutes(b.effectiveSlot));
+      }
+      return items;
+    }
+
     function catchUpToToday() {
       if (!requireStarted()) return false;
       const todayIso = S.getTodayLocalIso();
@@ -1173,11 +1271,24 @@
         </div>`;
     }
 
-    function renderTaskRow(t) {
+    function renderTaskRow(t, displayMeta) {
       const st = getTaskStatus(t.id);
       const isDone = st === 1;
       const isRedo = st === 2;
       const meta = trackMeta[t.track] || { pillClass: "pill-muted", label: t.track };
+      const effectiveSlot = (displayMeta && displayMeta.effectiveSlot) || t.slot || "";
+      const isSwapped = Boolean(displayMeta && displayMeta.swapped);
+      const swapNote = (displayMeta && displayMeta.swapNote) || "";
+      const isFlexDefer = Boolean(displayMeta && displayMeta.flexDefer);
+      const slotBadgeHtml = effectiveSlot
+        ? `<span class="slot-badge font-mono${isSwapped ? " slot-badge--swapped" : ""}${isFlexDefer ? " slot-badge--flex" : ""}">${S.escHtml(effectiveSlot)}</span>`
+        : "";
+      const swapPillHtml = swapNote
+        ? `<span class="pill pill-warn font-mono">${S.escHtml(swapNote)}</span>`
+        : "";
+      const flexPillHtml = isFlexDefer
+        ? `<span class="pill pill-muted font-mono">Flex &mdash; OK to Defer</span>`
+        : "";
       const skillPills = t.skills.map((sid) => {
         const sk = SKILL_MAP[sid];
         return sk
@@ -1191,8 +1302,11 @@
           <div class="flex-1 min-w-0 flex flex-col gap-1">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div class="flex flex-wrap items-center gap-1.5">
+                ${slotBadgeHtml}
                 <span class="pill ${meta.pillClass}">${S.escHtml(meta.label)}</span>
                 <span class="font-semibold text-sm">${S.escHtml(t.title)}</span>
+                ${swapPillHtml}
+                ${flexPillHtml}
               </div>
               <div class="flex items-center gap-1.5">
                 <span class="pill pill-muted font-mono">${t.hrs.toFixed(1)}h</span>
@@ -1219,9 +1333,47 @@
       const isToday = day.dateIso === todayIso;
       const isOverdue = day.dateIso < todayIso && !allDone;
       const isPanelOpen = ui.openRescheduleDay === day.dayNum;
+      const isSwapOpen = ui.openSwapDay === day.dayNum;
+      const activeSwapMode = (state.daySwaps && state.daySwaps[day.dayNum]) || "";
+      const hasDailySchedule = Boolean(config.dailySchedule && Array.isArray(config.dailySchedule.anchors));
+      const hasB4 = day.tasks.some((t) => t.blockKey === "b4");
+      const hasB1a = day.tasks.some((t) => t.blockKey === "b1a");
+      const hasB2 = day.tasks.some((t) => t.blockKey === "b2");
       const isNoteOpen = Boolean(noteVal.trim()) || ui.openNoteDay === day.dayNum || day.dayNum === 1 || isSpotlight;
       const minTargetIso = day.dayNum > 1 ? S.addDaysIso(DAY_MAP[day.dayNum - 1].dateIso, 1).iso : "";
       const cardIdAttr = isSpotlight ? `id="spotlight-day-${day.dayNum}"` : `id="day-${day.dayNum}"`;
+
+      const rhythmStrip = hasDailySchedule
+        ? `<div class="rhythm-strip">
+            <strong>Anchors (${S.escHtml(config.dailySchedule.window || "07:00 AM – 12:00 AM")}):</strong>
+            ${config.dailySchedule.anchors.map((a) => `<span>${S.escHtml(a)}</span>`).join("<span>&bull;</span>")}
+          </div>`
+        : "";
+
+      const swapLabels = {
+        swap_b1a: "Client Meeting hit 07:30 \u2014 swapped 07:30 DSA \u2194 17:30 Client",
+        swap_b2: "Client Meeting hit 12:30 \u2014 swapped 12:30 Research \u2194 17:30 Client",
+        client_overflow: "Client Overflow Mode \u2014 Flex slots (15:00 & 22:45) marked OK to defer"
+      };
+
+      const swapBanner = activeSwapMode && swapLabels[activeSwapMode]
+        ? `<div class="swap-banner">
+            <div><strong>Client Swap Active:</strong> ${S.escHtml(swapLabels[activeSwapMode])}</div>
+            <button type="button" class="btn btn-ghost" data-action="set-day-swap" data-day="${day.dayNum}" data-mode="">Reset Swap</button>
+          </div>`
+        : "";
+
+      const swapPanel = hasDailySchedule && isSwapOpen
+        ? `<div class="swap-panel">
+            <div class="text-xs font-semibold text-muted">Fluctuating Client Meeting Swap (Day ${day.dayNum}): swap blocks instead of cancelling study</div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" class="btn${!activeSwapMode ? " btn-primary" : ""}" data-action="set-day-swap" data-day="${day.dayNum}" data-mode="">Default Slots</button>
+              <button type="button" class="btn${activeSwapMode === "swap_b1a" ? " btn-primary" : ""}" ${!(hasB1a && hasB4) ? "disabled" : ""} data-action="set-day-swap" data-day="${day.dayNum}" data-mode="swap_b1a">Client Hit 07:30 (Swap DSA &harr; Client)</button>
+              <button type="button" class="btn${activeSwapMode === "swap_b2" ? " btn-primary" : ""}" ${!(hasB2 && hasB4) ? "disabled" : ""} data-action="set-day-swap" data-day="${day.dayNum}" data-mode="swap_b2">Client Hit 12:30 (Swap Research &harr; Client)</button>
+              <button type="button" class="btn${activeSwapMode === "client_overflow" ? " btn-primary" : ""}" data-action="set-day-swap" data-day="${day.dayNum}" data-mode="client_overflow">Client Overflow (Mark Flex Slots)</button>
+            </div>
+          </div>`
+        : "";
 
       const shiftBanner = day.ownShift > 0
         ? `<div class="shift-banner">
@@ -1258,6 +1410,8 @@
           </div>`
         : "";
 
+      const resolvedTasks = resolveDayTaskDisplay(day, filteredTasks);
+
       return `
         <article ${cardIdAttr} class="card day-card${isToday ? " is-today" : ""}${allDone ? " is-complete" : ""}${isSpotlight ? " day-card--spotlight" : ""}">
           <div class="day-head">
@@ -1273,15 +1427,19 @@
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <span class="text-xs font-mono text-muted">${doneCount}/${day.tasks.length} tasks &bull; ${totalHrs.toFixed(1)}h</span>
+              ${hasDailySchedule ? `<button type="button" class="btn${activeSwapMode ? " btn-swap-active" : ""}" data-action="toggle-day-swap" data-day="${day.dayNum}">${isSwapOpen ? "Hide Swap" : (activeSwapMode ? "Client Swap *" : "Client Swap")}</button>` : ""}
               ${!allDone ? `<button type="button" class="btn" data-action="shift-day" data-day="${day.dayNum}" data-delta="1" title="Missed or busy? Push this day +1 day">+1d &curvearrowright;</button>` : ""}
               <button type="button" class="btn" data-action="toggle-day-note" data-day="${day.dayNum}">${isNoteOpen ? "Hide Note" : (noteVal.trim() ? "Edit Note" : "+ Note")}</button>
               <button type="button" class="btn" data-action="toggle-reschedule" data-day="${day.dayNum}">${isPanelOpen ? "Hide Shift" : "Reschedule"}</button>
               <button type="button" class="btn ${allDone ? "btn-primary" : ""}" data-action="toggle-day-done" data-day="${day.dayNum}">${allDone ? "&#10003; Day Completed" : "Mark Day Done"}</button>
             </div>
           </div>
+          ${rhythmStrip}
+          ${swapBanner}
+          ${swapPanel}
           ${shiftBanner}
           ${reschedulePanel}
-          <div>${filteredTasks.map(renderTaskRow).join("")}</div>
+          <div>${resolvedTasks.map((it) => renderTaskRow(it.task, it)).join("")}</div>
           ${noteDrawer}
         </article>`;
     }
@@ -1585,8 +1743,9 @@
         { label: config.ui.skillsChartCombinedLabel, pct: m.overallPct, color: "var(--primary)" }
       ];
 
+      const svgH = Math.max(152, 24 + rowsSvg.length * 33);
       const svgChart = `
-        <svg viewBox="0 0 700 152" class="w-full max-w-3xl" role="img" aria-label="${S.escHtml(config.ui.skillsChartAriaLabel)}">
+        <svg viewBox="0 0 700 ${svgH}" class="w-full max-w-3xl" role="img" aria-label="${S.escHtml(config.ui.skillsChartAriaLabel)}">
           ${rowsSvg.map((r, i) => {
             const y = 16 + i * 33;
             const fw = Math.round((r.pct / 100) * barW);
@@ -1649,6 +1808,53 @@
         .filter((x) => DAY_MAP[x.dayNum] && x.val.trim())
         .sort((a, b) => a.dayNum - b.dayNum);
 
+      const hasNonPdf = Object.values(RESOURCES).some((r) => !r.path);
+      const resUnitLabel = hasNonPdf ? "Resources" : "PDFs";
+      const courseGuideHtml = Array.isArray(config.courseGuide) && config.courseGuide.length
+        ? `<section class="card course-guide-card">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 class="text-base font-bold m-0">15-Course Udemy Sequence &amp; Keep / Skip Guide</h2>
+                <p class="text-xs text-muted mt-0.5 m-0">Exact order across your 15 Udemy courses: 6 sequenced AI/ML modules + Hitesh Web Dev synced with your Freelancing Project + 2 Ref companions (6 redundant/off-track courses parked).</p>
+              </div>
+              <span class="pill pill-1 font-mono">${config.courseGuide.length} Courses Audited</span>
+            </div>
+            <div class="report-table-wrap">
+              <table class="course-guide-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Course &amp; Instructor</th>
+                    <th>Current</th>
+                    <th>Verdict &amp; Window</th>
+                    <th>What to Do (Focus)</th>
+                    <th>What to Skip</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${config.courseGuide.map((c) => `
+                    <tr class="${c.window === "Parked" || c.window === "Skipped" || c.window === "After May 2027" ? "is-skipped" : ""}">
+                      <td class="font-mono font-bold">${S.escHtml(c.order)}</td>
+                      <td>
+                        <div class="font-semibold">${S.escHtml(c.title)}</div>
+                        <div class="text-xs text-muted">${S.escHtml(c.instructor)}</div>
+                      </td>
+                      <td class="font-mono text-xs whitespace-nowrap">${S.escHtml(c.progress)}</td>
+                      <td>
+                        <div class="flex flex-col gap-1 items-start">
+                          <span class="pill ${S.escHtml(c.pillClass)}">${S.escHtml(c.verdict)}</span>
+                          <span class="font-mono text-[11px] text-muted">${S.escHtml(c.window)} &bull; ${S.escHtml(c.targetPct)}</span>
+                        </div>
+                      </td>
+                      <td class="text-xs leading-relaxed">${S.escHtml(c.doText)}</td>
+                      <td class="text-xs text-muted leading-relaxed">${S.escHtml(c.skipText)}</td>
+                    </tr>`).join("")}
+                </tbody>
+              </table>
+            </div>
+          </section>`
+        : "";
+
       return `
         <div class="queue-notes-grid">
           <section class="card queue-panel">
@@ -1709,13 +1915,15 @@
           </section>
         </div>
 
+        ${courseGuideHtml}
+
         <section class="card library-section">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 class="text-base font-bold m-0">${S.escHtml(config.ui.libraryTitle)} (${Object.keys(RESOURCES).length} Mapped PDFs)</h2>
-              <p class="text-xs text-muted mt-0.5 m-0">Click any book card below to open the PDF directly from the repository.</p>
+              <h2 class="text-base font-bold m-0">${S.escHtml(config.ui.libraryTitle)} (${Object.keys(RESOURCES).length} Mapped ${resUnitLabel})</h2>
+              <p class="text-xs text-muted mt-0.5 m-0">Click any PDF book card to open directly from the repository; Udemy, Client &amp; Research items list exact target modules.</p>
             </div>
-            <span class="pill pill-muted font-mono">${Object.keys(RESOURCES).length} Total Books</span>
+            <span class="pill pill-muted font-mono">${Object.keys(RESOURCES).length} Total ${resUnitLabel}</span>
           </div>
           <div class="library-groups">
             ${config.tracks.map((tr) => {
@@ -1728,13 +1936,13 @@
                       <span class="pill ${meta.pillClass}">${S.escHtml(tr.label)}</span>
                       <h3 class="library-group__title">${S.escHtml(tr.libraryHeading)}</h3>
                     </div>
-                    <span class="pill pill-muted font-mono">${items.length} PDFs</span>
+                    <span class="pill pill-muted font-mono">${items.length} ${resUnitLabel}</span>
                   </div>
                   <div class="library-books-grid">
                     ${items.map(([k, r]) => `
                       <article class="library-book-card">
                         <div>${renderResRef(k)}</div>
-                        <code class="library-book-path">${S.escHtml(r.path)}</code>
+                        ${r.path ? `<code class="library-book-path">${S.escHtml(r.path)}</code>` : `<div class="library-book-note text-xs text-muted">${S.escHtml(r.detail || r.badge || "Active Track Resource")}</div>`}
                       </article>`).join("")}
                   </div>
                 </div>`;
@@ -1841,6 +2049,16 @@
           renderAll();
           break;
         }
+        case "toggle-day-swap": {
+          if (!requireStarted()) break;
+          const dn = Number(actEl.getAttribute("data-day"));
+          ui.openSwapDay = ui.openSwapDay === dn ? null : dn;
+          renderAll();
+          break;
+        }
+        case "set-day-swap":
+          setDaySwap(Number(actEl.getAttribute("data-day")), actEl.getAttribute("data-mode") || "");
+          break;
         case "shift-day":
           shiftDay(Number(actEl.getAttribute("data-day")), Number(actEl.getAttribute("data-delta")));
           break;
@@ -1876,10 +2094,13 @@
         case "reset-progress": {
           const now = Date.now();
           if (now < resetArmedUntil) {
-            const todayIso = S.getTodayLocalIso();
-            state = defaultState(todayIso);
-            ui.pendingStartDate = todayIso;
+            const anchorIso = (config.defaultStartIso && S.isValidIsoDate(config.defaultStartIso))
+              ? config.defaultStartIso
+              : S.getTodayLocalIso();
+            state = defaultState(anchorIso);
+            ui.pendingStartDate = anchorIso;
             ui.openRescheduleDay = null;
+            ui.openSwapDay = null;
             resetArmedUntil = 0;
             actEl.textContent = "Reset Progress";
             try {
@@ -2077,6 +2298,7 @@
       moveDayToDate,
       clearDayShift,
       saveShiftReason,
+      setDaySwap,
       catchUpToToday,
       getReportAnalysis,
       setTrackFilter,

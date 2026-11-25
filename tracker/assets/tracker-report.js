@@ -333,7 +333,7 @@
     const cols = [];
     for (const [wk, days] of weeksMap.entries()) {
       const cells = days.map((d) => {
-        const level = d.isFull ? "full" : d.done >= 2 ? "high" : d.done === 1 ? "low" : "empty";
+        const level = d.isFull ? "full" : d.pct >= 60 ? "high" : d.done > 0 ? "low" : "empty";
         const isToday = d.dateIso === todayIso;
         return `<span class="heatmap-cell heatmap-cell--${level}${isToday ? " is-today" : ""}" title="Day ${d.dayNum} (W${wk} • ${S.escHtml(d.dateLabel)}): ${d.done}/${d.total} tasks (${d.pct}%)"></span>`;
       }).join("");
@@ -348,10 +348,10 @@
         <div class="heatmap-grid">${cols.join("")}</div>
         <div class="heatmap-legend text-xs text-muted">
           <span>Consistency Map:</span>
-          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--empty"></span> 0/3</span>
-          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--low"></span> 1/3</span>
-          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--high"></span> 2/3</span>
-          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--full"></span> 3/3 (100% Day)</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--empty"></span> 0%</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--low"></span> 1&ndash;59%</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--high"></span> 60&ndash;99%</span>
+          <span class="heatmap-legend-item"><span class="heatmap-cell heatmap-cell--full"></span> 100% Day</span>
         </div>
       </div>`;
   }

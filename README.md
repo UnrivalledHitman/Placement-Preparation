@@ -39,6 +39,18 @@ The library has grown past 130 books, so here are the three routes it was built 
 | 4 | Interviews for data and AI roles, then senior-level habits | `06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep`, `08_Interview_and_HR` (04, 05) |
 | 5 | Teaching what you know: a ready-to-run 2-day corporate workshop on RAG and agentic AI | `06_AI_and_Machine_Learning/10_Corporate_Workshop_RAG_and_Agents` |
 
+### Path D · 2027 Full-Stack, AI/ML Engineering & Digital Marketing (35h/wk Sustainable Tracker)
+
+A burnout-safe 24-week roadmap (`30 Nov 2026 – 16 May 2027`, `35.0h/wk` study + `45m/day` conditioning, study hard stop at `19:00`, **Sunday 0h cognitive rest**) tracked interactively in [`tracker/python_dsa_sql_aiml_tracker.html`](tracker/python_dsa_sql_aiml_tracker.html) to target 14–18 LPA engineering roles and freelance D2C delivery while reversing AI cognitive atrophy via 24 Friday Zero-AI Blank-File Proof Gates (`F1.1`–`F6.2`, `M1.1`–`M6.2`).
+
+| Track | Allocation | What | Where |
+|---|---|---|---|
+| 1 · DSA, SQL & Xplore | 30% (`252h`) | Zero-AI Python DSA (NeetCode 150 + Q1 2027 IPA), MySQL 1–16, TCS Xplore 100% (Wk 12) & Mock Loops | `03_Programming/05_DSA_in_Python`, `03_Programming/02_MySQL`, `06_AI_and_Machine_Learning/07_Data_Science_Interview_Prep`, `08_Interview_and_HR` (02–03) |
+| 2 · Full-Stack & Client | 23% (`192h`) | Auth/RBAC, IDOR/SSRF hardening, Postgres/Prisma integer-paise, Razorpay HMAC webhooks, Vitest/Playwright/Docker CI, store launch & HLD | `03_Programming/12_Fullstack_ZeroAI_Drills`, `03_Programming` (07, 09, 10, 11), `04_CS_Fundamentals/06_DevOps_and_Cloud`, `05_System_Design/02_High_Level_Design` |
+| 3 · AI/ML & MLOps | 20% (`168h`) | Pure-NumPy ML & backprop (`< 1e-6` grad check) → PyTorch→ONNX (`opset=17`), FastAPI serving, slim non-root Docker (`< 450 MB`), PSI drift & MLflow CI | `06_AI_and_Machine_Learning/11_Zero_AI_ML_and_MLOps_Drills`, `06_AI_and_Machine_Learning` (01, 02, 04, 05, 06) |
+| 4 · Digital Marketing | 10% (`84h`) | Phase 1: Next.js Technical SEO, CWV (`< 150 KB` WebP/AVIF), GA4, Meta Pixel+CAPI & CRO → Phase 2: Unit Economics/ROAS, Meta/Google Ads, GMC XML & MER SQL | `09_Digital_Marketing_and_Growth` (01–02) |
+| 5 · Research, Defense & Fit | 17% (`144h` + `126h` fit) | Journal Article #1 submission (Wk 12), strictly capped `3.5h/wk` Saturday research maintenance (Phase 2), Friday Cold Whiteboard Defense & daily `45m` workout | `08_Interview_and_HR/04_Senior_Engineer_Handbook_Complete_Guide.pdf`, [`tracker/python_dsa_sql_aiml_tracker.html`](tracker/python_dsa_sql_aiml_tracker.html) |
+
 ## Folder structure
 
 ```
@@ -61,7 +73,8 @@ Placement Preparation/
 │   ├── 08_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
 │   ├── 09_Software_Testing/      Guide → practice book (every test run on JUnit 5)
 │   ├── 10_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
-│   └── 11_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
+│   ├── 11_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
+│   └── 12_Fullstack_ZeroAI_Drills/          Full-Stack production guide & 12 Zero-AI Friday Proof Gates (F1.1–F6.2)
 ├── 04_CS_Fundamentals/
 │   ├── 01_Operating_Systems/     Guide → practice book
 │   ├── 02_Linux/                 Guide → practice book (every command executed)
@@ -86,14 +99,18 @@ Placement Preparation/
 │   ├── 07_Data_Science_Interview_Prep/  Guide → practice book (SQL, pandas, stats, product sense)
 │   ├── 08_TCS_CPA_AI_ML_Stream/  Guide → practice sets with 2 mock papers → quick revision → supplement
 │   ├── 09_GATE_Data_Science_and_AI/  2 guides → 2 practice books → aptitude and 3 mocks → revision → weekend warm-up
-│   └── 10_Corporate_Workshop_RAG_and_Agents/  Trainer guide for a 2-day corporate workshop
+│   ├── 10_Corporate_Workshop_RAG_and_Agents/  Trainer guide for a 2-day corporate workshop
+│   └── 11_Zero_AI_ML_and_MLOps_Drills/        Pure-NumPy ML, ONNX/FastAPI, slim Docker, PSI drift & Proof Gates (M1.1–M6.2)
 ├── 07_Business_and_Finance/
 │   ├── 01_Parable_of_the_Pipeline/  Book → study report
 │   └── 02_Cashflow_Quadrant/        Book → study report
-└── 08_Interview_and_HR/
-    ├── Interview, HR and resume guide
-    ├── Mock Interview Loops: guide → workbook (full DSA, LLD, HLD and behavioural loops)
-    └── Senior Engineer Handbook: guide → workbook (growing into senior and staff)
+├── 08_Interview_and_HR/
+│   ├── Interview, HR and resume guide
+│   ├── Mock Interview Loops: guide → workbook (full DSA, LLD, HLD and behavioural loops)
+│   └── Senior Engineer Handbook: guide → workbook (growing into senior and staff)
+└── 09_Digital_Marketing_and_Growth/
+    ├── Phase 1: Technical SEO, Core Web Vitals, GA4/Meta CAPI & D2C CRO (Audits G1.1–G3.2)
+    └── Phase 2: Paid Ads, ROAS Economics, GMC XML Feeds, Lifecycle & MER Attribution (Drills P1.1–P3.2)
 ```
 
 ---
@@ -269,6 +286,14 @@ After the Spring Boot guide: the pieces around the core API that production syst
 |---|-------|---------------|
 | 01 | [Advanced Back-end Engineering: Caches, Queues and Real-time](03_Programming/11_Advanced_Backend_Engineering/01_Advanced_Backend_Engineering_Complete_Guide.pdf) (29 runnable programs) | [33 exercises with hints and executed solutions, including two system designs](03_Programming/11_Advanced_Backend_Engineering/02_Advanced_Backend_Engineering_Practice_Book.pdf) |
 
+### 12 · Full-Stack production engineering and Zero-AI drills
+
+Built to reverse AI cognitive atrophy via the Struggle-First Blank-File protocol (30–45m unassisted attempt before targeted clip lookup): Argon2id + rotating HTTP-only JWT refresh cookies, RBAC, killing IDOR (`GET /profile/:id`, `POST /image`) and SSRF (DNS lookup + CIDR blocklist + `redirect: "manual"`), eliminating error swallowing, Postgres + Prisma integer-paise e-commerce schemas with atomic stock locking (`UPDATE ... WHERE stock_qty >= qty`), server-derived 3% GST + raw-Buffer Razorpay HMAC-SHA256 webhooks (`crypto.timingSafeEqual`), Vitest/Supertest/Playwright E2E, React Error Boundaries, multi-stage Docker, Upstash Redis rate limiting, GitHub Actions CI, and 12 weekly Friday Zero-AI Proof Gates (`F1.1`–`F6.2`).
+
+| # | Guide | Contents |
+|---|-------|----------|
+| 01 | [Full-Stack Production Engineering & Zero-AI Drills](03_Programming/12_Fullstack_ZeroAI_Drills/01_Fullstack_Production_and_ZeroAI_Drills_Guide.pdf) | 6 chapters, production TypeScript/Prisma/Docker patterns, 12 Friday Zero-AI Proof Gates (`F1.1`–`F6.2`), hints, verification rubrics & tracker |
+
 ---
 
 ## 04 · CS Fundamentals
@@ -348,6 +373,14 @@ A ready-to-deliver, two-day workshop for engineering teams, written as a trainer
 |---|------|----------|
 | 01 | [RAG and Agentic AI Workshop: Trainer Guide](06_AI_and_Machine_Learning/10_Corporate_Workshop_RAG_and_Agents/01_RAG_and_Agentic_AI_Workshop_Trainer_Guide.pdf) | 6 modules, 6 labs, capstone, assessments, delivery and pricing notes |
 
+### 11 · Zero-AI ML fundamentals and production MLOps drills
+
+Pure-NumPy ML from scratch (no `sklearn`, PyTorch, or AI): `StandardScaler`, OLS/SGD Ridge and Logistic Regression with L2 excluding bias, leak-free Stratified/Time/LOSO cross-validation, 2-layer ReLU + Softmax Cross-Entropy MLP forward/backward pass with central finite-difference gradient checking (`< 1e-6`), BatchNorm vs LayerNorm vs RevIN, PyTorch-to-ONNX (`opset=17`) parity, FastAPI `lifespan` ONNX serving with Pydantic v2 `NaN`/`Inf` rejection (`Wearable-Sensor-Data-Analytics/app/`), multi-stage slim non-root Docker (`< 450 MB`), `p50`/`p95`/`p99` latency benchmarking, PSI input drift monitoring, MLflow + GitHub Actions ML CI, multi-GB `.npz` Git de-bloating, Cold Whiteboard Defense protocol, and 12 Friday Zero-AI Proof Gates (`M1.1`–`M6.2`).
+
+| # | Guide | Contents |
+|---|-------|----------|
+| 01 | [Zero-AI ML Fundamentals & Production MLOps Drills](06_AI_and_Machine_Learning/11_Zero_AI_ML_and_MLOps_Drills/01_Zero_AI_ML_Fundamentals_and_MLOps_Drills_Guide.pdf) | 6 chapters, pure-NumPy/ONNX/FastAPI/Docker/PSI reference code, 12 Friday Zero-AI Proof Gates (`M1.1`–`M6.2`), hints, rubrics & tracker |
+
 ---
 
 ## 07 · Business and Finance
@@ -380,3 +413,15 @@ Then, for the years after you are hired, **The Senior Engineer Handbook**: what 
 | # | Guide | Workbook |
 |---|-------|----------|
 | 04 | [The Senior Engineer Handbook: Scope, Impact and Leverage](08_Interview_and_HR/04_Senior_Engineer_Handbook_Complete_Guide.pdf) (11 chapters) | [36 scenario, design and reflection exercises with worked answers](08_Interview_and_HR/05_Senior_Engineer_Handbook_Workbook.pdf) |
+
+---
+
+## 09 · Digital Marketing and Growth
+
+Developer-first practical digital marketing for Indian D2C storefronts and freelance Growth + Engineering retainers: Phase 1 covers Next.js technical SEO (`robots.ts`, dynamic `sitemap.ts`, canonicals, `Product`/`Offer (INR)`/`BreadcrumbList`/`LocalBusiness` JSON-LD), Core Web Vitals (`LCP <= 2.5s`, `INP <= 200ms`, `CLS <= 0.1`, `< 150 KB` WebP/AVIF), GA4 e-commerce events, Meta Pixel + server-side CAPI `event_id` deduplication, 375px Indian D2C CRO, and 40/30/30 SOWs; Phase 2 covers Indian D2C unit economics (3% GST, RTO, Break-Even ROAS, MER, LTV:CAC), Meta Ads architecture & diagnostics, Google Search + live Postgres `/api/feeds/google-merchant.xml`, WhatsApp Business & Resend lifecycle flows, SQL + Python attribution pipelines, and Rs 25K–40K/month retainer pitches.
+
+| # | Guide | Contents |
+|---|-------|----------|
+| 01 | [Technical SEO, Analytics & D2C CRO (Phase 1)](09_Digital_Marketing_and_Growth/01_Technical_SEO_Analytics_and_CRO_Guide.pdf) | 5 chapters, Next.js SEO/CWV/GA4/CAPI patterns, 6 hands-on Phase 1 growth audits (`G1.1`–`G3.2`), hints, rubrics & tracker |
+| 02 | [Paid Ads, ROAS Economics & D2C Growth (Phase 2)](09_Digital_Marketing_and_Growth/02_Paid_Ads_ROAS_and_D2C_Growth_Guide.pdf) | 6 chapters, unit economics, Meta/Google/GMC XML, WhatsApp/Resend, MER/CAC SQL + Python, 6 Phase 2 drills (`P1.1`–`P3.2`), hints, rubrics & tracker |
+

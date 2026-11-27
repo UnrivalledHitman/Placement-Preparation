@@ -67,6 +67,7 @@ THEMES = {
     'cpa': dict(accent=colors.HexColor('#0e7490'), soft=colors.HexColor('#e6f4f7')),
     'pydsa': dict(accent=colors.HexColor('#3b5bdb'), soft=colors.HexColor('#edf0fd')),
     'gate': dict(accent=colors.HexColor('#7c3aed'), soft=colors.HexColor('#f3eefe')),
+    'mkt': dict(accent=colors.HexColor('#0f766e'), soft=colors.HexColor('#e6f7f5')),
 }
 
 CALLOUTS = {

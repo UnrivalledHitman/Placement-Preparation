@@ -149,9 +149,8 @@
         .join("");
 
       const trackerSuite = [
-        { id: "python", label: "Master Roadmap", badge: "24W", href: "python_dsa_sql_aiml_tracker.html" },
-        { id: "java", label: "Java Backend", badge: "24W", href: "java_dsa_sql_backend_tracker.html" },
-        { id: "aptitude", label: "TCS Aptitude", badge: "12W", href: "aptitude_tracker.html" }
+        { id: "python", label: "2027 Full-Stack & AI/ML", badge: "24W", href: "python_dsa_sql_aiml_tracker.html" },
+        { id: "java_nqt", label: "Java SDE + TCS NQT", badge: "24W", href: "java_nqt_unified_tracker.html" }
       ];
       const suiteSwitcherHtml = trackerSuite.map((item) => {
         const isCurrent = item.id === config.id;

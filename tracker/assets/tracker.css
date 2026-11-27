@@ -67,6 +67,25 @@
   --chart-3: #34d399;
 }
 
+[data-tracker="java_nqt"] {
+  --primary: #b45309;
+  --link: #92400e;
+  --chart-1: #d97706;
+  --chart-2: #059669;
+  --chart-3: #0284c7;
+  --chart-4: #7c3aed;
+}
+
+[data-theme="dark"][data-tracker="java_nqt"],
+[data-theme="dark"] [data-tracker="java_nqt"] {
+  --primary: #f59e0b;
+  --link: #fbbf24;
+  --chart-1: #f59e0b;
+  --chart-2: #34d399;
+  --chart-3: #38bdf8;
+  --chart-4: #a78bfa;
+}
+
 [data-tracker="aptitude"] {
   --primary: #059669;
   --link: #047857;
@@ -1189,6 +1208,7 @@ body {
 }
 
 .suite-dot--python { background: #6366f1; }
+.suite-dot--java_nqt { background: #ea580c; }
 .suite-dot--java { background: #f59e0b; }
 .suite-dot--aptitude { background: #10b981; }
 

@@ -820,6 +820,22 @@ DOCS = {
                'Automate weekly MER, blended CAC & cohort retention'],
               ['Chapter 6: 6 Phase 2 performance & analytics drills (P1.1–P3.2), hints & tracker',
                'Complete one drill every two weeks across Weeks 13–24']]),
+    'java_zeroai': dict(file='03_Spring_Boot_ZeroAI_Projects_and_Gates_Guide.pdf',
+        title='Spring Boot Zero-AI Projects, LLD & Proof Gates',
+        subtitle='Struggle-First Zero-AI protocol, TCS NQT stdin/stdout survival checklist, full rubrics '
+                 'for Mini-Project 0 (JDBC) & Flagship Projects 1–2 (Spring Boot/Postgres/Redis), '
+                 '3 cold 60-min Java LLD rubrics and 12 Phase-2 Friday Proof Gates (J1.1–J6.2)',
+        theme='be', kicker='Java backend · Zero-AI projects, LLD & Friday proof gates',
+        files=['java_zeroai.md'],
+        rows=[['What is inside', 'How to use it'],
+              ['Chapter 1: Struggle-First Zero-AI protocol & TCS NQT stdin/stdout checklist',
+               'Disable Copilot/AI before every OA drill and coding block'],
+              ['Chapters 2–3: Mini-Project 0 (Pure JDBC) & Flagship Projects 1–2 (Spring + Redis)',
+               'Build end-to-end with Postgres, Flyway, Testcontainers & CI'],
+              ['Chapter 4: 3 Cold 60-Min Java LLD Rubrics (Parking Lot, Rate Limiter, Splitwise)',
+               'Code each from a blank IDE against a 60-minute timer'],
+              ['Chapter 5: 12 Weekly Phase-2 Friday Zero-AI Proof Gates (J1.1–J6.2) & tracker',
+               'Sit one gate every Friday across Weeks 13–24, AI off']]),
 }
 
 

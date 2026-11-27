@@ -19,6 +19,8 @@ The library has grown past 130 books, so here are the three routes it was built 
 | 5 | Exam-specific sets | `03_Programming/01_Java` (TCS CPA Java sets), `06_AI_and_Machine_Learning/08_TCS_CPA_AI_ML_Stream` |
 | 6 | Interviews: HR, resume, then full mock loops | `08_Interview_and_HR` (01–03) |
 
+**Unified Interactive Tracker (TCS NQT + 8–15 LPA Java Backend SDE-1):** Track the burnout-proof 24-week plan (`30 Nov 2026 – 16 May 2027`, `29.5h/wk`, max 3 blocks/day, **Sunday 0h full rest**) in [`tracker/java_nqt_unified_tracker.html`](tracker/java_nqt_unified_tracker.html) — combining Day-1 Diagnostic, Week-2 Reasoning, dedicated DI, 7 full multi-section NQT mocks, Zero-AI Java DSA, MySQL/JDBC/Core CS, Mini-Project 0, Security-first Spring Boot (4 full weeks + Flagship Project 1), Redis/Locking Flagship Project 2, and 3 cold 60-minute Java LLDs (`J1.1`–`J6.2`).
+
 ### Path B · GATE Data Science and AI (February 2028)
 
 | Period | What | Where |
@@ -58,7 +60,7 @@ Placement Preparation/
 │   ├── 05_DSA_in_Python/         Guide → practice book → revision (same patterns in Python)
 │   ├── 06_Java_Concurrency/      Guide → practice book (every program run on JDK 25)
 │   ├── 07_Security_Engineering/  Guide → practice book (attacks run on toys)
-│   ├── 08_Backend_Spring_Boot/   Guide → practice book (runnable Spring Boot 3 apps)
+│   ├── 08_Backend_Spring_Boot/   Guide → practice book → Zero-AI projects, LLD & Friday proof gates (J1.1–J6.2)
 │   ├── 09_Software_Testing/      Guide → practice book (every test run on JUnit 5)
 │   ├── 10_Frontend_Design_and_Development/  Guide → practice book (pages rendered in Chromium)
 │   └── 11_Advanced_Backend_Engineering/     Guide → practice book (run against real Redis)
@@ -241,9 +243,10 @@ Security fundamentals come before any framework, so this sits before the Spring 
 
 After Java, MySQL (the JPA chapters build on SQL) and Security Engineering (Chapter 6 applies its password, session and JWT fundamentals with Spring Security). Every program is a real Spring Boot 3 application that was run to produce its output; Chapter 10 is a complete smart-meter REST API worth rebuilding as a GitHub project.
 
-| # | Guide | Practice book |
-|---|-------|---------------|
+| # | Guide | Practice book / Companion |
+|---|-------|---------------------------|
 | 01 | [Spring Boot Backend: From Beans to Production](03_Programming/08_Backend_Spring_Boot/01_Backend_Spring_Boot_Complete_Guide.pdf) (21 runnable apps) | [31 exercises with hints and solutions](03_Programming/08_Backend_Spring_Boot/02_Backend_Spring_Boot_Practice_Book.pdf) |
+| 03 | [Spring Boot Zero-AI Projects, LLD & Proof Gates](03_Programming/08_Backend_Spring_Boot/03_Spring_Boot_ZeroAI_Projects_and_Gates_Guide.pdf) | Struggle-First Zero-AI protocol, TCS NQT stdin/stdout checklist, Mini-Project 0 & Flagship Projects 1–2 rubrics, 3 cold 60m LLDs & 12 Friday Proof Gates (`J1.1`–`J6.2`) |
 
 ### 09 · Software testing
 

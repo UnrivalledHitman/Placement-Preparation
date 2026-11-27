@@ -150,6 +150,7 @@
 
       const trackerSuite = [
         { id: "python", label: "Master Roadmap", badge: "24W", href: "python_dsa_sql_aiml_tracker.html" },
+        { id: "java_nqt", label: "Java + NQT Unified", badge: "24W", href: "java_nqt_unified_tracker.html" },
         { id: "java", label: "Java Backend", badge: "24W", href: "java_dsa_sql_backend_tracker.html" },
         { id: "aptitude", label: "TCS Aptitude", badge: "12W", href: "aptitude_tracker.html" }
       ];
